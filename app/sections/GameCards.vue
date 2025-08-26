@@ -339,23 +339,7 @@
   animation: glow 2s infinite;
 }
 
-/* Плавное появление при загрузке */
-.game-card {
-  opacity: 0;
-  animation: slideInUp 0.6s ease forwards;
-}
 
-.game-card:nth-child(1) {
-  animation-delay: 0.1s;
-}
-
-.game-card:nth-child(2) {
-  animation-delay: 0.2s;
-}
-
-.game-card:nth-child(3) {
-  animation-delay: 0.3s;
-}
 
 @keyframes slideInUp {
   from {

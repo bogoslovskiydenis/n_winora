@@ -8,11 +8,6 @@
 <!--        <ChestPromo />-->
       </div>
 
-      <!-- Страница инвестиций -->
-      <div class="investments-section" v-else-if="currentSection === 'investments'">
-        <InvestmentSection />
-      </div>
-
       <!-- Другие страницы -->
       <div v-else class="section-placeholder">
         <h1>{{ getSectionTitle() }}</h1>
@@ -25,7 +20,6 @@
 <script setup>
 import GameCards from './GameCards.vue'
 import LoyaltySection from './LoyaltySection.vue'
-import InvestmentSection from './InvestmentsSection.vue'
 import ChestPromo from './ChestPromo.vue'
 
 const props = defineProps({
