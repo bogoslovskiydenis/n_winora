@@ -16,8 +16,10 @@ body {
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    position: relative;
 }
 
+/* Фоновые паттерны */
 body::before {
     content: '';
     position: fixed;
@@ -25,50 +27,32 @@ body::before {
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: radial-gradient(circle at 20% 50%, rgba(74, 222, 128, 0.1) 0%, transparent 50%),
-    radial-gradient(circle at 80% 20%, rgba(34, 197, 94, 0.1) 0%, transparent 50%),
-    radial-gradient(circle at 40% 80%, rgba(22, 163, 74, 0.1) 0%, transparent 50%);
+    background-image:
+            radial-gradient(circle at 20% 50%, rgba(74, 222, 128, 0.1) 0%, transparent 50%),
+            radial-gradient(circle at 80% 20%, rgba(34, 197, 94, 0.1) 0%, transparent 50%),
+            radial-gradient(circle at 40% 80%, rgba(22, 163, 74, 0.1) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: -2;
+}
+
+/* Фоновое изображение Winora в нижнюю часть */
+body::after {
+    content: '';
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 40vh;
+    background-image: url("./../images/winora_bg.png");
+    background-repeat: no-repeat;
+    background-position: center bottom;
+    background-size: cover;
+    opacity: 0.15;
     pointer-events: none;
     z-index: -1;
 }
 
-#app {
-    min-height: 100vh;
-}
-
-:root {
-    --primary-color: #4ade80;
-    --primary-dark: #22c55e;
-    --primary-light: #86efac;
-    --secondary-color: #f97316;
-    --secondary-dark: #ea580c;
-    --background-primary: #0f2027;
-    --background-secondary: #203a43;
-    --background-tertiary: #2c5364;
-    --text-primary: rgba(255, 255, 255, 0.95);
-    --text-secondary: rgba(255, 255, 255, 0.7);
-    --text-muted: rgba(255, 255, 255, 0.5);
-    --border-color: rgba(255, 255, 255, 0.15);
-    --border-color-hover: rgba(255, 255, 255, 0.25);
-    --error-color: #ef4444;
-    --success-color: #22c55e;
-    --warning-color: #f59e0b;
-    --glass-bg: rgba(255, 255, 255, 0.05);
-    --glass-border: rgba(255, 255, 255, 0.1);
-    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-    --border-radius-sm: 8px;
-    --border-radius-md: 12px;
-    --border-radius-lg: 16px;
-    --border-radius-xl: 24px;
-    --border-radius-full: 9999px;
-    --transition-fast: 0.15s ease;
-    --transition-normal: 0.3s ease;
-    --transition-slow: 0.5s ease;
-}
-
+/* Кастомный скроллбар */
 ::-webkit-scrollbar {
     width: 8px;
 }
@@ -88,6 +72,7 @@ body::before {
     background: rgba(255, 255, 255, 0.3);
 }
 
+/* Стили выделения */
 ::selection {
     background-color: rgba(74, 222, 128, 0.3);
     color: white;
@@ -96,11 +81,6 @@ body::before {
 ::-moz-selection {
     background-color: rgba(74, 222, 128, 0.3);
     color: white;
-}
-
-:focus-visible {
-    outline: 2px solid var(--primary-color);
-    outline-offset: 2px;
 }
 
 @keyframes fadeIn {
@@ -151,6 +131,16 @@ body::before {
     }
 }
 
+@keyframes shimmer {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+/* Анимации */
 .fade-in {
     animation: fadeIn var(--transition-normal);
 }
@@ -177,14 +167,96 @@ body::before {
     border: 1px solid var(--glass-border);
 }
 
+.loading {
+    pointer-events: none;
+    opacity: 0.6;
+    cursor: not-allowed;
+    position: relative;
+}
+
+.loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 20px;
+    height: 20px;
+    border: 2px solid transparent;
+    border-top: 2px solid var(--primary-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+.error {
+    color: var(--error-color);
+    border-color: var(--error-color);
+}
+
+.success {
+    color: var(--success-color);
+    border-color: var(--success-color);
+}
+
+.warning {
+    color: var(--warning-color);
+    border-color: var(--warning-color);
+}
+
+/* Ссылки */
+a {
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+}
+
+a:hover {
+    color: var(--primary-light);
+}
+
+/* Кнопки */
+button {
+    font-family: inherit;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    transition: all var(--transition-normal);
+}
+
+/* Поля ввода */
+input, textarea, select {
+    font-family: inherit;
+    outline: none;
+}
+
+.page-enter-active,
+.page-leave-active {
+    transition: all 0.3s ease;
+}
+
+.page-enter-from {
+    opacity: 0;
+    transform: translateX(10px);
+}
+
+.page-leave-to {
+    opacity: 0;
+    transform: translateX(-10px);
+}
+
 @media (max-width: 640px) {
-    /* Убираем padding для мобильных */
+    body {
+        font-size: 14px;
+    }
 }
 
 @media (max-width: 480px) {
-    /* Убираем padding для мобильных */
+    body {
+        font-size: 13px;
+    }
 }
 
+/* Поддержка высокого контраста */
 @media (prefers-contrast: high) {
     :root {
         --text-primary: #ffffff;
@@ -193,6 +265,7 @@ body::before {
     }
 }
 
+/* Поддержка уменьшенной анимации */
 @media (prefers-reduced-motion: reduce) {
     *,
     *::before,
@@ -203,13 +276,46 @@ body::before {
     }
 }
 
+/* Плавный скролл */
+@media (prefers-reduced-motion: no-preference) {
+    html {
+        scroll-behavior: smooth;
+    }
+}
+
+/* Стили для печати */
 @media print {
     body {
         background: white !important;
         color: black !important;
     }
 
-    #app {
-        background: white !important;
+    body::before,
+    body::after {
+        display: none !important;
     }
+
+    .sidebar,
+    .header,
+    button {
+        display: none !important;
+    }
+}
+
+/* Skip-ссылка для клавиатурной навигации */
+.skip-link {
+    position: absolute;
+    top: -40px;
+    left: 6px;
+    background: var(--primary-color);
+    color: var(--background-primary);
+    padding: 8px;
+    text-decoration: none;
+    border-radius: 4px;
+    z-index: 10000;
+    transition: top var(--transition-fast);
+}
+
+.skip-link:focus {
+    top: 6px;
 }

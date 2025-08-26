@@ -61,8 +61,7 @@
 
       <nav class="sidebar-menu">
         <NuxtLink
-            to="/"
-            class="menu-item"
+            @click="$emit('navigate-home')"
             :data-tooltip="!isOpen ? 'Главная' : ''">
           <div class="menu-icon-wrapper">
             <span class="menu-icon">🏠</span>
