@@ -181,17 +181,6 @@ const resetForm = () => {
               :error="errors.password"
           />
 
-          <div class="checkbox-wrapper">
-            <label class="checkbox-label">
-              <input
-                  type="checkbox"
-                  v-model="rememberMe"
-                  class="checkbox-input"
-              />
-              <span class="checkbox-custom"></span>
-              <span class="checkbox-text">Запомнить меня</span>
-            </label>
-          </div>
 
           <BaseButton
               variant="primary"
@@ -222,17 +211,7 @@ const resetForm = () => {
           />
 
           <div class="form-extras">
-            <div class="checkbox-wrapper">
-              <label class="checkbox-label">
-                <input
-                    type="checkbox"
-                    v-model="rememberMe"
-                    class="checkbox-input"
-                />
-                <span class="checkbox-custom"></span>
-                <span class="checkbox-text">Запомнить меня</span>
-              </label>
-            </div>
+
 
             <div class="forgot-password">
               <a href="#" class="link">Восстановить пароль</a>
@@ -294,16 +273,14 @@ const resetForm = () => {
 }
 
 .logo-image {
-  width: 80px;
-  height: 80px;
+
   margin-bottom: 15px;
   filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
 }
 
 @media (min-width: 1024px) {
   .logo-image {
-    width: 100px;
-    height: 100px;
+
     margin-bottom: 20px;
   }
 }
@@ -434,14 +411,11 @@ const resetForm = () => {
 /* Дополнительные элементы формы */
 .form-extras {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   margin: 8px 0;
 }
 
-.forgot-password {
-  margin-left: auto;
-}
 
 .link {
   color: #4ade80;
