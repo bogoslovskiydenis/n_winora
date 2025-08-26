@@ -5,7 +5,7 @@
       <div class="main-section" v-if="currentSection === 'main'">
         <GameCards />
         <LoyaltySection />
-        <ChestPromo />
+<!--        <ChestPromo />-->
       </div>
 
       <!-- Страница инвестиций -->
