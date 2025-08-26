@@ -3,20 +3,6 @@
     <div class="content-wrapper">
       <!-- Главная страница -->
       <div class="main-section" v-if="currentSection === 'main'">
-        <div class="main-title">
-          <h1>Главная</h1>
-        </div>
-
-        <div class="level-info-card">
-          <div class="level-badge-large">
-            <span class="level-number-large">2</span>
-          </div>
-          <div class="level-text">
-            <h2>У вас 2 уровень лояльности</h2>
-            <router-link to="/profile" class="level-link">Узнать больше</router-link>
-          </div>
-        </div>
-
         <GameCards />
         <LoyaltySection />
         <ChestPromo />
@@ -83,27 +69,6 @@ const getSectionTitle = () => {
   width: 100%;
 }
 
-.main-title h1 {
-  font-size: 48px;
-  font-weight: 700;
-  color: white;
-  margin-bottom: 32px;
-  text-align: center;
-}
-
-/* Level Info Card */
-.level-info-card {
-  display: flex;
-  align-items: center;
-  gap: 24px;
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 20px;
-  padding: 24px;
-  margin-bottom: 32px;
-}
-
 .level-badge-large {
   width: 80px;
   height: 80px;
@@ -168,24 +133,11 @@ const getSectionTitle = () => {
     padding: 24px 16px;
   }
 
-  .main-title h1 {
-    font-size: 32px;
-  }
-
-  .level-info-card {
-    flex-direction: column;
-    text-align: center;
-    gap: 16px;
-  }
 }
 
 @media (max-width: 480px) {
   .main-content {
     padding: 20px 12px;
-  }
-
-  .main-title h1 {
-    font-size: 24px;
   }
 }
 </style>

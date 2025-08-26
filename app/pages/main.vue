@@ -115,7 +115,7 @@ onUnmounted(() => {
 <style scoped>
 .main-page {
   min-height: 100vh;
-  background: linear-gradient(135deg, #0f2027 0%, #203a43 30%, #2c5364 100%);
+  background: linear-gradient(135deg, #01614B, #032019 70%);
   color: var(--text-primary);
   display: flex;
   position: relative;
