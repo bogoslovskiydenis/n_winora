@@ -1,15 +1,5 @@
 <template>
   <div class="main-page">
-    <Sidebar
-        :is-open="sidebarOpen"
-        :user="user"
-        @toggle="toggleSidebar"
-        @logout="handleLogout"
-        @navigate-home="navigateToMain"
-    />
-
-    <div v-if="sidebarOpen && isMobile" class="sidebar-overlay" @click="closeSidebar"></div>
-
     <div class="main-wrapper" :class="{ 'main-wrapper--sidebar-open': sidebarOpen && !isMobile }">
       <MainContent :current-section="getCurrentSection()" />
     </div>
@@ -20,7 +10,6 @@
 import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import MainContent from '../components/main/MainContent.vue'
-import Sidebar from "../components/layout/Sidebar.vue";
 
 const props = defineProps({
   user: {
