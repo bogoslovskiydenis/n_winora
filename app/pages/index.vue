@@ -6,13 +6,13 @@
 
 <script setup>
 // Автоматическое перенаправление на страницу авторизации или главную
-const { isAuthenticated } = useAuth()
+const { isAuthenticated } = useAuth();
 
 onMounted(() => {
   if (isAuthenticated.value) {
-    navigateTo('/main')
+    navigateTo('/main');
   } else {
-    navigateTo('/auth')
+    navigateTo('/auth');
   }
-})
+});
 </script>

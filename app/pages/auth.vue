@@ -1,135 +1,138 @@
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed } from 'vue';
 
-const activeTab = ref('registration')
-const isLoading = ref(false)
-const isLoginLoading = ref(false)
-const rememberMe = ref(false)
+const activeTab = ref('registration');
+const isLoading = ref(false);
+const isLoginLoading = ref(false);
+const rememberMe = ref(false);
 
 const form = ref({
   nickname: '',
   email: '',
-  password: ''
-})
+  password: '',
+});
 
 const loginForm = ref({
   email: '',
-  password: ''
-})
+  password: '',
+});
 
-const errors = ref({})
-const loginErrors = ref({})
+const errors = ref({});
+const loginErrors = ref({});
 
 const isRegistrationValid = computed(() => {
-  return form.value.nickname.trim() &&
-      isValidEmail(form.value.email) &&
-      form.value.password.length >= 8
-})
+  return (
+    form.value.nickname.trim() &&
+    isValidEmail(form.value.email) &&
+    form.value.password.length >= 8
+  );
+});
 
 const isLoginValid = computed(() => {
-  return isValidEmail(loginForm.value.email) &&
-      loginForm.value.password.length > 0
-})
+  return (
+    isValidEmail(loginForm.value.email) && loginForm.value.password.length > 0
+  );
+});
 
 const isValidEmail = (email) => {
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-  return emailRegex.test(email)
-}
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+};
 
 const validateRegistration = () => {
-  errors.value = {}
+  errors.value = {};
 
   if (!form.value.nickname.trim()) {
-    errors.value.nickname = 'Никнейм обязателен для заполнения'
+    errors.value.nickname = 'Никнейм обязателен для заполнения';
   }
 
   if (!isValidEmail(form.value.email)) {
-    errors.value.email = 'Введите корректный email'
+    errors.value.email = 'Введите корректный email';
   }
 
   if (form.value.password.length < 8) {
-    errors.value.password = 'Пароль должен содержать минимум 8 символов'
+    errors.value.password = 'Пароль должен содержать минимум 8 символов';
   }
 
-  return Object.keys(errors.value).length === 0
-}
+  return Object.keys(errors.value).length === 0;
+};
 
 const submitRegistration = async () => {
   if (!validateRegistration()) {
-    return
+    return;
   }
 
-  isLoading.value = true
+  isLoading.value = true;
 
   // Имитация запроса к серверу
   setTimeout(() => {
     console.log('Регистрация пользователя:', {
       nickname: form.value.nickname,
-      email: form.value.email
-    })
+      email: form.value.email,
+    });
 
     // Создаем объект пользователя
     const userData = {
       nickname: form.value.nickname,
       email: form.value.email,
       balance: 150000,
-      id: Date.now()
-    }
+      id: Date.now(),
+    };
 
     // Используем глобальную функцию для авторизации
-    window.loginUser(userData, rememberMe.value)
+    window.loginUser(userData, rememberMe.value);
 
-    isLoading.value = false
+    isLoading.value = false;
 
     // Сброс формы
-    resetForm()
-  }, 2000)
-}
+    resetForm();
+  }, 2000);
+};
 
 const submitLogin = async () => {
-  loginErrors.value = {}
+  loginErrors.value = {};
 
   if (!isValidEmail(loginForm.value.email)) {
-    loginErrors.value.email = 'Введите корректный email'
-    return
+    loginErrors.value.email = 'Введите корректный email';
+    return;
   }
 
   if (!loginForm.value.password) {
-    loginErrors.value.password = 'Введите пароль'
-    return
+    loginErrors.value.password = 'Введите пароль';
+    return;
   }
 
-  isLoginLoading.value = true
+  isLoginLoading.value = true;
 
   setTimeout(() => {
     console.log('Попытка входа:', {
-      email: loginForm.value.email
-    })
+      email: loginForm.value.email,
+    });
 
     // Создаем объект пользователя для входа
     const userData = {
       nickname: loginForm.value.email.split('@')[0], // Простое извлечение имени из email
       email: loginForm.value.email,
       balance: 150000,
-      id: Date.now()
-    }
+      id: Date.now(),
+    };
 
     // Используем глобальную функцию для авторизации
-    window.loginUser(userData, rememberMe.value)
+    window.loginUser(userData, rememberMe.value);
 
-    isLoginLoading.value = false
-    loginForm.value = { email: '', password: '' }
-  }, 1500)
-}
+    isLoginLoading.value = false;
+    loginForm.value = { email: '', password: '' };
+  }, 1500);
+};
 
 const resetForm = () => {
   form.value = {
     nickname: '',
     email: '',
-    password: ''
-  }
-  errors.value = {}
-}
+    password: '',
+  };
+  errors.value = {};
+};
 </script>
 
 <template>
@@ -137,22 +140,26 @@ const resetForm = () => {
     <div class="registration-app">
       <!-- Логотип -->
       <div class="logo">
-        <img src="../assets/images/Winora_logo.png" alt="Winora Logo" class="logo-image" />
+        <img
+          src="../assets/images/Winora_logo.png"
+          alt="Winora Logo"
+          class="logo-image"
+        />
       </div>
 
       <!-- Табы -->
       <div class="tabs">
         <button
-            class="tab"
-            :class="{ active: activeTab === 'registration' }"
-            @click="activeTab = 'registration'"
+          class="tab"
+          :class="{ active: activeTab === 'registration' }"
+          @click="activeTab = 'registration'"
         >
           Регистрация
         </button>
         <button
-            class="tab"
-            :class="{ active: activeTab === 'authorization' }"
-            @click="activeTab = 'authorization'"
+          class="tab"
+          :class="{ active: activeTab === 'authorization' }"
+          @click="activeTab = 'authorization'"
         >
           Авторизация
         </button>
@@ -162,31 +169,30 @@ const resetForm = () => {
       <div v-if="activeTab === 'registration'" class="form-section">
         <div class="step-content">
           <BaseInput
-              v-model="form.nickname"
-              placeholder="Введите ваш никнейм"
-              :error="errors.nickname"
+            v-model="form.nickname"
+            placeholder="Введите ваш никнейм"
+            :error="errors.nickname"
           />
 
           <BaseInput
-              v-model="form.email"
-              type="email"
-              placeholder="Введите ваш E-mail"
-              :error="errors.email"
+            v-model="form.email"
+            type="email"
+            placeholder="Введите ваш E-mail"
+            :error="errors.email"
           />
 
           <BaseInput
-              v-model="form.password"
-              type="password"
-              placeholder="Придумайте пароль"
-              :error="errors.password"
+            v-model="form.password"
+            type="password"
+            placeholder="Придумайте пароль"
+            :error="errors.password"
           />
-
 
           <BaseButton
-              variant="primary"
-              :disabled="!isRegistrationValid"
-              :loading="isLoading"
-              @click="submitRegistration"
+            variant="primary"
+            :disabled="!isRegistrationValid"
+            :loading="isLoading"
+            @click="submitRegistration"
           >
             {{ isLoading ? 'РЕГИСТРАЦИЯ...' : 'ЗАРЕГИСТРИРОВАТЬСЯ' }}
           </BaseButton>
@@ -197,32 +203,30 @@ const resetForm = () => {
       <div v-if="activeTab === 'authorization'" class="form-section">
         <div class="step-content">
           <BaseInput
-              v-model="loginForm.email"
-              type="email"
-              placeholder="Введите ваш E-mail"
-              :error="loginErrors.email"
+            v-model="loginForm.email"
+            type="email"
+            placeholder="Введите ваш E-mail"
+            :error="loginErrors.email"
           />
 
           <BaseInput
-              v-model="loginForm.password"
-              type="password"
-              placeholder="Введите пароль"
-              :error="loginErrors.password"
+            v-model="loginForm.password"
+            type="password"
+            placeholder="Введите пароль"
+            :error="loginErrors.password"
           />
 
           <div class="form-extras">
-
-
             <div class="forgot-password">
               <a href="#" class="link">Восстановить пароль</a>
             </div>
           </div>
 
           <BaseButton
-              variant="primary"
-              :disabled="!isLoginValid"
-              :loading="isLoginLoading"
-              @click="submitLogin"
+            variant="primary"
+            :disabled="!isLoginValid"
+            :loading="isLoginLoading"
+            @click="submitLogin"
           >
             {{ isLoginLoading ? 'ВХОД...' : 'ВХОД' }}
           </BaseButton>
@@ -232,10 +236,16 @@ const resetForm = () => {
       <!-- Переключение между формами -->
       <div class="form-toggle">
         <div v-if="activeTab === 'registration'" class="toggle-text">
-          Уже есть аккаунт? <button @click="activeTab = 'authorization'" class="link-button">Войдите</button>
+          Уже есть аккаунт?
+          <button @click="activeTab = 'authorization'" class="link-button">
+            Войдите
+          </button>
         </div>
         <div v-if="activeTab === 'authorization'" class="toggle-text">
-          Нет аккаунта? <button @click="activeTab = 'registration'" class="link-button">Зарегистрируйтесь</button>
+          Нет аккаунта?
+          <button @click="activeTab = 'registration'" class="link-button">
+            Зарегистрируйтесь
+          </button>
         </div>
       </div>
     </div>
@@ -273,14 +283,12 @@ const resetForm = () => {
 }
 
 .logo-image {
-
   margin-bottom: 15px;
   filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
 }
 
 @media (min-width: 1024px) {
   .logo-image {
-
     margin-bottom: 20px;
   }
 }
@@ -415,7 +423,6 @@ const resetForm = () => {
   align-items: center;
   margin: 8px 0;
 }
-
 
 .link {
   color: #4ade80;

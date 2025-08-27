@@ -9,8 +9,9 @@ html {
 }
 
 body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-    background: linear-gradient(135deg, #01614B, #032019 70%);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue',
+    Arial, sans-serif;
+    background: linear-gradient(135deg, #01614b, #032019 70%);
     background-attachment: fixed;
     min-height: 100vh;
     overflow-x: hidden;
@@ -27,10 +28,21 @@ body::before {
     left: 0;
     width: 100%;
     height: 100%;
-    background-image:
-            radial-gradient(circle at 20% 50%, rgba(74, 222, 128, 0.1) 0%, transparent 50%),
-            radial-gradient(circle at 80% 20%, rgba(34, 197, 94, 0.1) 0%, transparent 50%),
-            radial-gradient(circle at 40% 80%, rgba(22, 163, 74, 0.1) 0%, transparent 50%);
+    background-image: radial-gradient(
+            circle at 20% 50%,
+            rgba(74, 222, 128, 0.1) 0%,
+            transparent 50%
+    ),
+    radial-gradient(
+            circle at 80% 20%,
+            rgba(34, 197, 94, 0.1) 0%,
+            transparent 50%
+    ),
+    radial-gradient(
+            circle at 40% 80%,
+            rgba(22, 163, 74, 0.1) 0%,
+            transparent 50%
+    );
     pointer-events: none;
     z-index: -2;
 }
@@ -43,7 +55,7 @@ body::after {
     left: 0;
     width: 100%;
     height: 40vh;
-    background-image: url("./../images/winora_bg.png");
+    background-image: url('./../images/winora_bg.png');
     background-repeat: no-repeat;
     background-position: center bottom;
     background-size: cover;
@@ -117,7 +129,8 @@ body::after {
 }
 
 @keyframes pulse {
-    0%, 100% {
+    0%,
+    100% {
         opacity: 1;
     }
     50% {
@@ -224,7 +237,9 @@ button {
 }
 
 /* Поля ввода */
-input, textarea, select {
+input,
+textarea,
+select {
     font-family: inherit;
     outline: none;
 }

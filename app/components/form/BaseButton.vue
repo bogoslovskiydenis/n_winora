@@ -1,9 +1,9 @@
 <template>
   <button
-      :class="buttonClasses"
-      :disabled="disabled || loading"
-      @click="$emit('click')"
-      :type="type"
+    :class="buttonClasses"
+    :disabled="disabled || loading"
+    @click="$emit('click')"
+    :type="type"
   >
     <span v-if="loading" class="loading-spinner"></span>
     <span :class="{ 'loading-text': loading }">
@@ -13,42 +13,42 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed } from 'vue';
 
 const props = defineProps({
   variant: {
     type: String,
     default: 'primary',
-    validator: (value) => ['primary', 'secondary', 'outline'].includes(value)
+    validator: (value) => ['primary', 'secondary', 'outline'].includes(value),
   },
   size: {
     type: String,
     default: 'medium',
-    validator: (value) => ['small', 'medium', 'large'].includes(value)
+    validator: (value) => ['small', 'medium', 'large'].includes(value),
   },
   disabled: {
     type: Boolean,
-    default: false
+    default: false,
   },
   loading: {
     type: Boolean,
-    default: false
+    default: false,
   },
   text: {
     type: String,
-    default: ''
+    default: '',
   },
   type: {
     type: String,
-    default: 'button'
+    default: 'button',
   },
   fullWidth: {
     type: Boolean,
-    default: true
-  }
-})
+    default: true,
+  },
+});
 
-defineEmits(['click'])
+defineEmits(['click']);
 
 const buttonClasses = computed(() => [
   'base-button',
@@ -57,9 +57,9 @@ const buttonClasses = computed(() => [
   {
     'base-button--disabled': props.disabled,
     'base-button--loading': props.loading,
-    'base-button--full-width': props.fullWidth
-  }
-])
+    'base-button--full-width': props.fullWidth,
+  },
+]);
 </script>
 
 <style scoped>

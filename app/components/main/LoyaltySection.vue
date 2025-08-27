@@ -26,7 +26,9 @@
                   <span class="remaining">{{ nextLevelRemaining }} USD</span>
                 </div>
               </div>
-              <router-link to="/profile" class="level-link">Узнать больше</router-link>
+              <router-link to="/profile" class="level-link"
+                >Узнать больше</router-link
+              >
             </div>
           </div>
 
@@ -39,9 +41,9 @@
               </div>
               <div class="reward-list">
                 <div
-                    v-for="bonus in currentBonuses"
-                    :key="bonus.name"
-                    class="reward-item"
+                  v-for="bonus in currentBonuses"
+                  :key="bonus.name"
+                  class="reward-item"
                 >
                   <span class="reward-name">{{ bonus.name }}</span>
                   <span class="reward-value">{{ bonus.value }}</span>
@@ -56,9 +58,9 @@
               </div>
               <div class="reward-list">
                 <div
-                    v-for="bonus in nextBonuses"
-                    :key="bonus.name"
-                    class="reward-item"
+                  v-for="bonus in nextBonuses"
+                  :key="bonus.name"
+                  class="reward-item"
                 >
                   <span class="reward-name">{{ bonus.name }}</span>
                   <span class="reward-value green">{{ bonus.value }}</span>
@@ -146,64 +148,63 @@
 
 <script setup lang="ts">
 // Реактивные данные для уровня пользователя
-const currentLevel = ref(2)
-const depositAmount = ref(1370)
-const nextLevelRemaining = ref(130)
+const currentLevel = ref(2);
+const depositAmount = ref(1370);
+const nextLevelRemaining = ref(130);
 
 // Бонусы для текущего уровня (согласно дизайну)
 const currentBonuses = ref([
   { name: 'Кешбек', value: '5%' },
-  { name: 'Спины', value: '-' },  // Тире для пустых значений
-  { name: 'Сундуки', value: '-' } // Тире для пустых значений
-])
+  { name: 'Спины', value: '-' }, // Тире для пустых значений
+  { name: 'Сундуки', value: '-' }, // Тире для пустых значений
+]);
 
 // Бонусы для следующего уровня (согласно дизайну)
 const nextBonuses = ref([
   { name: 'Кешбек', value: '7%' },
-  { name: 'Спины', value: '2' },   // Правильное значение из дизайна
-  { name: 'Сундуки', value: '3' }  // Правильное значение из дизайна
-])
+  { name: 'Спины', value: '2' }, // Правильное значение из дизайна
+  { name: 'Сундуки', value: '3' }, // Правильное значение из дизайна
+]);
 
 // Обработчик клика на кнопку инвестиций
 const handleInvestmentClick = () => {
-  navigateTo('/investments')
-}
+  navigateTo('/investments');
+};
 
 // Функция для обновления данных (для будущей интеграции с API)
 const updateLoyaltyData = (userData: any) => {
-  currentLevel.value = userData.level || 2
-  depositAmount.value = userData.totalDeposits || 1370
-  nextLevelRemaining.value = userData.nextLevelRemaining || 130
+  currentLevel.value = userData.level || 2;
+  depositAmount.value = userData.totalDeposits || 1370;
+  nextLevelRemaining.value = userData.nextLevelRemaining || 130;
 
   // Обновляем бонусы на основе уровня
-  updateBonuses(userData.level || 2)
-}
+  updateBonuses(userData.level || 2);
+};
 
 // Функция для обновления бонусов в зависимости от уровня
 const updateBonuses = (level: number) => {
   // Логика для разных уровней
-  switch(level) {
+  switch (level) {
     case 2:
       currentBonuses.value = [
         { name: 'Кешбек', value: '5%' },
         { name: 'Спины', value: '-' },
-        { name: 'Сундуки', value: '-' }
-      ]
+        { name: 'Сундуки', value: '-' },
+      ];
       nextBonuses.value = [
         { name: 'Кешбек', value: '7%' },
         { name: 'Спины', value: '2' },
-        { name: 'Сундуки', value: '3' }
-      ]
-      break
-      // Добавить другие уровни по необходимости
+        { name: 'Сундуки', value: '3' },
+      ];
+      break;
+    // Добавить другие уровни по необходимости
     default:
-      break
+      break;
   }
-}
+};
 </script>
 
 <style scoped>
-
 .loyalty-investment-wrapper {
   display: grid;
   grid-template-columns: 800px 1fr;
@@ -233,7 +234,12 @@ const updateBonuses = (level: number) => {
   left: 0;
   right: 0;
   height: 1px;
-  background: linear-gradient(90deg, transparent, var(--primary-color), transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--primary-color),
+    transparent
+  );
   opacity: 0.5;
 }
 
@@ -473,8 +479,8 @@ const updateBonuses = (level: number) => {
   position: absolute;
   inset: 0;
   background-image:
-      linear-gradient(rgba(74, 222, 128, 0.1) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(74, 222, 128, 0.1) 1px, transparent 1px);
+    linear-gradient(rgba(74, 222, 128, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(74, 222, 128, 0.1) 1px, transparent 1px);
   background-size: 20px 20px;
   animation: techGridMove 20s linear infinite;
 }
@@ -485,20 +491,35 @@ const updateBonuses = (level: number) => {
   right: 20px;
   width: 80px;
   height: 80px;
-  background: radial-gradient(circle, rgba(74, 222, 128, 0.1) 2px, transparent 2px);
+  background: radial-gradient(
+    circle,
+    rgba(74, 222, 128, 0.1) 2px,
+    transparent 2px
+  );
   background-size: 15px 15px;
   border-radius: 50%;
   animation: circuitPulse 3s ease-in-out infinite;
 }
 
 @keyframes techGridMove {
-  0% { transform: translate(0, 0); }
-  100% { transform: translate(20px, 20px); }
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(20px, 20px);
+  }
 }
 
 @keyframes circuitPulse {
-  0%, 100% { opacity: 0.3; transform: scale(1); }
-  50% { opacity: 0.6; transform: scale(1.1); }
+  0%,
+  100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.6;
+    transform: scale(1.1);
+  }
 }
 
 /* ===========================================
@@ -597,15 +618,23 @@ const updateBonuses = (level: number) => {
   font-size: 32px;
 }
 
-
 @keyframes glowRotate {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 @keyframes highlight {
-  0%, 100% { opacity: 0.3; }
-  50% { opacity: 1; }
+  0%,
+  100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 1;
+  }
 }
 
 /* ===========================================
@@ -636,7 +665,12 @@ const updateBonuses = (level: number) => {
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
   transition: left 0.6s ease;
 }
 
@@ -728,7 +762,8 @@ const updateBonuses = (level: number) => {
    =========================================== */
 
 @keyframes levelPulse {
-  0%, 100% {
+  0%,
+  100% {
     box-shadow: 0 8px 24px rgba(255, 107, 53, 0.2);
   }
   50% {

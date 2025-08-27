@@ -2,39 +2,39 @@
   <div class="profile-page">
     <!-- Хедер профиля -->
     <ProfileHeader
-        :user="user"
-        @upload-avatar="handleAvatarUpload"
-        @open-settings="activeTab = 'settings'"
-        @logout="handleLogout"
+      :user="user"
+      @upload-avatar="handleAvatarUpload"
+      @open-settings="activeTab = 'settings'"
+      @logout="handleLogout"
     />
 
     <!-- Навигация по вкладкам -->
     <div class="profile-tabs">
       <button
-          class="tab-btn"
-          :class="{ active: activeTab === 'overview' }"
-          @click="activeTab = 'overview'"
+        class="tab-btn"
+        :class="{ active: activeTab === 'overview' }"
+        @click="activeTab = 'overview'"
       >
         📊 Обзор
       </button>
       <button
-          class="tab-btn"
-          :class="{ active: activeTab === 'verification' }"
-          @click="activeTab = 'verification'"
+        class="tab-btn"
+        :class="{ active: activeTab === 'verification' }"
+        @click="activeTab = 'verification'"
       >
         ✅ Верификация
       </button>
       <button
-          class="tab-btn"
-          :class="{ active: activeTab === 'security' }"
-          @click="activeTab = 'security'"
+        class="tab-btn"
+        :class="{ active: activeTab === 'security' }"
+        @click="activeTab = 'security'"
       >
         🔒 Безопасность
       </button>
       <button
-          class="tab-btn"
-          :class="{ active: activeTab === 'settings' }"
-          @click="activeTab = 'settings'"
+        class="tab-btn"
+        :class="{ active: activeTab === 'settings' }"
+        @click="activeTab = 'settings'"
       >
         ⚙️ Настройки
       </button>
@@ -47,64 +47,64 @@
         <div class="overview-grid">
           <!-- Статистика аккаунта -->
           <ProfileStats
-              :user="user"
-              :total-investments="statistics.totalInvestments"
-              :active-investments="statistics.activeInvestments"
-              :total-profit="statistics.totalProfit"
+            :user="user"
+            :total-investments="statistics.totalInvestments"
+            :active-investments="statistics.activeInvestments"
+            :total-profit="statistics.totalProfit"
           />
 
           <!-- Уровень лояльности -->
           <LoyaltyLevel
-              :current-level="loyalty.currentLevel"
-              :loyalty-progress="loyalty.progress"
-              :current-cashback="loyalty.cashback"
+            :current-level="loyalty.currentLevel"
+            :loyalty-progress="loyalty.progress"
+            :current-cashback="loyalty.cashback"
           />
 
           <!-- Недавняя активность -->
-          <ActivityFeed :activities="recentActivity"/>
+          <ActivityFeed :activities="recentActivity" />
         </div>
       </div>
 
       <!-- Вкладка "Верификация" -->
       <div v-if="activeTab === 'verification'" class="tab-panel">
         <VerificationForm
-            :loading="isVerificationLoading"
-            @submit="handleVerificationSubmit"
-            @upload-document="handleDocumentUpload"
+          :loading="isVerificationLoading"
+          @submit="handleVerificationSubmit"
+          @upload-document="handleDocumentUpload"
         />
       </div>
 
       <!-- Вкладка "Безопасность" -->
       <div v-if="activeTab === 'security'" class="tab-panel">
         <SecuritySettings
-            :loading="isPasswordLoading"
-            :two-factor-enabled="twoFactorEnabled"
-            :sessions="activeSessions"
-            @change-password="handlePasswordChange"
-            @toggle-2fa="handleToggle2FA"
-            @terminate-session="handleTerminateSession"
+          :loading="isPasswordLoading"
+          :two-factor-enabled="twoFactorEnabled"
+          :sessions="activeSessions"
+          @change-password="handlePasswordChange"
+          @toggle-2fa="handleToggle2FA"
+          @terminate-session="handleTerminateSession"
         />
       </div>
 
       <!-- Вкладка "Настройки" -->
       <div v-if="activeTab === 'settings'" class="tab-panel">
         <UserSettings
-            :settings="userSettings"
-            @update-settings="handleUpdateSettings"
-            @show-delete-confirm="showDeleteConfirm = true"
+          :settings="userSettings"
+          @update-settings="handleUpdateSettings"
+          @show-delete-confirm="showDeleteConfirm = true"
         />
       </div>
     </div>
 
     <!-- Модальное окно подтверждения удаления -->
     <ConfirmModal
-        :show="showDeleteConfirm"
-        title="Подтверждение удаления"
-        message="Вы действительно хотите удалить свой аккаунт? Это действие нельзя отменить."
-        confirm-text="Удалить"
-        cancel-text="Отмена"
-        @close="showDeleteConfirm = false"
-        @confirm="handleDeleteAccount"
+      :show="showDeleteConfirm"
+      title="Подтверждение удаления"
+      message="Вы действительно хотите удалить свой аккаунт? Это действие нельзя отменить."
+      confirm-text="Удалить"
+      cancel-text="Отмена"
+      @close="showDeleteConfirm = false"
+      @confirm="handleDeleteAccount"
     />
 
     <!-- Уведомление об успешном сохранении -->
@@ -117,46 +117,46 @@
 </template>
 
 <script setup>
-import {ref, reactive, onMounted} from 'vue'
-import ProfileHeader from "../components/profile/ProfileHeader.vue";
-import ProfileStats from "../components/profile/ProfileStats.vue";
-import LoyaltyLevel from "../components/profile/LoyaltyLevel.vue";
-import ActivityFeed from "../components/profile/ActivityFeed.vue";
-import VerificationForm from "../components/profile/VerificationForm.vue";
-import SecuritySettings from "../components/profile/SecuritySettings.vue";
-import ConfirmModal from "../components/profile/ui/ConfirmModal.vue";
+import { ref, reactive, onMounted } from 'vue';
+import ProfileHeader from '../components/profile/ProfileHeader.vue';
+import ProfileStats from '../components/profile/ProfileStats.vue';
+import LoyaltyLevel from '../components/profile/LoyaltyLevel.vue';
+import ActivityFeed from '../components/profile/ActivityFeed.vue';
+import VerificationForm from '../components/profile/VerificationForm.vue';
+import SecuritySettings from '../components/profile/SecuritySettings.vue';
+import ConfirmModal from '../components/profile/ui/ConfirmModal.vue';
 
 // Middleware для проверки авторизации
 definePageMeta({
-  middleware: 'auth'
-})
+  middleware: 'auth',
+});
 
 // Получаем данные пользователя
-const {user, logoutUser} = useAuth()
+const { user, logoutUser } = useAuth();
 
 // Основные состояния
-const activeTab = ref('overview')
-const showDeleteConfirm = ref(false)
-const showNotification = ref(false)
-const notificationText = ref('')
+const activeTab = ref('overview');
+const showDeleteConfirm = ref(false);
+const showNotification = ref(false);
+const notificationText = ref('');
 
 // Состояния загрузки
-const isVerificationLoading = ref(false)
-const isPasswordLoading = ref(false)
+const isVerificationLoading = ref(false);
+const isPasswordLoading = ref(false);
 
 // Статистические данные
 const statistics = reactive({
   totalInvestments: 5,
   activeInvestments: 3,
-  totalProfit: 1250
-})
+  totalProfit: 1250,
+});
 
 // Данные лояльности
 const loyalty = reactive({
   currentLevel: 2,
   progress: 65,
-  cashback: 5
-})
+  cashback: 5,
+});
 
 // Недавняя активность
 const recentActivity = ref([
@@ -166,7 +166,7 @@ const recentActivity = ref([
     title: 'Пополнение баланса',
     date: new Date(),
     amount: '+500 USD',
-    type: 'positive'
+    type: 'positive',
   },
   {
     id: 2,
@@ -174,7 +174,7 @@ const recentActivity = ref([
     title: 'Прибыль от инвестиции #3',
     date: new Date(Date.now() - 3600000),
     amount: '+25 USD',
-    type: 'positive'
+    type: 'positive',
   },
   {
     id: 3,
@@ -182,28 +182,28 @@ const recentActivity = ref([
     title: 'Создана новая инвестиция',
     date: new Date(Date.now() - 7200000),
     amount: '-100 USD',
-    type: 'negative'
-  }
-])
+    type: 'negative',
+  },
+]);
 
 // Безопасность
-const twoFactorEnabled = ref(false)
+const twoFactorEnabled = ref(false);
 const activeSessions = ref([
   {
     id: 1,
     device: 'Chrome на Windows',
     location: 'Москва, Россия',
     lastActive: new Date(),
-    current: true
+    current: true,
   },
   {
     id: 2,
     device: 'Safari на iPhone',
     location: 'Москва, Россия',
     lastActive: new Date(Date.now() - 2 * 60 * 60 * 1000),
-    current: false
-  }
-])
+    current: false,
+  },
+]);
 
 // Настройки пользователя
 const userSettings = ref({
@@ -211,129 +211,133 @@ const userSettings = ref({
   pushNotifications: false,
   tradingNotifications: true,
   animations: true,
-  tooltips: true
-})
+  tooltips: true,
+});
 
 // Обработчики событий
 const handleAvatarUpload = () => {
-  console.log('Загрузка аватара')
-  showSuccessNotification('Аватар загружен успешно!')
+  console.log('Загрузка аватара');
+  showSuccessNotification('Аватар загружен успешно!');
   // Здесь будет логика загрузки аватара
-}
+};
 
 const handleVerificationSubmit = async (verificationData) => {
-  isVerificationLoading.value = true
+  isVerificationLoading.value = true;
 
   try {
     // Имитация API запроса
-    await new Promise(resolve => setTimeout(resolve, 2000))
+    await new Promise((resolve) => setTimeout(resolve, 2000));
 
-    console.log('Верификация отправлена:', verificationData)
-    showSuccessNotification('Данные отправлены на верификацию!')
-
+    console.log('Верификация отправлена:', verificationData);
+    showSuccessNotification('Данные отправлены на верификацию!');
   } catch (error) {
-    console.error('Ошибка верификации:', error)
+    console.error('Ошибка верификации:', error);
   } finally {
-    isVerificationLoading.value = false
+    isVerificationLoading.value = false;
   }
-}
+};
 
 const handleDocumentUpload = (type) => {
-  console.log('Загрузка документа:', type)
-  showSuccessNotification('Документ загружен успешно!')
+  console.log('Загрузка документа:', type);
+  showSuccessNotification('Документ загружен успешно!');
   // Здесь будет логика загрузки документов
-}
+};
 
 const handlePasswordChange = async (passwordData) => {
-  isPasswordLoading.value = true
+  isPasswordLoading.value = true;
 
   try {
     // Имитация API запроса
-    await new Promise(resolve => setTimeout(resolve, 1500))
+    await new Promise((resolve) => setTimeout(resolve, 1500));
 
-    console.log('Пароль изменен:', passwordData)
-    showSuccessNotification('Пароль успешно изменен!')
-
+    console.log('Пароль изменен:', passwordData);
+    showSuccessNotification('Пароль успешно изменен!');
   } catch (error) {
-    console.error('Ошибка смены пароля:', error)
+    console.error('Ошибка смены пароля:', error);
   } finally {
-    isPasswordLoading.value = false
+    isPasswordLoading.value = false;
   }
-}
+};
 
 const handleToggle2FA = () => {
-  twoFactorEnabled.value = !twoFactorEnabled.value
-  const message = twoFactorEnabled.value ?
-      'Двухфакторная аутентификация включена' :
-      'Двухфакторная аутентификация отключена'
+  twoFactorEnabled.value = !twoFactorEnabled.value;
+  const message = twoFactorEnabled.value
+    ? 'Двухфакторная аутентификация включена'
+    : 'Двухфакторная аутентификация отключена';
 
-  showSuccessNotification(message)
-  console.log('2FA:', twoFactorEnabled.value ? 'включена' : 'отключена')
-}
+  showSuccessNotification(message);
+  console.log('2FA:', twoFactorEnabled.value ? 'включена' : 'отключена');
+};
 
 const handleTerminateSession = (sessionId) => {
-  activeSessions.value = activeSessions.value.filter(s => s.id !== sessionId)
-  showSuccessNotification('Сессия завершена')
-  console.log('Сессия завершена:', sessionId)
-}
+  activeSessions.value = activeSessions.value.filter((s) => s.id !== sessionId);
+  showSuccessNotification('Сессия завершена');
+  console.log('Сессия завершена:', sessionId);
+};
 
 const handleUpdateSettings = (newSettings) => {
-  userSettings.value = {...userSettings.value, ...newSettings}
-  showSuccessNotification('Настройки сохранены')
-  console.log('Настройки обновлены:', newSettings)
+  userSettings.value = { ...userSettings.value, ...newSettings };
+  showSuccessNotification('Настройки сохранены');
+  console.log('Настройки обновлены:', newSettings);
 
   // Сохранение в localStorage для персистентности
   if (process.client) {
-    localStorage.setItem('userSettings', JSON.stringify(userSettings.value))
+    localStorage.setItem('userSettings', JSON.stringify(userSettings.value));
   }
-}
+};
 
 const handleDeleteAccount = () => {
-  console.log('Аккаунт удален')
-  logoutUser()
-}
+  console.log('Аккаунт удален');
+  logoutUser();
+};
 
 const handleLogout = () => {
-  logoutUser()
-}
+  logoutUser();
+};
 
 // Вспомогательные функции для уведомлений
 const showSuccessNotification = (message) => {
-  notificationText.value = message
-  showNotification.value = true
+  notificationText.value = message;
+  showNotification.value = true;
 
   // Автоматическое скрытие через 3 секунды
   setTimeout(() => {
-    showNotification.value = false
-  }, 3000)
-}
+    showNotification.value = false;
+  }, 3000);
+};
 
 const hideNotification = () => {
-  showNotification.value = false
-}
+  showNotification.value = false;
+};
 
 // Загрузка сохраненных настроек при монтировании
 onMounted(() => {
   if (process.client) {
-    const savedSettings = localStorage.getItem('userSettings')
+    const savedSettings = localStorage.getItem('userSettings');
     if (savedSettings) {
       try {
-        userSettings.value = JSON.parse(savedSettings)
+        userSettings.value = JSON.parse(savedSettings);
       } catch (error) {
-        console.error('Ошибка загрузки настроек:', error)
+        console.error('Ошибка загрузки настроек:', error);
       }
     }
   }
-})
+});
 
 // SEO метаданные
 useHead({
   title: 'Профиль пользователя - Winora',
   meta: [
-    {name: 'description', content: 'Управление профилем пользователя в Winora'},
-    {name: 'keywords', content: 'профиль, настройки, верификация, безопасность, winora'}
-  ]
-})
+    {
+      name: 'description',
+      content: 'Управление профилем пользователя в Winora',
+    },
+    {
+      name: 'keywords',
+      content: 'профиль, настройки, верификация, безопасность, winora',
+    },
+  ],
+});
 </script>
 
 <style scoped>

@@ -4,7 +4,10 @@
       <div class="warning-icon">⚠️</div>
       <div class="verification-text">
         <h3>Верификация аккаунта</h3>
-        <p>Верификация личных данных необходима для загрузки копий документов удостоверяющих личность</p>
+        <p>
+          Верификация личных данных необходима для загрузки копий документов
+          удостоверяющих личность
+        </p>
       </div>
     </div>
 
@@ -13,24 +16,24 @@
         <h4>Личные данные</h4>
         <div class="form-grid">
           <BaseInput
-              v-model="formData.firstName"
-              placeholder="Имя"
-              :error="errors.firstName"
+            v-model="formData.firstName"
+            placeholder="Имя"
+            :error="errors.firstName"
           />
           <BaseInput
-              v-model="formData.lastName"
-              placeholder="Фамилия"
-              :error="errors.lastName"
+            v-model="formData.lastName"
+            placeholder="Фамилия"
+            :error="errors.lastName"
           />
           <BaseInput
-              v-model="formData.phone"
-              placeholder="Номер телефона"
-              :error="errors.phone"
+            v-model="formData.phone"
+            placeholder="Номер телефона"
+            :error="errors.phone"
           />
           <BaseInput
-              v-model="formData.address"
-              placeholder="Адрес проживания"
-              :error="errors.address"
+            v-model="formData.address"
+            placeholder="Адрес проживания"
+            :error="errors.address"
           />
         </div>
       </div>
@@ -40,14 +43,20 @@
         <div class="document-upload">
           <div class="upload-item">
             <div class="upload-label">Паспорт (главная страница)</div>
-            <div class="upload-area" @click="$emit('upload-document', 'passport')">
+            <div
+              class="upload-area"
+              @click="$emit('upload-document', 'passport')"
+            >
               <div class="upload-icon">📄</div>
               <div class="upload-text">Нажмите для загрузки</div>
             </div>
           </div>
           <div class="upload-item">
             <div class="upload-label">Селфи с паспортом</div>
-            <div class="upload-area" @click="$emit('upload-document', 'selfie')">
+            <div
+              class="upload-area"
+              @click="$emit('upload-document', 'selfie')"
+            >
               <div class="upload-icon">🤳</div>
               <div class="upload-text">Нажмите для загрузки</div>
             </div>
@@ -56,11 +65,7 @@
       </div>
 
       <div class="form-actions">
-        <BaseButton
-            variant="primary"
-            :loading="loading"
-            @click="handleSubmit"
-        >
+        <BaseButton variant="primary" :loading="loading" @click="handleSubmit">
           Отправить на верификацию
         </BaseButton>
       </div>
@@ -72,48 +77,48 @@
 const props = defineProps({
   loading: {
     type: Boolean,
-    default: false
-  }
-})
+    default: false,
+  },
+});
 
-const emit = defineEmits(['submit', 'upload-document'])
+const emit = defineEmits(['submit', 'upload-document']);
 
 const formData = ref({
   firstName: '',
   lastName: '',
   phone: '',
-  address: ''
-})
+  address: '',
+});
 
-const errors = ref({})
+const errors = ref({});
 
 const validateForm = () => {
-  errors.value = {}
+  errors.value = {};
 
   if (!formData.value.firstName.trim()) {
-    errors.value.firstName = 'Введите имя'
+    errors.value.firstName = 'Введите имя';
   }
 
   if (!formData.value.lastName.trim()) {
-    errors.value.lastName = 'Введите фамилию'
+    errors.value.lastName = 'Введите фамилию';
   }
 
   if (!formData.value.phone.trim()) {
-    errors.value.phone = 'Введите номер телефона'
+    errors.value.phone = 'Введите номер телефона';
   }
 
   if (!formData.value.address.trim()) {
-    errors.value.address = 'Введите адрес'
+    errors.value.address = 'Введите адрес';
   }
 
-  return Object.keys(errors.value).length === 0
-}
+  return Object.keys(errors.value).length === 0;
+};
 
 const handleSubmit = () => {
   if (validateForm()) {
-    emit('submit', { ...formData.value })
+    emit('submit', { ...formData.value });
   }
-}
+};
 </script>
 
 <style scoped>
@@ -298,5 +303,4 @@ const handleSubmit = () => {
     font-size: 13px;
   }
 }
-
 </style>

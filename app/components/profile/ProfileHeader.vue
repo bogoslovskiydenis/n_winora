@@ -11,7 +11,9 @@
       </div>
       <div class="profile-details">
         <h1 class="profile-name">{{ user?.nickname || 'Пользователь' }}</h1>
-        <div class="profile-email">{{ user?.email || 'email@example.com' }}</div>
+        <div class="profile-email">
+          {{ user?.email || 'email@example.com' }}
+        </div>
         <div class="profile-id">ID: {{ user?.id || '000000' }}</div>
         <div class="profile-registration">
           Дата регистрации: {{ getRegistrationDate() }}
@@ -34,20 +36,20 @@
 const props = defineProps({
   user: {
     type: Object,
-    required: true
-  }
-})
+    required: true,
+  },
+});
 
-defineEmits(['upload-avatar', 'open-settings', 'logout'])
+defineEmits(['upload-avatar', 'open-settings', 'logout']);
 
 const getAvatarText = () => {
-  const nickname = props.user?.nickname || 'User'
-  return nickname.charAt(0).toUpperCase()
-}
+  const nickname = props.user?.nickname || 'User';
+  return nickname.charAt(0).toUpperCase();
+};
 
 const getRegistrationDate = () => {
-  return new Date().toLocaleDateString('ru-RU')
-}
+  return new Date().toLocaleDateString('ru-RU');
+};
 </script>
 
 <style scoped>

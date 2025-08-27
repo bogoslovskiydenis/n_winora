@@ -14,9 +14,9 @@
     <!-- Список инвестиций (для будущего использования) -->
     <div class="investments-list" v-else>
       <div
-          v-for="investment in investments"
-          :key="investment.id"
-          class="investment-item"
+        v-for="investment in investments"
+        :key="investment.id"
+        class="investment-item"
       >
         <!-- Здесь будет компонент InvestmentCard -->
         <div class="investment-card">
@@ -33,11 +33,11 @@
 defineProps({
   investments: {
     type: Array,
-    default: () => []
-  }
-})
+    default: () => [],
+  },
+});
 
-defineEmits(['create-first'])
+defineEmits(['create-first']);
 </script>
 
 <style scoped>
@@ -129,7 +129,11 @@ defineEmits(['create-first'])
 }
 
 @keyframes bounce {
-  0%, 20%, 50%, 80%, 100% {
+  0%,
+  20%,
+  50%,
+  80%,
+  100% {
     transform: translateY(0);
   }
   40% {

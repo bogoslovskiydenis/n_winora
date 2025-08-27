@@ -9,13 +9,12 @@
 <script setup>
 // Инициализация пользователя при загрузке приложения
 onMounted(() => {
-  const { initUser } = useAuth()
-  initUser()
-})
+  const { initUser } = useAuth();
+  initUser();
+});
 </script>
 
 <style>
-
 :root {
   --primary-color: #4ade80;
   --primary-dark: #22c55e;

@@ -22,32 +22,32 @@
 const props = defineProps({
   show: {
     type: Boolean,
-    default: false
+    default: false,
   },
   title: {
     type: String,
-    default: 'Подтверждение'
+    default: 'Подтверждение',
   },
   message: {
     type: String,
-    default: 'Вы уверены?'
+    default: 'Вы уверены?',
   },
   confirmText: {
     type: String,
-    default: 'Подтвердить'
+    default: 'Подтвердить',
   },
   cancelText: {
     type: String,
-    default: 'Отмена'
-  }
-})
+    default: 'Отмена',
+  },
+});
 
-const emit = defineEmits(['close', 'confirm'])
+const emit = defineEmits(['close', 'confirm']);
 
 const handleConfirm = () => {
-  emit('confirm')
-  emit('close')
-}
+  emit('confirm');
+  emit('close');
+};
 </script>
 
 <style scoped>

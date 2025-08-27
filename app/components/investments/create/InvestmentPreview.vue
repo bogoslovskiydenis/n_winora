@@ -9,7 +9,7 @@
     <div class="preview-info">
       <div class="info-icon">ℹ️</div>
       <div class="preview-description">
-        <strong>Подсказка</strong><br>
+        <strong>Подсказка</strong><br />
         Предпросмотр инвестиции
       </div>
     </div>
@@ -87,78 +87,78 @@
 const props = defineProps({
   selectedPreset: {
     type: String,
-    required: true
+    required: true,
   },
   bettingMode: {
     type: String,
-    required: true
+    required: true,
   },
   settings: {
     type: Object,
-    required: true
-  }
-})
+    required: true,
+  },
+});
 
 // Словари для названий
 const presetTitles = {
   user: 'Пользовательский',
   conservative: 'Консервативный',
   balanced: 'Сбалансированный',
-  aggressive: 'Агрессивный'
-}
+  aggressive: 'Агрессивный',
+};
 
 // Вычисляемые значения
 const getPresetTitle = () => {
-  return presetTitles[props.selectedPreset] || 'Пользовательский'
-}
+  return presetTitles[props.selectedPreset] || 'Пользовательский';
+};
 
 const getBettingTitle = () => {
-  return props.bettingMode === 'gambling' ? 'Гэмблинг' : 'Беттинг'
-}
+  return props.bettingMode === 'gambling' ? 'Гэмблинг' : 'Беттинг';
+};
 
 const getProfitability = () => {
-  const base = props.bettingMode === 'gambling' ? 15 : 10
+  const base = props.bettingMode === 'gambling' ? 15 : 10;
   const presetMultiplier = {
     user: 1,
     conservative: 0.8,
     balanced: 1.2,
-    aggressive: 1.8
-  }
-  const profit = Math.round(base * presetMultiplier[props.selectedPreset])
-  return `${profit} USD / Week`
-}
+    aggressive: 1.8,
+  };
+  const profit = Math.round(base * presetMultiplier[props.selectedPreset]);
+  return `${profit} USD / Week`;
+};
 
 const getRiskPercentage = () => {
   const riskLevels = {
     user: '5%',
     conservative: '2%',
     balanced: '8%',
-    aggressive: '15%'
-  }
-  return riskLevels[props.selectedPreset] || '5%'
-}
+    aggressive: '15%',
+  };
+  return riskLevels[props.selectedPreset] || '5%';
+};
 
 const getRiskClass = () => {
   const riskClasses = {
     user: 'risk-medium',
     conservative: 'risk-low',
     balanced: 'risk-medium',
-    aggressive: 'risk-high'
-  }
-  return riskClasses[props.selectedPreset] || 'risk-medium'
-}
+    aggressive: 'risk-high',
+  };
+  return riskClasses[props.selectedPreset] || 'risk-medium';
+};
 
 const handleCreateInvestment = () => {
   // Здесь будет логика создания инвестиции
   console.log('Создание инвестиции:', {
     preset: props.selectedPreset,
     bettingMode: props.bettingMode,
-    settings: props.settings
-  })
+    settings: props.settings,
+  });
 
   // Переход к оплате или другая логика
-  navigateTo('/payment') // или показать модальное окно
-}
+  navigateTo('/payment'); // или показать модальное окно
+};
 </script>
 
 <style scoped>

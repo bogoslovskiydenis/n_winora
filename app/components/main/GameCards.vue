@@ -107,7 +107,6 @@
 </script>
 
 <style scoped>
-
 .game-section {
   margin-bottom: 32px;
 }
@@ -117,7 +116,6 @@
   grid-template-columns: repeat(3, 1fr);
   gap: 20px;
 }
-
 
 .game-card {
   background: rgba(255, 255, 255, 0.03);
@@ -143,7 +141,12 @@
   left: 0;
   right: 0;
   height: 2px;
-  background: linear-gradient(90deg, transparent, var(--primary-color), transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--primary-color),
+    transparent
+  );
   opacity: 0;
   transition: opacity 0.3s ease;
 }
@@ -248,7 +251,6 @@
   margin-left: 8px;
 }
 
-
 .stat-value.green .value {
   color: #22c55e;
 }
@@ -322,12 +324,11 @@
   .stat-label {
     font-size: 9px;
   }
-
 }
 
-
 @keyframes glow {
-  0%, 100% {
+  0%,
+  100% {
     box-shadow: 0 0 10px rgba(74, 222, 128, 0.3);
   }
   50% {
@@ -339,8 +340,6 @@
   animation: glow 2s infinite;
 }
 
-
-
 @keyframes slideInUp {
   from {
     opacity: 0;
@@ -351,7 +350,6 @@
     transform: translateY(0);
   }
 }
-
 
 @media (prefers-reduced-motion: reduce) {
   .game-card {

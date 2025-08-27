@@ -10,9 +10,14 @@
           <div class="level-title">Уровень {{ currentLevel }}</div>
           <div class="level-progress">
             <div class="progress-bar">
-              <div class="progress-fill" :style="{ width: loyaltyProgress + '%' }"></div>
+              <div
+                class="progress-fill"
+                :style="{ width: loyaltyProgress + '%' }"
+              ></div>
             </div>
-            <div class="progress-text">{{ loyaltyProgress }}% до следующего уровня</div>
+            <div class="progress-text">
+              {{ loyaltyProgress }}% до следующего уровня
+            </div>
           </div>
         </div>
       </div>
@@ -34,17 +39,17 @@
 defineProps({
   currentLevel: {
     type: Number,
-    default: 1
+    default: 1,
   },
   loyaltyProgress: {
     type: Number,
-    default: 0
+    default: 0,
   },
   currentCashback: {
     type: Number,
-    default: 3
-  }
-})
+    default: 3,
+  },
+});
 </script>
 
 <style scoped>
@@ -107,7 +112,8 @@ defineProps({
 }
 
 @keyframes levelPulse {
-  0%, 100% {
+  0%,
+  100% {
     box-shadow: 0 8px 24px rgba(255, 107, 53, 0.2);
   }
   50% {

@@ -46,28 +46,29 @@
 const props = defineProps({
   title: {
     type: String,
-    default: 'У вас пока нет активных инвестиций'
+    default: 'У вас пока нет активных инвестиций',
   },
   description: {
     type: String,
-    default: 'Создайте свою первую инвестицию и начните получать стабильный доход уже сегодня'
+    default:
+      'Создайте свою первую инвестицию и начните получать стабильный доход уже сегодня',
   },
   primaryButtonText: {
     type: String,
-    default: 'Создать первую инвестицию'
+    default: 'Создать первую инвестицию',
   },
   showFeatures: {
     type: Boolean,
-    default: true
+    default: true,
   },
   variant: {
     type: String,
     default: 'default',
-    validator: (value) => ['default', 'compact', 'detailed'].includes(value)
-  }
-})
+    validator: (value) => ['default', 'compact', 'detailed'].includes(value),
+  },
+});
 
-defineEmits(['create-investment', 'learn-more'])
+defineEmits(['create-investment', 'learn-more']);
 </script>
 
 <style scoped>
@@ -240,7 +241,8 @@ defineEmits(['create-investment', 'learn-more'])
 
 /* Анимации */
 @keyframes float {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(0px);
   }
   50% {
@@ -403,5 +405,4 @@ defineEmits(['create-investment', 'learn-more'])
   outline: 2px solid var(--primary-color);
   outline-offset: 2px;
 }
-
 </style>

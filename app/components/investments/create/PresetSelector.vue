@@ -8,9 +8,9 @@
 
     <div class="preset-selector">
       <select
-          :value="selectedPreset"
-          @change="$emit('update-preset', $event.target.value)"
-          class="preset-dropdown"
+        :value="selectedPreset"
+        @change="$emit('update-preset', $event.target.value)"
+        class="preset-dropdown"
       >
         <option value="user">Пользовательский</option>
         <option value="conservative">Консервативный</option>
@@ -21,15 +21,16 @@
       <div class="preset-info">
         <div class="info-icon">ℹ️</div>
         <div class="preset-description">
-          <strong>{{ getPresetTitle() }}</strong><br>
+          <strong>{{ getPresetTitle() }}</strong
+          ><br />
           {{ getPresetDescription() }}
         </div>
         <div class="preset-dots">
           <span
-              v-for="preset in presetList"
-              :key="preset"
-              class="dot"
-              :class="{ active: selectedPreset === preset }"
+            v-for="preset in presetList"
+            :key="preset"
+            class="dot"
+            :class="{ active: selectedPreset === preset }"
           ></span>
         </div>
       </div>
@@ -41,35 +42,38 @@
 const props = defineProps({
   selectedPreset: {
     type: String,
-    required: true
-  }
-})
+    required: true,
+  },
+});
 
-defineEmits(['update-preset'])
+defineEmits(['update-preset']);
 
-const presetList = ['user', 'conservative', 'balanced', 'aggressive']
+const presetList = ['user', 'conservative', 'balanced', 'aggressive'];
 
 const presetTitles = {
   user: 'Пользовательский',
   conservative: 'Консервативный',
   balanced: 'Сбалансированный',
-  aggressive: 'Агрессивный'
-}
+  aggressive: 'Агрессивный',
+};
 
 const presetDescriptions = {
   user: 'Настройте инвестицию под свои предпочтения',
   conservative: 'Минимальные риски, стабильная, но невысокая доходность',
   balanced: 'Сбалансированное соотношение риска и доходности',
-  aggressive: 'Высокие риски, максимальная потенциальная доходность'
-}
+  aggressive: 'Высокие риски, максимальная потенциальная доходность',
+};
 
 const getPresetTitle = () => {
-  return presetTitles[props.selectedPreset] || 'Пользовательский'
-}
+  return presetTitles[props.selectedPreset] || 'Пользовательский';
+};
 
 const getPresetDescription = () => {
-  return presetDescriptions[props.selectedPreset] || 'Настройте инвестицию под свои предпочтения'
-}
+  return (
+    presetDescriptions[props.selectedPreset] ||
+    'Настройте инвестицию под свои предпочтения'
+  );
+};
 </script>
 
 <style scoped>

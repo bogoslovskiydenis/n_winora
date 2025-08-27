@@ -9,17 +9,17 @@
     <div class="betting-controls">
       <div class="control-group">
         <button
-            class="betting-btn"
-            :class="{ active: bettingMode === 'gambling' }"
-            @click="$emit('update-betting-mode', 'gambling')"
+          class="betting-btn"
+          :class="{ active: bettingMode === 'gambling' }"
+          @click="$emit('update-betting-mode', 'gambling')"
         >
           <span class="btn-icon">🎲</span>
           Гэмблинг
         </button>
         <button
-            class="betting-btn"
-            :class="{ active: bettingMode === 'betting' }"
-            @click="$emit('update-betting-mode', 'betting')"
+          class="betting-btn"
+          :class="{ active: bettingMode === 'betting' }"
+          @click="$emit('update-betting-mode', 'betting')"
         >
           <span class="btn-icon">🎯</span>
           Беттинг
@@ -42,23 +42,25 @@ const props = defineProps({
   bettingMode: {
     type: String,
     required: true,
-    validator: (value) => ['gambling', 'betting'].includes(value)
-  }
-})
+    validator: (value) => ['gambling', 'betting'].includes(value),
+  },
+});
 
-defineEmits(['update-betting-mode'])
+defineEmits(['update-betting-mode']);
 
 const getBettingTitle = () => {
-  return props.bettingMode === 'gambling' ? 'Гэмблинг' : 'Беттинг'
-}
+  return props.bettingMode === 'gambling' ? 'Гэмблинг' : 'Беттинг';
+};
 
 const getBettingDescription = () => {
   const descriptions = {
-    gambling: 'Высокорискованные ставки с большим потенциалом прибыли. Подходит для опытных игроков.',
-    betting: 'Сбалансированный подход к ставкам с умеренными рисками. Рекомендуется для начинающих.'
-  }
-  return descriptions[props.bettingMode]
-}
+    gambling:
+      'Высокорискованные ставки с большим потенциалом прибыли. Подходит для опытных игроков.',
+    betting:
+      'Сбалансированный подход к ставкам с умеренными рисками. Рекомендуется для начинающих.',
+  };
+  return descriptions[props.bettingMode];
+};
 </script>
 
 <style scoped>

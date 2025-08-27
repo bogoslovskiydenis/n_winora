@@ -5,7 +5,7 @@
       <div class="main-section" v-if="currentSection === 'main'">
         <GameCards />
         <LoyaltySection />
-<!--        <ChestPromo />-->
+        <!--        <ChestPromo />-->
       </div>
 
       <!-- Другие страницы -->
@@ -18,16 +18,16 @@
 </template>
 
 <script setup>
-import GameCards from './GameCards.vue'
-import LoyaltySection from './LoyaltySection.vue'
-import ChestPromo from './ChestPromo.vue'
+import GameCards from './GameCards.vue';
+import LoyaltySection from './LoyaltySection.vue';
+import ChestPromo from './ChestPromo.vue';
 
 const props = defineProps({
   currentSection: {
     type: String,
-    required: true
-  }
-})
+    required: true,
+  },
+});
 
 const getSectionTitle = () => {
   const titles = {
@@ -38,10 +38,10 @@ const getSectionTitle = () => {
     shop: 'Магазин',
     rating: 'Рейтинг пользователей',
     profile: 'Профиль пользователя',
-    support: 'Служба поддержки'
-  }
-  return titles[props.currentSection] || 'Главная'
-}
+    support: 'Служба поддержки',
+  };
+  return titles[props.currentSection] || 'Главная';
+};
 </script>
 
 <style scoped>
@@ -126,7 +126,6 @@ const getSectionTitle = () => {
   .main-content {
     padding: 24px 16px;
   }
-
 }
 
 @media (max-width: 480px) {

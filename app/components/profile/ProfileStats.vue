@@ -6,7 +6,9 @@
     <div class="stats-list">
       <div class="stat-item">
         <span class="stat-label">Баланс</span>
-        <span class="stat-value balance">{{ formatCurrency(user?.balance || 0) }} USD</span>
+        <span class="stat-value balance"
+          >{{ formatCurrency(user?.balance || 0) }} USD</span
+        >
       </div>
       <div class="stat-item">
         <span class="stat-label">Всего инвестиций</span>
@@ -18,7 +20,9 @@
       </div>
       <div class="stat-item">
         <span class="stat-label">Общая прибыль</span>
-        <span class="stat-value profit">+{{ formatCurrency(totalProfit) }} USD</span>
+        <span class="stat-value profit"
+          >+{{ formatCurrency(totalProfit) }} USD</span
+        >
       </div>
     </div>
   </div>
@@ -28,25 +32,25 @@
 const props = defineProps({
   user: {
     type: Object,
-    required: true
+    required: true,
   },
   totalInvestments: {
     type: Number,
-    default: 0
+    default: 0,
   },
   activeInvestments: {
     type: Number,
-    default: 0
+    default: 0,
   },
   totalProfit: {
     type: Number,
-    default: 0
-  }
-})
+    default: 0,
+  },
+});
 
 const formatCurrency = (amount) => {
-  return new Intl.NumberFormat('ru-RU').format(amount)
-}
+  return new Intl.NumberFormat('ru-RU').format(amount);
+};
 </script>
 
 <style scoped>

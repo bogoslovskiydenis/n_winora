@@ -12,9 +12,9 @@
           </div>
           <label class="toggle-switch">
             <input
-                type="checkbox"
-                v-model="localSettings.emailNotifications"
-                @change="handleSettingChange"
+              type="checkbox"
+              v-model="localSettings.emailNotifications"
+              @change="handleSettingChange"
             />
             <span class="toggle-slider"></span>
           </label>
@@ -22,13 +22,15 @@
         <div class="setting-item">
           <div class="setting-info">
             <div class="setting-title">Push уведомления</div>
-            <div class="setting-description">Получать push уведомления в браузере</div>
+            <div class="setting-description">
+              Получать push уведомления в браузере
+            </div>
           </div>
           <label class="toggle-switch">
             <input
-                type="checkbox"
-                v-model="localSettings.pushNotifications"
-                @change="handleSettingChange"
+              type="checkbox"
+              v-model="localSettings.pushNotifications"
+              @change="handleSettingChange"
             />
             <span class="toggle-slider"></span>
           </label>
@@ -36,13 +38,15 @@
         <div class="setting-item">
           <div class="setting-info">
             <div class="setting-title">Уведомления о сделках</div>
-            <div class="setting-description">Уведомления об инвестициях и прибыли</div>
+            <div class="setting-description">
+              Уведомления об инвестициях и прибыли
+            </div>
           </div>
           <label class="toggle-switch">
             <input
-                type="checkbox"
-                v-model="localSettings.tradingNotifications"
-                @change="handleSettingChange"
+              type="checkbox"
+              v-model="localSettings.tradingNotifications"
+              @change="handleSettingChange"
             />
             <span class="toggle-slider"></span>
           </label>
@@ -62,9 +66,9 @@
           </div>
           <label class="toggle-switch">
             <input
-                type="checkbox"
-                v-model="localSettings.animations"
-                @change="handleSettingChange"
+              type="checkbox"
+              v-model="localSettings.animations"
+              @change="handleSettingChange"
             />
             <span class="toggle-slider"></span>
           </label>
@@ -72,13 +76,15 @@
         <div class="setting-item">
           <div class="setting-info">
             <div class="setting-title">Подсказки</div>
-            <div class="setting-description">Показывать подсказки для новичков</div>
+            <div class="setting-description">
+              Показывать подсказки для новичков
+            </div>
           </div>
           <label class="toggle-switch">
             <input
-                type="checkbox"
-                v-model="localSettings.tooltips"
-                @change="handleSettingChange"
+              type="checkbox"
+              v-model="localSettings.tooltips"
+              @change="handleSettingChange"
             />
             <span class="toggle-slider"></span>
           </label>
@@ -109,21 +115,25 @@
 const props = defineProps({
   settings: {
     type: Object,
-    required: true
-  }
-})
+    required: true,
+  },
+});
 
-const emit = defineEmits(['update-settings', 'show-delete-confirm'])
+const emit = defineEmits(['update-settings', 'show-delete-confirm']);
 
-const localSettings = ref({ ...props.settings })
+const localSettings = ref({ ...props.settings });
 
-watch(() => props.settings, (newSettings) => {
-  localSettings.value = { ...newSettings }
-}, { deep: true })
+watch(
+  () => props.settings,
+  (newSettings) => {
+    localSettings.value = { ...newSettings };
+  },
+  { deep: true }
+);
 
 const handleSettingChange = () => {
-  emit('update-settings', { ...localSettings.value })
-}
+  emit('update-settings', { ...localSettings.value });
+};
 </script>
 
 <style scoped>
@@ -242,7 +252,7 @@ const handleSettingChange = () => {
 
 .toggle-slider:before {
   position: absolute;
-  content: "";
+  content: '';
   height: 20px;
   width: 20px;
   left: 2px;

@@ -5,16 +5,16 @@
     <div class="left-column">
       <!-- Пресет -->
       <PresetSelector
-          :selected-preset="selectedPreset"
-          @update-preset="$emit('update-preset', $event)"
+        :selected-preset="selectedPreset"
+        @update-preset="$emit('update-preset', $event)"
       />
 
       <!-- Эквалайзер -->
       <EqualizerSettings
-          :settings="settings"
-          :selected-platforms="selectedPlatforms"
-          @update-settings="$emit('update-settings', $event)"
-          @update-platforms="$emit('update-platforms', $event)"
+        :settings="settings"
+        :selected-platforms="selectedPlatforms"
+        @update-settings="$emit('update-settings', $event)"
+        @update-platforms="$emit('update-platforms', $event)"
       />
     </div>
 
@@ -22,51 +22,51 @@
     <div class="right-column">
       <!-- Контролы ставок -->
       <BettingControls
-          :betting-mode="bettingMode"
-          @update-betting-mode="$emit('update-betting-mode', $event)"
+        :betting-mode="bettingMode"
+        @update-betting-mode="$emit('update-betting-mode', $event)"
       />
 
       <!-- Предпросмотр инвестиции -->
       <InvestmentPreview
-          :selected-preset="selectedPreset"
-          :betting-mode="bettingMode"
-          :settings="settings"
+        :selected-preset="selectedPreset"
+        :betting-mode="bettingMode"
+        :settings="settings"
       />
     </div>
   </div>
 </template>
 
 <script setup>
-import PresetSelector from './../create/PresetSelector.vue'
-import BettingControls from './../create//BettingControls.vue'
-import EqualizerSettings from './../create/EqualizerSettings.vue'
-import InvestmentPreview from './../create/InvestmentPreview.vue'
+import PresetSelector from './../create/PresetSelector.vue';
+import BettingControls from './../create//BettingControls.vue';
+import EqualizerSettings from './../create/EqualizerSettings.vue';
+import InvestmentPreview from './../create/InvestmentPreview.vue';
 
 defineProps({
   selectedPreset: {
     type: String,
-    required: true
+    required: true,
   },
   bettingMode: {
     type: String,
-    required: true
+    required: true,
   },
   settings: {
     type: Object,
-    required: true
+    required: true,
   },
   selectedPlatforms: {
     type: Object,
-    required: true
-  }
-})
+    required: true,
+  },
+});
 
 defineEmits([
   'update-preset',
   'update-betting-mode',
   'update-settings',
-  'update-platforms'
-])
+  'update-platforms',
+]);
 </script>
 
 <style scoped>

@@ -42,30 +42,30 @@
       </div>
       <div class="progress-bar">
         <div
-            class="progress-fill"
-            :style="{ width: investment.progress + '%' }"
+          class="progress-fill"
+          :style="{ width: investment.progress + '%' }"
         ></div>
       </div>
     </div>
 
     <div class="investment-actions">
       <button
-          class="action-btn primary"
-          v-if="investment.status === 'active'"
-          @click="$emit('manage', investment.id)"
+        class="action-btn primary"
+        v-if="investment.status === 'active'"
+        @click="$emit('manage', investment.id)"
       >
         Управлять
       </button>
       <button
-          class="action-btn secondary"
-          v-if="investment.availableProfit > 0"
-          @click="$emit('withdraw', investment.id)"
+        class="action-btn secondary"
+        v-if="investment.availableProfit > 0"
+        @click="$emit('withdraw', investment.id)"
       >
         Вывести {{ investment.availableProfit }} USD
       </button>
       <button
-          class="action-btn outline"
-          @click="$emit('view-details', investment.id)"
+        class="action-btn outline"
+        @click="$emit('view-details', investment.id)"
       >
         Детали
       </button>
@@ -91,60 +91,60 @@ const props = defineProps({
       profitability: '15 USD / Week',
       riskLevel: 8,
       progress: 65,
-      createdAt: '2024-01-15'
-    })
-  }
-})
+      createdAt: '2024-01-15',
+    }),
+  },
+});
 
-defineEmits(['manage', 'withdraw', 'view-details'])
+defineEmits(['manage', 'withdraw', 'view-details']);
 
 // Методы для получения данных
 const getInvestmentType = () => {
   const types = {
     betting: 'Беттинг',
-    gambling: 'Гэмблинг'
-  }
-  return types[props.investment.type] || 'Беттинг'
-}
+    gambling: 'Гэмблинг',
+  };
+  return types[props.investment.type] || 'Беттинг';
+};
 
 const getStatusClass = () => {
   const classes = {
     active: 'status-active',
     paused: 'status-paused',
     completed: 'status-completed',
-    frozen: 'status-frozen'
-  }
-  return classes[props.investment.status] || 'status-active'
-}
+    frozen: 'status-frozen',
+  };
+  return classes[props.investment.status] || 'status-active';
+};
 
 const getStatusIcon = () => {
   const icons = {
     active: '🟢',
     paused: '⏸️',
     completed: '✅',
-    frozen: '❄️'
-  }
-  return icons[props.investment.status] || '🟢'
-}
+    frozen: '❄️',
+  };
+  return icons[props.investment.status] || '🟢';
+};
 
 const getProfitClass = () => {
-  if (props.investment.currentProfit > 0) return 'profit-positive'
-  if (props.investment.currentProfit < 0) return 'profit-negative'
-  return 'profit-neutral'
-}
+  if (props.investment.currentProfit > 0) return 'profit-positive';
+  if (props.investment.currentProfit < 0) return 'profit-negative';
+  return 'profit-neutral';
+};
 
 const formatProfit = () => {
-  const profit = props.investment.currentProfit
-  const sign = profit > 0 ? '+' : profit < 0 ? '-' : ''
-  return `${sign}${Math.abs(profit)} USD`
-}
+  const profit = props.investment.currentProfit;
+  const sign = profit > 0 ? '+' : profit < 0 ? '-' : '';
+  return `${sign}${Math.abs(profit)} USD`;
+};
 
 const getRiskClass = () => {
-  const risk = props.investment.riskLevel
-  if (risk <= 5) return 'risk-low'
-  if (risk <= 12) return 'risk-medium'
-  return 'risk-high'
-}
+  const risk = props.investment.riskLevel;
+  if (risk <= 5) return 'risk-low';
+  if (risk <= 12) return 'risk-medium';
+  return 'risk-high';
+};
 </script>
 
 <style scoped>

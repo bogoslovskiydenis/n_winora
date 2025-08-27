@@ -11,19 +11,25 @@
 
       <nav class="sidebar-menu">
         <div class="sidebar-logo">
-          <div class="logo-icon"
-               @click="$emit('navigate-home')"
-               :data-tooltip="!isOpen ? 'Главная' : ''">
-            <img v-if="!isOpen"
-                 src="../../assets/images/Winora_logo.png"
-                 alt="W"
-                 class="logo-img-small"
-                 @error="onLogoError">
-            <img v-else
-                 src="../../assets/images/Winora_logo.png"
-                 alt="Winora"
-                 class="logo-img-large"
-                 @error="onLogoError">
+          <div
+            class="logo-icon"
+            @click="$emit('navigate-home')"
+            :data-tooltip="!isOpen ? 'Главная' : ''"
+          >
+            <img
+              v-if="!isOpen"
+              src="../../assets/images/Winora_logo.png"
+              alt="W"
+              class="logo-img-small"
+              @error="onLogoError"
+            />
+            <img
+              v-else
+              src="../../assets/images/Winora_logo.png"
+              alt="Winora"
+              class="logo-img-large"
+              @error="onLogoError"
+            />
             <span v-if="logoError" class="logo-w">W</span>
           </div>
         </div>
@@ -36,34 +42,45 @@
             </div>
           </div>
           <div class="user-info">
-            <div class="user-name">{{ user?.nickname || 'bogoslovskydenis' }}</div>
-            <div class="user-email">{{ user?.email || 'bogoslovskydenis@gmail.com' }}</div>
+            <div class="user-name">
+              {{ user?.nickname || 'bogoslovskydenis' }}
+            </div>
+            <div class="user-email">
+              {{ user?.email || 'bogoslovskydenis@gmail.com' }}
+            </div>
             <button class="user-exit" @click="$emit('logout')">ВЫХОД</button>
           </div>
         </div>
 
-        <div class="user-level-badge"
-             v-if="!isOpen"
-             data-tooltip="Уровень пользователя: 2">
+        <div
+          class="user-level-badge"
+          v-if="!isOpen"
+          data-tooltip="Уровень пользователя: 2"
+        >
           <span class="level-number">2</span>
         </div>
 
         <div class="sidebar-balance" v-if="isOpen">
           <div class="balance-item">
             <span class="balance-icon">💰</span>
-            <span class="balance-value">{{ user?.balance?.toLocaleString() || '150,000' }}</span>
+            <span class="balance-value">{{
+                user?.balance?.toLocaleString() || '150,000'
+              }}</span>
           </div>
           <div class="balance-item">
             <span class="balance-label">USDT</span>
-            <span class="balance-count">{{ Math.floor((user?.balance || 150000) / 100) }}</span>
+            <span class="balance-count">{{
+                Math.floor((user?.balance || 150000) / 100)
+              }}</span>
             <span class="balance-wallets">КОШЕЛЕК</span>
           </div>
         </div>
 
         <NuxtLink
-            to="/investments"
-            class="menu-item"
-            :data-tooltip="!isOpen ? 'Инвестиции' : ''">
+          to="/investments"
+          class="menu-item"
+          :data-tooltip="!isOpen ? 'Инвестиции' : ''"
+        >
           <div class="menu-icon-wrapper">
             <span class="menu-icon">📈</span>
           </div>
@@ -71,9 +88,10 @@
         </NuxtLink>
 
         <NuxtLink
-            to="/chests"
-            class="menu-item"
-            :data-tooltip="!isOpen ? 'Сундуки' : ''">
+          to="/chests"
+          class="menu-item"
+          :data-tooltip="!isOpen ? 'Сундуки' : ''"
+        >
           <div class="menu-icon-wrapper">
             <span class="menu-icon">🎁</span>
             <span class="menu-badge red">999</span>
@@ -82,9 +100,10 @@
         </NuxtLink>
 
         <NuxtLink
-            to="/roulette"
-            class="menu-item"
-            :data-tooltip="!isOpen ? 'Рулетка' : ''">
+          to="/roulette"
+          class="menu-item"
+          :data-tooltip="!isOpen ? 'Рулетка' : ''"
+        >
           <div class="menu-icon-wrapper">
             <span class="menu-icon">🎰</span>
             <span class="menu-badge green">7</span>
@@ -93,9 +112,10 @@
         </NuxtLink>
 
         <NuxtLink
-            to="/shop"
-            class="menu-item"
-            :data-tooltip="!isOpen ? 'Магазин' : ''">
+          to="/shop"
+          class="menu-item"
+          :data-tooltip="!isOpen ? 'Магазин' : ''"
+        >
           <div class="menu-icon-wrapper">
             <span class="menu-icon">🛒</span>
           </div>
@@ -103,9 +123,10 @@
         </NuxtLink>
 
         <NuxtLink
-            to="/rating"
-            class="menu-item"
-            :data-tooltip="!isOpen ? 'Рейтинг пользователей' : ''">
+          to="/rating"
+          class="menu-item"
+          :data-tooltip="!isOpen ? 'Рейтинг пользователей' : ''"
+        >
           <div class="menu-icon-wrapper">
             <span class="menu-icon">⭐</span>
           </div>
@@ -113,9 +134,10 @@
         </NuxtLink>
 
         <NuxtLink
-            to="/profile"
-            class="menu-item"
-            :data-tooltip="!isOpen ? 'Профиль пользователя' : ''">
+          to="/profile"
+          class="menu-item"
+          :data-tooltip="!isOpen ? 'Профиль пользователя' : ''"
+        >
           <div class="menu-icon-wrapper">
             <span class="menu-icon">👤</span>
           </div>
@@ -123,9 +145,10 @@
         </NuxtLink>
 
         <NuxtLink
-            to="/support"
-            class="menu-item"
-            :data-tooltip="!isOpen ? 'Служба поддержки' : ''">
+          to="/support"
+          class="menu-item"
+          :data-tooltip="!isOpen ? 'Служба поддержки' : ''"
+        >
           <div class="menu-icon-wrapper">
             <span class="menu-icon">💬</span>
             <span class="menu-badge green">?</span>
@@ -135,8 +158,10 @@
       </nav>
 
       <div class="sidebar-bottom">
-        <button class="menu-item referral-btn"
-                :data-tooltip="!isOpen ? 'Реферальная ссылка' : ''">
+        <button
+          class="menu-item referral-btn"
+          :data-tooltip="!isOpen ? 'Реферальная ссылка' : ''"
+        >
           <div class="menu-icon-wrapper">
             <span class="menu-icon">🔗</span>
           </div>
@@ -148,7 +173,8 @@
           <span class="warning-icon">⚠</span>
           <div class="warning-text">
             <span>Верификация аккаунта</span>
-            Подтвердите свою личность, чтобы получить доступ ко всем возможностям
+            Подтвердите свою личность, чтобы получить доступ ко всем
+            возможностям
             <a href="#" class="warning-link">Подтвердить</a>
           </div>
         </div>
@@ -160,16 +186,16 @@
 <script setup>
 defineProps({
   isOpen: Boolean,
-  user: Object
-})
+  user: Object,
+});
 
-defineEmits(['toggle', 'logout', 'navigate-home'])
+defineEmits(['toggle', 'logout', 'navigate-home']);
 
-const logoError = ref(false)
+const logoError = ref(false);
 
 const onLogoError = () => {
-  logoError.value = true
-}
+  logoError.value = true;
+};
 </script>
 
 <style scoped>
@@ -539,11 +565,11 @@ const onLogoError = () => {
   color: white;
 }
 
-[data-tooltip]:not([data-tooltip=""]) {
+[data-tooltip]:not([data-tooltip='']) {
   position: relative;
 }
 
-.sidebar:not(.sidebar--open) [data-tooltip]:not([data-tooltip=""])::after {
+.sidebar:not(.sidebar--open) [data-tooltip]:not([data-tooltip=''])::after {
   content: attr(data-tooltip);
   position: fixed;
   left: 92px;
@@ -557,19 +583,21 @@ const onLogoError = () => {
   z-index: 100001;
   opacity: 0;
   visibility: hidden;
-  transition: opacity 0.2s ease, visibility 0.2s ease;
+  transition: opacity 0.2s ease,
+  visibility 0.2s ease;
   pointer-events: none;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.sidebar:not(.sidebar--open) [data-tooltip]:not([data-tooltip=""]):hover::after {
+.sidebar:not(.sidebar--open)
+[data-tooltip]:not([data-tooltip='']):hover::after {
   opacity: 1;
   visibility: visible;
   transition-delay: 0.5s;
 }
 
-.sidebar:not(.sidebar--open) [data-tooltip]:not([data-tooltip=""])::before {
+.sidebar:not(.sidebar--open) [data-tooltip]:not([data-tooltip=''])::before {
   content: '';
   position: fixed;
   left: 84px;
@@ -581,10 +609,12 @@ const onLogoError = () => {
   z-index: 100001;
   opacity: 0;
   visibility: hidden;
-  transition: opacity 0.2s ease, visibility 0.2s ease;
+  transition: opacity 0.2s ease,
+  visibility 0.2s ease;
 }
 
-.sidebar:not(.sidebar--open) [data-tooltip]:not([data-tooltip=""]):hover::before {
+.sidebar:not(.sidebar--open)
+[data-tooltip]:not([data-tooltip='']):hover::before {
   opacity: 1;
   visibility: visible;
   transition-delay: 0.5s;

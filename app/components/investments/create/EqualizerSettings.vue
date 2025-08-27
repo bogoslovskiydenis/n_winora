@@ -9,7 +9,7 @@
     <div class="equalizer-info">
       <div class="info-icon">ℹ️</div>
       <div class="equalizer-description">
-        <strong>Эквалайзер</strong><br>
+        <strong>Эквалайзер</strong><br />
         Настройте параметры инвестирования для оптимизации доходности
       </div>
     </div>
@@ -22,58 +22,62 @@
           <div class="setting-item">
             <label class="setting-checkbox">
               <input
-                  type="checkbox"
-                  :checked="settings.highRtp"
-                  @change="updateSetting('highRtp', $event.target.checked)"
+                type="checkbox"
+                :checked="settings.highRtp"
+                @change="updateSetting('highRtp', $event.target.checked)"
               />
               <span class="checkmark">✓</span>
               <span class="setting-text">Высокий RTP слотов (-96%)</span>
             </label>
-            <div class="setting-description">
-              Прибыль больше, риски больше
-            </div>
+            <div class="setting-description">Прибыль больше, риски больше</div>
           </div>
 
           <!-- Участие в акциях казино -->
           <div class="setting-item">
             <label class="setting-checkbox">
               <input
-                  type="checkbox"
-                  :checked="settings.casinoParticipation"
-                  @change="updateSetting('casinoParticipation', $event.target.checked)"
+                type="checkbox"
+                :checked="settings.casinoParticipation"
+                @change="
+                  updateSetting('casinoParticipation', $event.target.checked)
+                "
               />
               <span class="checkmark">✓</span>
               <span class="setting-text">Участие в акциях казино</span>
             </label>
-            <div class="setting-description">
-              Прибыль больше, риски больше
-            </div>
+            <div class="setting-description">Прибыль больше, риски больше</div>
           </div>
 
           <!-- Автоматическая смена слота -->
           <div class="setting-item">
             <label class="setting-checkbox">
               <input
-                  type="checkbox"
-                  :checked="settings.autoSlotChange"
-                  @change="updateSetting('autoSlotChange', $event.target.checked)"
+                type="checkbox"
+                :checked="settings.autoSlotChange"
+                @change="updateSetting('autoSlotChange', $event.target.checked)"
               />
               <span class="checkmark">✓</span>
-              <span class="setting-text">Автоматическая смена слота после заданного числа выигрышей</span>
+              <span class="setting-text"
+                >Автоматическая смена слота после заданного числа
+                выигрышей</span
+              >
             </label>
-            <div class="setting-description">
-              Прибыль больше, риски больше
-            </div>
+            <div class="setting-description">Прибыль больше, риски больше</div>
 
             <!-- Поле для ввода количества выигрышей -->
             <div class="wins-input" v-if="settings.autoSlotChange">
               <label>Число выигрышей:</label>
               <input
-                  type="number"
-                  :value="settings.winsCount"
-                  @input="updateSetting('winsCount', parseInt($event.target.value) || 100)"
-                  min="1"
-                  max="999"
+                type="number"
+                :value="settings.winsCount"
+                @input="
+                  updateSetting(
+                    'winsCount',
+                    parseInt($event.target.value) || 100
+                  )
+                "
+                min="1"
+                max="999"
               />
             </div>
           </div>
@@ -85,60 +89,60 @@
           <div class="setting-item">
             <label class="setting-checkbox">
               <input
-                  type="checkbox"
-                  :checked="settings.slotSelection"
-                  @change="updateSetting('slotSelection', $event.target.checked)"
+                type="checkbox"
+                :checked="settings.slotSelection"
+                @change="updateSetting('slotSelection', $event.target.checked)"
               />
               <span class="checkmark">✓</span>
-              <span class="setting-text">Подбор слотов по последнему джекпоту</span>
+              <span class="setting-text"
+                >Подбор слотов по последнему джекпоту</span
+              >
             </label>
-            <div class="setting-description">
-              Прибыль больше, риски больше
-            </div>
+            <div class="setting-description">Прибыль больше, риски больше</div>
           </div>
 
           <!-- Использование минимальных ставок -->
           <div class="setting-item">
             <label class="setting-checkbox">
               <input
-                  type="checkbox"
-                  :checked="settings.minimalStakes"
-                  @change="updateSetting('minimalStakes', $event.target.checked)"
+                type="checkbox"
+                :checked="settings.minimalStakes"
+                @change="updateSetting('minimalStakes', $event.target.checked)"
               />
               <span class="checkmark">✓</span>
               <span class="setting-text">Использование минимальных ставок</span>
             </label>
-            <div class="setting-description">
-              Прибыль больше, риски больше
-            </div>
+            <div class="setting-description">Прибыль больше, риски больше</div>
           </div>
 
           <!-- Распределение средств по игровым платформам -->
           <div class="setting-item">
             <label class="setting-checkbox">
               <input
-                  type="checkbox"
-                  :checked="settings.platformDistribution"
-                  @change="updateSetting('platformDistribution', $event.target.checked)"
+                type="checkbox"
+                :checked="settings.platformDistribution"
+                @change="
+                  updateSetting('platformDistribution', $event.target.checked)
+                "
               />
               <span class="checkmark">✓</span>
-              <span class="setting-text">Распределение средств по игровым платформам</span>
+              <span class="setting-text"
+                >Распределение средств по игровым платформам</span
+              >
             </label>
-            <div class="setting-description">
-              Прибыль больше, риски больше
-            </div>
+            <div class="setting-description">Прибыль больше, риски больше</div>
 
             <!-- Сетка платформ -->
             <div class="platforms-grid" v-if="settings.platformDistribution">
               <label
-                  v-for="(platform, index) in platformList"
-                  :key="platform.key"
-                  class="platform-item"
+                v-for="(platform, index) in platformList"
+                :key="platform.key"
+                class="platform-item"
               >
                 <input
-                    type="checkbox"
-                    :checked="selectedPlatforms[platform.key]"
-                    @change="updatePlatform(platform.key, $event.target.checked)"
+                  type="checkbox"
+                  :checked="selectedPlatforms[platform.key]"
+                  @change="updatePlatform(platform.key, $event.target.checked)"
                 />
                 <span class="platform-checkmark">✓</span>
                 <span>{{ platform.name }}</span>
@@ -155,15 +159,15 @@
 const props = defineProps({
   settings: {
     type: Object,
-    required: true
+    required: true,
   },
   selectedPlatforms: {
     type: Object,
-    required: true
-  }
-})
+    required: true,
+  },
+});
 
-const emit = defineEmits(['update-settings', 'update-platforms'])
+const emit = defineEmits(['update-settings', 'update-platforms']);
 
 // Список платформ для выбора
 const platformList = [
@@ -171,18 +175,18 @@ const platformList = [
   { key: 'platform2', name: 'Платформа 2' },
   { key: 'platform3', name: 'Платформа 3' },
   { key: 'platform4', name: 'Платформа 4' },
-  { key: 'platform5', name: 'Платформа 5' }
-]
+  { key: 'platform5', name: 'Платформа 5' },
+];
 
 // Обновление настроек
 const updateSetting = (key, value) => {
-  emit('update-settings', { [key]: value })
-}
+  emit('update-settings', { [key]: value });
+};
 
 // Обновление выбранных платформ
 const updatePlatform = (key, value) => {
-  emit('update-platforms', { [key]: value })
-}
+  emit('update-platforms', { [key]: value });
+};
 </script>
 
 <style scoped>

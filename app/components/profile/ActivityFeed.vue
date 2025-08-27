@@ -5,9 +5,9 @@
     </div>
     <div class="activity-list">
       <div
-          v-for="activity in activities"
-          :key="activity.id"
-          class="activity-item"
+        v-for="activity in activities"
+        :key="activity.id"
+        class="activity-item"
       >
         <div class="activity-icon">{{ activity.icon }}</div>
         <div class="activity-content">
@@ -26,18 +26,18 @@
 defineProps({
   activities: {
     type: Array,
-    default: () => []
-  }
-})
+    default: () => [],
+  },
+});
 
 const formatDate = (date) => {
   return new Intl.DateTimeFormat('ru-RU', {
     day: 'numeric',
     month: 'short',
     hour: '2-digit',
-    minute: '2-digit'
-  }).format(new Date(date))
-}
+    minute: '2-digit',
+  }).format(new Date(date));
+};
 </script>
 
 <style scoped>

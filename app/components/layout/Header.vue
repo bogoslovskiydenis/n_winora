@@ -8,9 +8,13 @@
         </button>
         <div class="balance-display">
           <span class="balance-icon">💰</span>
-          <span class="balance-amount">{{ user?.balance?.toLocaleString() || '150,000' }}</span>
+          <span class="balance-amount">{{
+            user?.balance?.toLocaleString() || '150,000'
+          }}</span>
           <span class="balance-text">USDT</span>
-          <span class="balance-count">{{ Math.floor((user?.balance || 150000) / 100) }}</span>
+          <span class="balance-count">{{
+            Math.floor((user?.balance || 150000) / 100)
+          }}</span>
         </div>
         <button class="action-btn top-up-balance">
           <span class="btn-icon">💳</span>
@@ -21,21 +25,26 @@
       <div class="header-right">
         <button class="notification-btn" @click="toggleNotifications">
           <span class="notification-icon">🔔</span>
-          <span v-if="notificationCount > 0" class="notification-badge">{{ notificationCount }}</span>
+          <span v-if="notificationCount > 0" class="notification-badge">{{
+            notificationCount
+          }}</span>
         </button>
 
         <div v-if="showNotifications" class="notifications-dropdown">
           <div class="notification-header">
             <span>Пополнение баланса на 100 USDT</span>
-            <button class="notification-close" @click="toggleNotifications">×</button>
+            <button class="notification-close" @click="toggleNotifications">
+              ×
+            </button>
           </div>
 
           <div class="notification-item">
             <div class="notification-icon-item">💰</div>
             <div class="notification-content">
               <div class="notification-title">Заголовок</div>
-              <div class="notification-text">Вспомогательная информация, которая появляется на экране и помогает
-                пользователю при работе
+              <div class="notification-text">
+                Вспомогательная информация, которая появляется на экране и
+                помогает пользователю при работе
               </div>
               <a href="#" class="notification-link">Детальнее</a>
             </div>
@@ -48,21 +57,21 @@
 </template>
 
 <script setup>
-import {ref} from 'vue'
+import { ref } from 'vue';
 
 defineProps({
   user: {
     type: Object,
-    default: () => ({})
-  }
-})
+    default: () => ({}),
+  },
+});
 
-const showNotifications = ref(false)
-const notificationCount = ref(3)
+const showNotifications = ref(false);
+const notificationCount = ref(3);
 
 const toggleNotifications = () => {
-  showNotifications.value = !showNotifications.value
-}
+  showNotifications.value = !showNotifications.value;
+};
 </script>
 
 <style scoped>
@@ -303,7 +312,8 @@ const toggleNotifications = () => {
 }
 
 @keyframes pulse {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 1;
   }
   50% {
@@ -331,5 +341,4 @@ const toggleNotifications = () => {
     padding: 8px 12px;
   }
 }
-
 </style>

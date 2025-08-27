@@ -6,27 +6,27 @@
       </div>
       <div class="password-form">
         <BaseInput
-            v-model="passwordData.currentPassword"
-            type="password"
-            placeholder="Текущий пароль"
-            :error="errors.currentPassword"
+          v-model="passwordData.currentPassword"
+          type="password"
+          placeholder="Текущий пароль"
+          :error="errors.currentPassword"
         />
         <BaseInput
-            v-model="passwordData.newPassword"
-            type="password"
-            placeholder="Новый пароль"
-            :error="errors.newPassword"
+          v-model="passwordData.newPassword"
+          type="password"
+          placeholder="Новый пароль"
+          :error="errors.newPassword"
         />
         <BaseInput
-            v-model="passwordData.confirmPassword"
-            type="password"
-            placeholder="Подтвердите новый пароль"
-            :error="errors.confirmPassword"
+          v-model="passwordData.confirmPassword"
+          type="password"
+          placeholder="Подтвердите новый пароль"
+          :error="errors.confirmPassword"
         />
         <BaseButton
-            variant="primary"
-            :loading="loading"
-            @click="handlePasswordChange"
+          variant="primary"
+          :loading="loading"
+          @click="handlePasswordChange"
         >
           Изменить пароль
         </BaseButton>
@@ -39,14 +39,17 @@
       </div>
       <div class="two-factor-content">
         <div class="two-factor-status">
-          <span class="status-indicator" :class="{ enabled: twoFactorEnabled }"></span>
+          <span
+            class="status-indicator"
+            :class="{ enabled: twoFactorEnabled }"
+          ></span>
           <span class="status-text">
             {{ twoFactorEnabled ? 'Включена' : 'Отключена' }}
           </span>
         </div>
         <BaseButton
-            :variant="twoFactorEnabled ? 'secondary' : 'primary'"
-            @click="$emit('toggle-2fa')"
+          :variant="twoFactorEnabled ? 'secondary' : 'primary'"
+          @click="$emit('toggle-2fa')"
         >
           {{ twoFactorEnabled ? 'Отключить' : 'Включить' }}
         </BaseButton>
@@ -66,9 +69,9 @@
             </div>
           </div>
           <button
-              class="session-terminate"
-              @click="$emit('terminate-session', session.id)"
-              :disabled="session.current"
+            class="session-terminate"
+            @click="$emit('terminate-session', session.id)"
+            :disabled="session.current"
           >
             {{ session.current ? 'Текущая' : 'Завершить' }}
           </button>
@@ -82,68 +85,72 @@
 const props = defineProps({
   loading: {
     type: Boolean,
-    default: false
+    default: false,
   },
   twoFactorEnabled: {
     type: Boolean,
-    default: false
+    default: false,
   },
   sessions: {
     type: Array,
-    default: () => []
-  }
-})
+    default: () => [],
+  },
+});
 
-const emit = defineEmits(['change-password', 'toggle-2fa', 'terminate-session'])
+const emit = defineEmits([
+  'change-password',
+  'toggle-2fa',
+  'terminate-session',
+]);
 
 const passwordData = ref({
   currentPassword: '',
   newPassword: '',
-  confirmPassword: ''
-})
+  confirmPassword: '',
+});
 
-const errors = ref({})
+const errors = ref({});
 
 const validatePassword = () => {
-  errors.value = {}
+  errors.value = {};
 
   if (!passwordData.value.currentPassword) {
-    errors.value.currentPassword = 'Введите текущий пароль'
-    return false
+    errors.value.currentPassword = 'Введите текущий пароль';
+    return false;
   }
 
   if (passwordData.value.newPassword.length < 8) {
-    errors.value.newPassword = 'Пароль должен содержать минимум 8 символов'
-    return false
+    errors.value.newPassword = 'Пароль должен содержать минимум 8 символов';
+    return false;
   }
 
   if (passwordData.value.newPassword !== passwordData.value.confirmPassword) {
-    errors.value.confirmPassword = 'Пароли не совпадают'
-    return false
+    errors.value.confirmPassword = 'Пароли не совпадают';
+    return false;
   }
 
-  return true
-}
+  return true;
+};
 
 const handlePasswordChange = () => {
   if (validatePassword()) {
-    emit('change-password', {...passwordData.value})
+    emit('change-password', { ...passwordData.value });
     passwordData.value = {
       currentPassword: '',
       newPassword: '',
-      confirmPassword: ''
-    }
+      confirmPassword: '',
+    };
   }
-}
+};
 
 const formatDate = (date) => {
   return new Intl.DateTimeFormat('ru-RU', {
     day: 'numeric',
     month: 'short',
     hour: '2-digit',
-    minute: '2-digit'
-  }).format(new Date(date))
-}
+    minute: '2-digit',
+  }).format(new Date(date));
+};
 </script>
 
 <style scoped>

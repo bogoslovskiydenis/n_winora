@@ -8,10 +8,10 @@
     <div class="section-controls">
       <label class="toggle-switch">
         <input
-            type="checkbox"
-            :checked="showHints"
-            @change="$emit('toggle-hints')"
-        >
+          type="checkbox"
+          :checked="showHints"
+          @change="$emit('toggle-hints')"
+        />
         <span class="slider"></span>
         <span class="toggle-text">Режим подсказок</span>
       </label>
@@ -23,11 +23,11 @@
 defineProps({
   showHints: {
     type: Boolean,
-    default: true
-  }
-})
+    default: true,
+  },
+});
 
-defineEmits(['toggle-hints'])
+defineEmits(['toggle-hints']);
 </script>
 
 <style scoped>

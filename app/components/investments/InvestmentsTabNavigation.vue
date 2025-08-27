@@ -2,17 +2,17 @@
 <template>
   <div class="tabs-navigation">
     <button
-        class="tab-button"
-        :class="{ active: activeTab === 'create' }"
-        @click="$emit('tab-change', 'create')"
+      class="tab-button"
+      :class="{ active: activeTab === 'create' }"
+      @click="$emit('tab-change', 'create')"
     >
       <span class="tab-icon">⊕</span>
       Создать инвестицию
     </button>
     <button
-        class="tab-button"
-        :class="{ active: activeTab === 'my' }"
-        @click="$emit('tab-change', 'my')"
+      class="tab-button"
+      :class="{ active: activeTab === 'my' }"
+      @click="$emit('tab-change', 'my')"
     >
       <span class="tab-icon">📊</span>
       Мои инвестиции
@@ -25,11 +25,11 @@ defineProps({
   activeTab: {
     type: String,
     required: true,
-    validator: (value) => ['create', 'my'].includes(value)
-  }
-})
+    validator: (value) => ['create', 'my'].includes(value),
+  },
+});
 
-defineEmits(['tab-change'])
+defineEmits(['tab-change']);
 </script>
 
 <style scoped>

@@ -3,27 +3,27 @@
     <a href="#main-content" class="skip-link">Перейти к основному содержанию</a>
 
     <Sidebar
-        v-if="showSidebar"
-        :is-open="sidebarOpen"
-        :user="user"
-        @toggle="toggleSidebar"
-        @logout="handleLogout"
-        @navigate-home="navigateToMain"
+      v-if="showSidebar"
+      :is-open="sidebarOpen"
+      :user="user"
+      @toggle="toggleSidebar"
+      @logout="handleLogout"
+      @navigate-home="navigateToMain"
     />
 
     <div
-        v-if="sidebarOpen && isMobile && showSidebar"
-        class="sidebar-overlay"
-        @click="closeSidebar"
-        aria-hidden="true"
+      v-if="sidebarOpen && isMobile && showSidebar"
+      class="sidebar-overlay"
+      @click="closeSidebar"
+      aria-hidden="true"
     ></div>
 
     <div
-        class="main-wrapper"
-        :class="{
-          'main-wrapper--sidebar-open': sidebarOpen && !isMobile && showSidebar,
-          'main-wrapper--no-sidebar': !showSidebar
-        }"
+      class="main-wrapper"
+      :class="{
+        'main-wrapper--sidebar-open': sidebarOpen && !isMobile && showSidebar,
+        'main-wrapper--no-sidebar': !showSidebar,
+      }"
     >
       <Header v-if="showSidebar" :user="user" />
 
@@ -35,85 +35,83 @@
 </template>
 
 <script setup>
-const route = useRoute()
-const { user, logoutUser } = useAuth()
+const route = useRoute();
+const { user, logoutUser } = useAuth();
 
-const sidebarOpen = ref(false)
-const windowWidth = ref(1200)
+const sidebarOpen = ref(false);
+const windowWidth = ref(1200);
 
-const isMobile = computed(() => windowWidth.value < 1024)
-const showSidebar = computed(() =>
-    route.name !== 'auth' &&
-    route.name !== 'index'
-)
+const isMobile = computed(() => windowWidth.value < 1024);
+const showSidebar = computed(
+  () => route.name !== 'auth' && route.name !== 'index'
+);
 
 const toggleSidebar = () => {
-  sidebarOpen.value = !sidebarOpen.value
-}
+  sidebarOpen.value = !sidebarOpen.value;
+};
 
 const closeSidebar = () => {
-  sidebarOpen.value = false
-}
+  sidebarOpen.value = false;
+};
 
 const handleLogout = () => {
-  logoutUser()
-}
+  logoutUser();
+};
 
 const navigateToMain = () => {
-  navigateTo('/main')
+  navigateTo('/main');
   if (isMobile.value) {
-    sidebarOpen.value = false
+    sidebarOpen.value = false;
   }
-}
+};
 
 const handleResize = () => {
-  windowWidth.value = window.innerWidth
+  windowWidth.value = window.innerWidth;
   if (!isMobile.value) {
-    sidebarOpen.value = false
+    sidebarOpen.value = false;
   }
-}
+};
 
 watch(route, () => {
   if (isMobile.value) {
-    sidebarOpen.value = false
+    sidebarOpen.value = false;
   }
-})
+});
 
 watch(sidebarOpen, (isOpen) => {
   if (isMobile.value) {
     if (isOpen) {
-      document.body.style.overflow = 'hidden'
+      document.body.style.overflow = 'hidden';
     } else {
-      document.body.style.overflow = ''
+      document.body.style.overflow = '';
     }
   }
-})
+});
 
 onMounted(() => {
-  windowWidth.value = window.innerWidth
-  window.addEventListener('resize', handleResize)
-})
+  windowWidth.value = window.innerWidth;
+  window.addEventListener('resize', handleResize);
+});
 
 onUnmounted(() => {
-  window.removeEventListener('resize', handleResize)
-  document.body.style.overflow = ''
-})
+  window.removeEventListener('resize', handleResize);
+  document.body.style.overflow = '';
+});
 
 // SEO и метаданные
 useHead({
   htmlAttrs: {
-    lang: 'ru'
+    lang: 'ru',
   },
   meta: [
     { charset: 'utf-8' },
     { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-    { name: 'theme-color', content: '#4ade80' }
-  ]
-})
+    { name: 'theme-color', content: '#4ade80' },
+  ],
+});
 </script>
 
 <style scoped>
-
 .layout {
   min-height: 100vh;
   color: var(--text-primary);
@@ -186,14 +184,12 @@ useHead({
   animation: fadeIn 0.5s ease;
 }
 
-
-.sidebar-overlay[aria-hidden="true"] {
+.sidebar-overlay[aria-hidden='true'] {
 }
 
 .main-content:focus {
   outline: none;
 }
-
 
 @media (prefers-color-scheme: dark) {
 }

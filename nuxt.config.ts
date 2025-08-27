@@ -13,13 +13,12 @@ export default defineNuxtConfig({
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
         {
           name: 'description',
-          content: 'Winora - современная инвестиционная платформа с высокой доходностью'
-        }
+          content:
+            'Winora - современная инвестиционная платформа с высокой доходностью',
+        },
       ],
-      link: [
-        { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
-      ]
-    }
+      link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
+    },
   },
 
   // SPA режим (без серверного рендеринга)
@@ -30,23 +29,23 @@ export default defineNuxtConfig({
     {
       path: '~/components',
       pathPrefix: false,
-    }
+    },
   ],
 
   // Конфигурация сборки
   nitro: {
-    preset: 'static'
+    preset: 'static',
   },
 
   // Экспериментальные функции
   experimental: {
-    payloadExtraction: false
+    payloadExtraction: false,
   },
 
   // Конфигурация рантайма
   runtimeConfig: {
     public: {
-      baseURL: process.env.BASE_URL || 'http://localhost:3000'
-    }
-  }
-})
+      baseURL: process.env.BASE_URL || 'http://localhost:3000',
+    },
+  },
+});
