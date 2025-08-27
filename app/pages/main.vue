@@ -19,7 +19,7 @@
 <script setup>
 import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import MainContent from '../sections/MainContent.vue'
+import MainContent from '../components/main/MainContent.vue'
 import Sidebar from "../components/layout/Sidebar.vue";
 
 const props = defineProps({

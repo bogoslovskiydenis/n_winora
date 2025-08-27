@@ -1,4 +1,3 @@
-<!-- investments.vue - главный файл страницы -->
 <template>
   <div class="investments-section">
     <!-- Заголовок страницы -->
