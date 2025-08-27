@@ -53,9 +53,9 @@
         </div>
 
         <div
-          class="user-level-badge"
+          class="menu-item"
+          :data-tooltip="!isOpen ? 'Уровень пользователя: 2' : ''"
           v-if="!isOpen"
-          data-tooltip="Уровень пользователя: 2"
         >
           <span class="level-number">2</span>
         </div>
@@ -64,14 +64,14 @@
           <div class="balance-item">
             <span class="balance-icon">💰</span>
             <span class="balance-value">{{
-                user?.balance?.toLocaleString() || '150,000'
-              }}</span>
+              user?.balance?.toLocaleString() || '150,000'
+            }}</span>
           </div>
           <div class="balance-item">
             <span class="balance-label">USDT</span>
             <span class="balance-count">{{
-                Math.floor((user?.balance || 150000) / 100)
-              }}</span>
+              Math.floor((user?.balance || 150000) / 100)
+            }}</span>
             <span class="balance-wallets">КОШЕЛЕК</span>
           </div>
         </div>
@@ -378,23 +378,33 @@ const onLogoError = () => {
   color: #dc2626;
 }
 
-.user-level-badge {
+.menu-item .level-number {
   width: 24px;
   height: 24px;
-  margin: 0 auto 24px;
   background: linear-gradient(135deg, #ff6b35, #f7931e);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
+  font-size: 18px;
+  font-weight: 700;
+  color: white;
+  margin: 0 auto;
   transition: all 0.3s ease;
-  position: relative;
 }
 
-.user-level-badge:hover {
+.menu-item:hover .level-number {
   transform: scale(1.05);
   box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
+}
+
+.menu-item:has(.level-number) {
+  justify-content: center;
+  padding: 0;
+}
+
+.menu-item:has(.level-number):hover .menu-icon-wrapper {
+  background: transparent;
 }
 
 .level-number {
@@ -583,15 +593,16 @@ const onLogoError = () => {
   z-index: 100001;
   opacity: 0;
   visibility: hidden;
-  transition: opacity 0.2s ease,
-  visibility 0.2s ease;
+  transition:
+    opacity 0.2s ease,
+    visibility 0.2s ease;
   pointer-events: none;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .sidebar:not(.sidebar--open)
-[data-tooltip]:not([data-tooltip='']):hover::after {
+  [data-tooltip]:not([data-tooltip='']):hover::after {
   opacity: 1;
   visibility: visible;
   transition-delay: 0.5s;
@@ -609,12 +620,13 @@ const onLogoError = () => {
   z-index: 100001;
   opacity: 0;
   visibility: hidden;
-  transition: opacity 0.2s ease,
-  visibility 0.2s ease;
+  transition:
+    opacity 0.2s ease,
+    visibility 0.2s ease;
 }
 
 .sidebar:not(.sidebar--open)
-[data-tooltip]:not([data-tooltip='']):hover::before {
+  [data-tooltip]:not([data-tooltip='']):hover::before {
   opacity: 1;
   visibility: visible;
   transition-delay: 0.5s;
