@@ -9,65 +9,56 @@
         </button>
       </div>
 
-      <div class="sidebar-logo">
-        <div class="logo-icon"
-             @click="$emit('navigate-home')"
-             :data-tooltip="!isOpen ? 'Главная' : ''">
-          <img v-if="!isOpen"
-               src="../../assets/images/Winora_logo.png"
-               alt="W"
-               class="logo-img-small"
-               @error="onLogoError">
-          <img v-else
-               src="../../assets/images/Winora_logo.png"
-               alt="Winora"
-               class="logo-img-large"
-               @error="onLogoError">
-          <span v-if="logoError" class="logo-w">W</span>
-        </div>
-      </div>
-
-      <div class="user-card" v-if="isOpen">
-        <div class="user-avatar">
-          <span class="user-level">2</span>
-          <div class="user-avatar-inner">
-            <span>{{ user?.nickname?.[0]?.toUpperCase() || 'B' }}</span>
-          </div>
-        </div>
-        <div class="user-info">
-          <div class="user-name">{{ user?.nickname || 'bogoslovskydenis' }}</div>
-          <div class="user-email">{{ user?.email || 'bogoslovskydenis@gmail.com' }}</div>
-          <button class="user-exit" @click="$emit('logout')">ВЫХОД</button>
-        </div>
-      </div>
-
-      <div class="user-level-badge"
-           v-if="!isOpen"
-           data-tooltip="Уровень пользователя: 2">
-        <span class="level-number">2</span>
-      </div>
-
-      <div class="sidebar-balance" v-if="isOpen">
-        <div class="balance-item">
-          <span class="balance-icon">💰</span>
-          <span class="balance-value">{{ user?.balance?.toLocaleString() || '150,000' }}</span>
-        </div>
-        <div class="balance-item">
-          <span class="balance-label">USDT</span>
-          <span class="balance-count">{{ Math.floor((user?.balance || 150000) / 100) }}</span>
-          <span class="balance-wallets">КОШЕЛЕК</span>
-        </div>
-      </div>
-
       <nav class="sidebar-menu">
-        <NuxtLink
-            @click="$emit('navigate-home')"
-            :data-tooltip="!isOpen ? 'Главная' : ''">
-          <div class="menu-icon-wrapper">
-            <span class="menu-icon">🏠</span>
+        <div class="sidebar-logo">
+          <div class="logo-icon"
+               @click="$emit('navigate-home')"
+               :data-tooltip="!isOpen ? 'Главная' : ''">
+            <img v-if="!isOpen"
+                 src="../../assets/images/Winora_logo.png"
+                 alt="W"
+                 class="logo-img-small"
+                 @error="onLogoError">
+            <img v-else
+                 src="../../assets/images/Winora_logo.png"
+                 alt="Winora"
+                 class="logo-img-large"
+                 @error="onLogoError">
+            <span v-if="logoError" class="logo-w">W</span>
           </div>
-          <span class="menu-text" v-if="isOpen">ГЛАВНАЯ</span>
-        </NuxtLink>
+        </div>
+
+        <div class="user-card" v-if="isOpen">
+          <div class="user-avatar">
+            <span class="user-level">2</span>
+            <div class="user-avatar-inner">
+              <span>{{ user?.nickname?.[0]?.toUpperCase() || 'B' }}</span>
+            </div>
+          </div>
+          <div class="user-info">
+            <div class="user-name">{{ user?.nickname || 'bogoslovskydenis' }}</div>
+            <div class="user-email">{{ user?.email || 'bogoslovskydenis@gmail.com' }}</div>
+            <button class="user-exit" @click="$emit('logout')">ВЫХОД</button>
+          </div>
+        </div>
+
+        <div class="user-level-badge"
+             v-if="!isOpen"
+             data-tooltip="Уровень пользователя: 2">
+          <span class="level-number">2</span>
+        </div>
+
+        <div class="sidebar-balance" v-if="isOpen">
+          <div class="balance-item">
+            <span class="balance-icon">💰</span>
+            <span class="balance-value">{{ user?.balance?.toLocaleString() || '150,000' }}</span>
+          </div>
+          <div class="balance-item">
+            <span class="balance-label">USDT</span>
+            <span class="balance-count">{{ Math.floor((user?.balance || 150000) / 100) }}</span>
+            <span class="balance-wallets">КОШЕЛЕК</span>
+          </div>
+        </div>
 
         <NuxtLink
             to="/investments"
