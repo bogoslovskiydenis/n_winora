@@ -10,8 +10,10 @@
     </div>
 
     <div class="empty-content">
-      <h3 class="empty-title">{{ title }}</h3>
-      <p class="empty-description">{{ description }}</p>
+      <h3 class="empty-title">У вас пока нет активных инвестиций</h3>
+      <p class="empty-description">
+        Создайте свою первую инвестицию, чтобы начать получать доход
+      </p>
 
       <div class="empty-features">
         <div class="feature-item">
@@ -31,11 +33,7 @@
       <div class="empty-actions">
         <button class="create-btn primary" @click="$emit('create-investment')">
           <span class="btn-icon">➕</span>
-          {{ primaryButtonText }}
-        </button>
-        <button class="learn-btn secondary" @click="$emit('learn-more')">
-          <span class="btn-icon">📚</span>
-          Узнать больше
+          Создать инвестицию
         </button>
       </div>
     </div>
@@ -43,32 +41,7 @@
 </template>
 
 <script setup>
-const props = defineProps({
-  title: {
-    type: String,
-    default: 'У вас пока нет активных инвестиций',
-  },
-  description: {
-    type: String,
-    default:
-      'Создайте свою первую инвестицию и начните получать стабильный доход уже сегодня',
-  },
-  primaryButtonText: {
-    type: String,
-    default: 'Создать первую инвестицию',
-  },
-  showFeatures: {
-    type: Boolean,
-    default: true,
-  },
-  variant: {
-    type: String,
-    default: 'default',
-    validator: (value) => ['default', 'compact', 'detailed'].includes(value),
-  },
-});
-
-defineEmits(['create-investment', 'learn-more']);
+defineEmits(['create-investment']);
 </script>
 
 <style scoped>
@@ -188,13 +161,10 @@ defineEmits(['create-investment', 'learn-more']);
 
 .empty-actions {
   display: flex;
-  gap: 16px;
   justify-content: center;
-  flex-wrap: wrap;
 }
 
-.create-btn,
-.learn-btn {
+.create-btn {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -220,19 +190,6 @@ defineEmits(['create-investment', 'learn-more']);
   background: linear-gradient(135deg, #86efac 0%, #4ade80 100%);
   transform: translateY(-2px);
   box-shadow: 0 8px 25px rgba(74, 222, 128, 0.4);
-}
-
-.learn-btn.secondary {
-  background: transparent;
-  color: var(--text-secondary);
-  border: 2px solid rgba(255, 255, 255, 0.2);
-}
-
-.learn-btn.secondary:hover {
-  background: rgba(255, 255, 255, 0.05);
-  color: var(--text-primary);
-  border-color: rgba(255, 255, 255, 0.3);
-  transform: translateY(-2px);
 }
 
 .btn-icon {
@@ -323,13 +280,7 @@ defineEmits(['create-investment', 'learn-more']);
     font-size: 11px;
   }
 
-  .empty-actions {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .create-btn,
-  .learn-btn {
+  .create-btn {
     width: 100%;
     max-width: 280px;
   }
@@ -352,36 +303,10 @@ defineEmits(['create-investment', 'learn-more']);
     text-align: left;
   }
 
-  .create-btn,
-  .learn-btn {
+  .create-btn {
     padding: 10px 20px;
     font-size: 13px;
   }
-}
-
-/* Варианты компонента */
-.empty-investments.compact {
-  padding: 30px 20px;
-  min-height: 250px;
-}
-
-.empty-investments.compact .empty-icon {
-  font-size: 48px;
-  margin-bottom: 16px;
-}
-
-.empty-investments.compact .empty-title {
-  font-size: 18px;
-  margin-bottom: 12px;
-}
-
-.empty-investments.compact .empty-description {
-  font-size: 14px;
-  margin-bottom: 24px;
-}
-
-.empty-investments.compact .empty-features {
-  display: none;
 }
 
 /* Accessibility */
@@ -393,15 +318,13 @@ defineEmits(['create-investment', 'learn-more']);
   }
 
   .feature-item:hover,
-  .create-btn:hover,
-  .learn-btn:hover {
+  .create-btn:hover {
     transform: none;
   }
 }
 
 /* Focus states */
-.create-btn:focus-visible,
-.learn-btn:focus-visible {
+.create-btn:focus-visible {
   outline: 2px solid var(--primary-color);
   outline-offset: 2px;
 }
