@@ -203,7 +203,13 @@ const togglePasswordVisibility = () => {
 .base-input__field:-webkit-autofill:hover,
 .base-input__field:-webkit-autofill:focus {
   -webkit-box-shadow: 0 0 0 30px rgba(255, 255, 255, 0.05) inset !important;
-  -webkit-text-fill-color: white !important;
+  -webkit-text-fill-color: transparent;
+  -webkit-background-clip: text;
+  background-image: linear-gradient(
+    135deg,
+    #01614b,
+    #032019 70%
+  ); /* Ваш градиент */
   border-color: rgba(255, 255, 255, 0.2) !important;
 }
 
