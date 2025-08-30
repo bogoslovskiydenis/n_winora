@@ -230,6 +230,8 @@
   text-transform: uppercase;
   letter-spacing: 0.5px;
   margin-bottom: 6px;
+  display: flex;
+  justify-content: center;
 }
 
 .stat-value,

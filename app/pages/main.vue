@@ -115,18 +115,9 @@ onUnmounted(() => {
   position: relative;
 }
 
-/* Sidebar Overlay */
-.sidebar-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.5);
-  z-index: 999;
-}
-
 /* Main Wrapper */
 .main-wrapper {
   flex: 1;
-  margin-left: 80px;
   transition: margin-left 0.3s ease;
 }
 

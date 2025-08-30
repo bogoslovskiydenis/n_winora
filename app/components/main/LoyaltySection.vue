@@ -191,14 +191,11 @@ const updateBonuses = (level: number) => {
 .loyalty-investment-wrapper {
   display: flex;
   flex-wrap: wrap;
-  gap: 32px;
-  align-items: start;
+  gap: 16px;
 }
 
 .loyalty-section {
   display: flex;
-  height: 160px;
-  width: 644px;
 }
 
 .loyalty-card {
@@ -237,6 +234,7 @@ const updateBonuses = (level: number) => {
    =========================================== */
 
 .loyalty-content {
+  padding: 20px;
   display: flex;
   gap: 32px;
   align-items: flex-start;
@@ -435,16 +433,6 @@ const updateBonuses = (level: number) => {
   justify-content: space-between;
 }
 
-.investment-banner::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-image: url('./../../assets/images/cadrs_investitions_bg.png');
-  opacity: 0.42;
-  border-radius: 20px;
-  z-index: -1;
-}
-
 /* Декоративный фон с сеткой */
 .banner-decoration {
   position: absolute;
@@ -612,11 +600,10 @@ const updateBonuses = (level: number) => {
 @media (max-width: 1200px) {
   .loyalty-investment-wrapper {
     grid-template-columns: 1fr;
-    gap: 24px;
   }
 
   .loyalty-section {
-    max-width: 800px;
+    height: 100%;
   }
 }
 
@@ -626,18 +613,15 @@ const updateBonuses = (level: number) => {
   }
 
   .loyalty-content {
-    flex-direction: column;
     gap: 20px;
   }
 
   .loyalty-level {
-    flex-direction: column;
     text-align: center;
     gap: 16px;
   }
 
   .loyalty-rewards {
-    flex-direction: column;
     gap: 16px;
   }
 
