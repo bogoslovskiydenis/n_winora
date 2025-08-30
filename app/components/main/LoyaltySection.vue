@@ -27,8 +27,8 @@
                 </div>
               </div>
               <router-link to="/profile" class="level-link"
-                >Узнать больше</router-link
-              >
+                >Узнать больше
+              </router-link>
             </div>
           </div>
 
@@ -73,33 +73,25 @@
     </div>
 
     <!-- Баннер инвестиций -->
+    <!-- Баннер инвестиций -->
     <div class="investment-banner-section">
       <div class="investment-banner">
-        <div class="banner-content">
-          <!-- Заголовок -->
-          <div class="banner-header">
-            <h2 class="banner-title">Время выбрать</h2>
-            <h1 class="banner-main-title">ИНВЕСТИЦИИ</h1>
-          </div>
-
-          <!-- Иконки портфелей/сундуков -->
-          <div class="investment-cases">
-            <div class="investment-case case-1">
-              <div class="case-icon">💼</div>
-            </div>
-            <div class="investment-case case-2 featured">
-              <div class="case-icon">💼</div>
-            </div>
-            <div class="investment-case case-3">
-              <div class="case-icon">💼</div>
-            </div>
-          </div>
-
-          <!-- Кнопка действия -->
-          <button class="investment-buy-btn" @click="handleInvestmentClick">
-            КУПИТЬ
-          </button>
+        <!-- Задний фон с картинкой (уже реализован через ::before) -->
+        <!-- Заголовок -->
+        <div class="banner-header">
+          <h2 class="banner-title">Время выбрать</h2>
+          <h1 class="banner-main-title">ИНВЕСТИЦИИ</h1>
         </div>
+
+        <!-- Иконки портфелей/сундуков -->
+        <div class="investment-cases">
+          <img src="./../../assets/images/cheast_1.png" />
+        </div>
+
+        <!-- Кнопка действия -->
+        <button class="investment-buy-btn" @click="handleInvestmentClick">
+          КУПИТЬ
+        </button>
 
         <!-- Декоративные элементы -->
         <div class="banner-decoration">
@@ -110,31 +102,22 @@
     </div>
     <div class="investment-banner-section">
       <div class="investment-banner">
-        <div class="banner-content">
-          <!-- Заголовок -->
-          <div class="banner-header">
-            <h2 class="banner-title">Время выбрать</h2>
-            <h1 class="banner-main-title">ИНВЕСТИЦИИ</h1>
-          </div>
-
-          <!-- Иконки портфелей/сундуков -->
-          <div class="investment-cases">
-            <div class="investment-case case-1">
-              <div class="case-icon">💼</div>
-            </div>
-            <div class="investment-case case-2 featured">
-              <div class="case-icon">💼</div>
-            </div>
-            <div class="investment-case case-3">
-              <div class="case-icon">💼</div>
-            </div>
-          </div>
-
-          <!-- Кнопка действия -->
-          <button class="investment-buy-btn" @click="handleInvestmentClick">
-            КУПИТЬ
-          </button>
+        <!-- Задний фон с картинкой (уже реализован через ::before) -->
+        <!-- Заголовок -->
+        <div class="banner-header">
+          <h2 class="banner-title">Время выбрать</h2>
+          <h1 class="banner-main-title">ИНВЕСТИЦИИ</h1>
         </div>
+
+        <!-- Иконки портфелей/сундуков -->
+        <div class="investment-cases">
+          <img src="./../../assets/images/cheast_1.png" />
+        </div>
+
+        <!-- Кнопка действия -->
+        <button class="investment-buy-btn" @click="handleInvestmentClick">
+          КУПИТЬ
+        </button>
 
         <!-- Декоративные элементы -->
         <div class="banner-decoration">
@@ -206,15 +189,16 @@ const updateBonuses = (level: number) => {
 
 <style scoped>
 .loyalty-investment-wrapper {
-  display: grid;
-  grid-template-columns: 800px 1fr;
+  display: flex;
+  flex-wrap: wrap;
   gap: 32px;
-  margin-bottom: 32px;
   align-items: start;
 }
 
 .loyalty-section {
-  width: 100%;
+  display: flex;
+  height: 160px;
+  width: 644px;
 }
 
 .loyalty-card {
@@ -222,39 +206,20 @@ const updateBonuses = (level: number) => {
   backdrop-filter: blur(15px);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 16px;
-  padding: 24px;
   position: relative;
-  overflow: hidden;
+  width: 100%;
 }
-
-.loyalty-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    var(--primary-color),
-    transparent
-  );
-  opacity: 0.5;
-}
-
-/* ===========================================
-   ЗАГОЛОВОК СЕКЦИИ ЛОЯЛЬНОСТИ
-   =========================================== */
 
 .loyalty-header {
   display: flex;
+  justify-content: center;
   align-items: center;
-  gap: 12px;
-  margin-bottom: 24px;
+  position: relative;
 }
 
 .loyalty-icon {
+  position: absolute;
+  left: 24px;
   font-size: 18px;
   color: #f59e0b;
   filter: drop-shadow(0 0 4px rgba(245, 158, 11, 0.3));
@@ -278,9 +243,11 @@ const updateBonuses = (level: number) => {
 }
 
 .loyalty-level {
+  padding: 10px;
+  border-radius: 8px;
+  background-color: #00000042;
   display: flex;
   align-items: flex-start;
-  gap: 20px;
   flex: 1;
 }
 
@@ -334,18 +301,15 @@ const updateBonuses = (level: number) => {
   font-size: 18px;
   font-weight: 600;
   color: var(--text-primary);
-  margin-bottom: 12px;
 }
 
 .level-details {
-  margin-bottom: 16px;
 }
 
 .level-deposit,
 .level-next {
   font-size: 14px;
   color: var(--text-secondary);
-  margin-bottom: 8px;
   line-height: 1.4;
 }
 
@@ -379,6 +343,9 @@ const updateBonuses = (level: number) => {
    =========================================== */
 
 .loyalty-rewards {
+  border-radius: 8px;
+  background-color: #ffffff1a;
+  padding: 10px;
   display: flex;
   gap: 24px;
   flex: 1;
@@ -391,7 +358,6 @@ const updateBonuses = (level: number) => {
 }
 
 .reward-header {
-  margin-bottom: 16px;
 }
 
 .reward-title {
@@ -413,7 +379,6 @@ const updateBonuses = (level: number) => {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 8px 0;
   transition: all 0.3s ease;
   position: relative;
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
@@ -437,7 +402,7 @@ const updateBonuses = (level: number) => {
 .reward-value {
   font-size: 14px;
   font-weight: 600;
-  color: var(--text-secondary);
+  color: #07cb38;
   min-width: 40px;
   text-align: right;
 }
@@ -451,20 +416,33 @@ const updateBonuses = (level: number) => {
    =========================================== */
 
 .investment-banner-section {
-  width: 100%;
-  min-width: 300px;
+  border-radius: 16px;
+  width: 329px;
+  height: 160px;
+  margin-bottom: 32px;
+  background-image: url('./../../assets/images/cadrs_investitions_bg.png');
+}
+
+.investment-banner-section:last-child {
+  margin-bottom: 0;
 }
 
 .investment-banner {
-  background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 50%, #2563eb 100%);
-  border-radius: 20px;
-  padding: 24px 20px;
   position: relative;
-  overflow: hidden;
-  min-height: 280px;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
+}
+
+.investment-banner::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url('./../../assets/images/cadrs_investitions_bg.png');
+  opacity: 0.42;
+  border-radius: 20px;
+  z-index: -1;
 }
 
 /* Декоративный фон с сеткой */
@@ -501,42 +479,13 @@ const updateBonuses = (level: number) => {
   animation: circuitPulse 3s ease-in-out infinite;
 }
 
-@keyframes techGridMove {
-  0% {
-    transform: translate(0, 0);
-  }
-  100% {
-    transform: translate(20px, 20px);
-  }
-}
-
-@keyframes circuitPulse {
-  0%,
-  100% {
-    opacity: 0.3;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 0.6;
-    transform: scale(1.1);
-  }
-}
-
 /* ===========================================
    КОНТЕНТ БАННЕРА
    =========================================== */
 
-.banner-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 24px;
-  z-index: 1;
-  position: relative;
-}
-
 .banner-header {
   text-align: center;
+  margin-bottom: auto;
 }
 
 .banner-title {
@@ -558,17 +507,6 @@ const updateBonuses = (level: number) => {
   animation: titleGlow 2s ease-in-out infinite alternate;
 }
 
-@keyframes titleGlow {
-  0% {
-    text-shadow: 0 0 20px rgba(74, 222, 128, 0.5);
-    transform: scale(1);
-  }
-  100% {
-    text-shadow: 0 0 30px rgba(74, 222, 128, 0.8);
-    transform: scale(1.02);
-  }
-}
-
 /* ===========================================
    ИНВЕСТИЦИОННЫЕ ПОРТФЕЛИ
    =========================================== */
@@ -577,7 +515,7 @@ const updateBonuses = (level: number) => {
   display: flex;
   align-items: center;
   gap: 16px;
-  position: relative;
+  margin: 0 auto;
 }
 
 .investment-case {
@@ -618,30 +556,12 @@ const updateBonuses = (level: number) => {
   font-size: 32px;
 }
 
-@keyframes glowRotate {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
-@keyframes highlight {
-  0%,
-  100% {
-    opacity: 0.3;
-  }
-  50% {
-    opacity: 1;
-  }
-}
-
 /* ===========================================
    КНОПКА ПОКУПКИ
    =========================================== */
 
 .investment-buy-btn {
+  bottom: 20px;
   background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
   border: none;
   border-radius: 50px;
@@ -656,6 +576,7 @@ const updateBonuses = (level: number) => {
   box-shadow: 0 4px 20px rgba(249, 115, 22, 0.4);
   position: relative;
   overflow: hidden;
+  margin-top: auto;
 }
 
 .investment-buy-btn::before {
@@ -696,7 +617,6 @@ const updateBonuses = (level: number) => {
 
   .loyalty-section {
     max-width: 800px;
-    margin: 0 auto;
   }
 }
 
@@ -726,10 +646,6 @@ const updateBonuses = (level: number) => {
     min-height: 240px;
   }
 
-  .banner-content {
-    gap: 20px;
-  }
-
   .banner-main-title {
     font-size: 24px;
   }
@@ -755,6 +671,15 @@ const updateBonuses = (level: number) => {
   .investment-case.featured .case-icon {
     font-size: 26px;
   }
+
+  .investment-buy-btn {
+    padding: 10px 30px;
+    font-size: 12px;
+  }
+
+  .investment-banner-section {
+    margin-bottom: 16px;
+  }
 }
 
 /* ===========================================
@@ -773,6 +698,38 @@ const updateBonuses = (level: number) => {
 
 .level-badge {
   animation: levelPulse 3s infinite;
+}
+
+@keyframes techGridMove {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(20px, 20px);
+  }
+}
+
+@keyframes circuitPulse {
+  0%,
+  100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.6;
+    transform: scale(1.1);
+  }
+}
+
+@keyframes titleGlow {
+  0% {
+    text-shadow: 0 0 20px rgba(74, 222, 128, 0.5);
+    transform: scale(1);
+  }
+  100% {
+    text-shadow: 0 0 30px rgba(74, 222, 128, 0.8);
+    transform: scale(1.02);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
