@@ -1,10 +1,19 @@
+// nuxt.config.ts (или nuxt.config.js)
 export default defineNuxtConfig({
   devtools: { enabled: true },
 
-  // CSS файлы
+  // CSS конфигурация
   css: ['~/assets/css/main.css'],
 
-  // Конфигурация приложения
+  // Компоненты
+  components: [
+    {
+      path: '~/components',
+      pathPrefix: false,
+    },
+  ],
+
+  // Настройки приложения
   app: {
     head: {
       title: 'Winora - Инвестиционная платформа',
@@ -13,39 +22,59 @@ export default defineNuxtConfig({
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
         {
           name: 'description',
-          content:
-            'Winora - современная инвестиционная платформа с высокой доходностью',
+          content: 'Winora - современная платформа для инвестиций и торговли',
         },
       ],
       link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
     },
   },
 
-  // SPA режим (без серверного рендеринга)
-  ssr: false,
+  // Настройки SSR
+  ssr: true,
 
-  // Автоматический импорт компонентов
-  components: [
-    {
-      path: '~/components',
-      pathPrefix: false,
+  // Настройки роутера
+  router: {
+    options: {
+      linkActiveClass: 'nuxt-link-active',
+      linkExactActiveClass: 'nuxt-link-exact-active',
     },
-  ],
+  },
 
-  // Конфигурация сборки
+  // Переменные среды
+  runtimeConfig: {
+    public: {
+      apiBaseUrl: process.env.API_BASE_URL || 'https://api.dev-site.site/api',
+    },
+  },
+
+  // Настройки сборки
   nitro: {
-    preset: 'static',
+    routeRules: {
+      // Страница подтверждения email не должна кэшироваться
+      '/confirmation/**': {
+        ssr: false,
+        index: false,
+        headers: { 'Cache-Control': 'no-cache, no-store, must-revalidate' },
+      },
+      // Страница авторизации
+      '/auth': {
+        ssr: false,
+        index: false,
+      },
+      // Главная страница
+      '/main': {
+        ssr: false,
+        prerender: false,
+      },
+      // Статические ресурсы
+      '/assets/**': {
+        headers: { 'Cache-Control': 'max-age=31536000' },
+      },
+    },
   },
 
   // Экспериментальные функции
   experimental: {
     payloadExtraction: false,
-  },
-
-  // Конфигурация рантайма
-  runtimeConfig: {
-    public: {
-      baseURL: process.env.BASE_URL || 'http://localhost:3000',
-    },
   },
 });

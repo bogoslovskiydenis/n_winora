@@ -73,10 +73,8 @@
     </div>
 
     <!-- Баннер инвестиций -->
-    <!-- Баннер инвестиций -->
     <div class="investment-banner-section">
       <div class="investment-banner">
-        <!-- Задний фон с картинкой (уже реализован через ::before) -->
         <!-- Заголовок -->
         <div class="banner-header">
           <h2 class="banner-title">Время выбрать</h2>

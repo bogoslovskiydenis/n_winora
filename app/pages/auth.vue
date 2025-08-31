@@ -1,140 +1,3 @@
-<script setup>
-import { ref, computed } from 'vue';
-
-const activeTab = ref('registration');
-const isLoading = ref(false);
-const isLoginLoading = ref(false);
-const rememberMe = ref(false);
-
-const form = ref({
-  nickname: '',
-  email: '',
-  password: '',
-});
-
-const loginForm = ref({
-  email: '',
-  password: '',
-});
-
-const errors = ref({});
-const loginErrors = ref({});
-
-const isRegistrationValid = computed(() => {
-  return (
-    form.value.nickname.trim() &&
-    isValidEmail(form.value.email) &&
-    form.value.password.length >= 8
-  );
-});
-
-const isLoginValid = computed(() => {
-  return (
-    isValidEmail(loginForm.value.email) && loginForm.value.password.length > 0
-  );
-});
-
-const isValidEmail = (email) => {
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return emailRegex.test(email);
-};
-
-const validateRegistration = () => {
-  errors.value = {};
-
-  if (!form.value.nickname.trim()) {
-    errors.value.nickname = 'Никнейм обязателен для заполнения';
-  }
-
-  if (!isValidEmail(form.value.email)) {
-    errors.value.email = 'Введите корректный email';
-  }
-
-  if (form.value.password.length < 8) {
-    errors.value.password = 'Пароль должен содержать минимум 8 символов';
-  }
-
-  return Object.keys(errors.value).length === 0;
-};
-
-const submitRegistration = async () => {
-  if (!validateRegistration()) {
-    return;
-  }
-
-  isLoading.value = true;
-
-  // Имитация запроса к серверу
-  setTimeout(() => {
-    console.log('Регистрация пользователя:', {
-      nickname: form.value.nickname,
-      email: form.value.email,
-    });
-
-    // Создаем объект пользователя
-    const userData = {
-      nickname: form.value.nickname,
-      email: form.value.email,
-      balance: 150000,
-      id: Date.now(),
-    };
-
-    // Используем глобальную функцию для авторизации
-    window.loginUser(userData, rememberMe.value);
-
-    isLoading.value = false;
-
-    // Сброс формы
-    resetForm();
-  }, 2000);
-};
-
-const submitLogin = async () => {
-  loginErrors.value = {};
-
-  if (!isValidEmail(loginForm.value.email)) {
-    loginErrors.value.email = 'Введите корректный email';
-    return;
-  }
-
-  if (!loginForm.value.password) {
-    loginErrors.value.password = 'Введите пароль';
-    return;
-  }
-
-  isLoginLoading.value = true;
-
-  setTimeout(() => {
-    console.log('Попытка входа:', {
-      email: loginForm.value.email,
-    });
-
-    // Создаем объект пользователя для входа
-    const userData = {
-      nickname: loginForm.value.email.split('@')[0], // Простое извлечение имени из email
-      email: loginForm.value.email,
-      balance: 150000,
-      id: Date.now(),
-    };
-
-    // Используем глобальную функцию для авторизации
-    window.loginUser(userData, rememberMe.value);
-
-    isLoginLoading.value = false;
-    loginForm.value = { email: '', password: '' };
-  }, 1500);
-};
-
-const resetForm = () => {
-  form.value = {
-    nickname: '',
-    email: '',
-    password: '',
-  };
-  errors.value = {};
-};
-</script>
-
 <template>
   <div class="registration-container">
     <div class="registration-app">
@@ -168,10 +31,23 @@ const resetForm = () => {
       <!-- Форма регистрации -->
       <div v-if="activeTab === 'registration'" class="form-section">
         <div class="step-content">
+          <!-- Сообщения -->
+          <div
+            v-if="registrationMessage"
+            class="message"
+            :class="registrationMessageType"
+          >
+            <span class="message-icon">
+              {{ registrationMessageType === 'success' ? '✅' : '❌' }}
+            </span>
+            <span class="message-text">{{ registrationMessage }}</span>
+          </div>
+
           <BaseInput
-            v-model="form.nickname"
+            v-model="form.login"
             placeholder="Введите ваш никнейм"
-            :error="errors.nickname"
+            :error="errors.login"
+            :disabled="isLoading"
           />
 
           <BaseInput
@@ -179,6 +55,7 @@ const resetForm = () => {
             type="email"
             placeholder="Введите ваш E-mail"
             :error="errors.email"
+            :disabled="isLoading"
           />
 
           <BaseInput
@@ -186,11 +63,12 @@ const resetForm = () => {
             type="password"
             placeholder="Придумайте пароль"
             :error="errors.password"
+            :disabled="isLoading"
           />
 
           <BaseButton
             variant="primary"
-            :disabled="!isRegistrationValid"
+            :disabled="!isRegistrationValid || isLoading"
             :loading="isLoading"
             @click="submitRegistration"
           >
@@ -202,11 +80,19 @@ const resetForm = () => {
       <!-- Форма авторизации -->
       <div v-if="activeTab === 'authorization'" class="form-section">
         <div class="step-content">
+          <!-- Сообщения -->
+          <div v-if="loginMessage" class="message" :class="loginMessageType">
+            <span class="message-icon">
+              {{ loginMessageType === 'success' ? '✅' : '❌' }}
+            </span>
+            <span class="message-text">{{ loginMessage }}</span>
+          </div>
+
           <BaseInput
-            v-model="loginForm.email"
-            type="email"
-            placeholder="Введите ваш E-mail"
-            :error="loginErrors.email"
+            v-model="loginForm.login"
+            placeholder="Введите ваш никнейм или email"
+            :error="loginErrors.login"
+            :disabled="isLoginLoading"
           />
 
           <BaseInput
@@ -214,9 +100,20 @@ const resetForm = () => {
             type="password"
             placeholder="Введите пароль"
             :error="loginErrors.password"
+            :disabled="isLoginLoading"
           />
 
           <div class="form-extras">
+            <label class="checkbox-label">
+              <input
+                type="checkbox"
+                v-model="rememberMe"
+                class="checkbox-input"
+                :disabled="isLoginLoading"
+              />
+              <span class="checkbox-custom"></span>
+              <span class="checkbox-text">Запомнить меня</span>
+            </label>
             <div class="forgot-password">
               <a href="#" class="link">Восстановить пароль</a>
             </div>
@@ -224,7 +121,7 @@ const resetForm = () => {
 
           <BaseButton
             variant="primary"
-            :disabled="!isLoginValid"
+            :disabled="!isLoginValid || isLoginLoading"
             :loading="isLoginLoading"
             @click="submitLogin"
           >
@@ -251,6 +148,158 @@ const resetForm = () => {
     </div>
   </div>
 </template>
+
+<script setup>
+import { ref, computed } from 'vue';
+
+const { registerUser, loginUser, isLoading } = useAuth();
+
+const activeTab = ref('registration');
+const isLoginLoading = ref(false);
+const rememberMe = ref(false);
+
+// Сообщения
+const registrationMessage = ref('');
+const registrationMessageType = ref('success');
+const loginMessage = ref('');
+const loginMessageType = ref('success');
+
+const form = ref({
+  login: '',
+  email: '',
+  password: '',
+});
+
+const loginForm = ref({
+  login: '',
+  password: '',
+});
+
+const errors = ref({});
+const loginErrors = ref({});
+
+const isRegistrationValid = computed(() => {
+  return (
+    form.value.login.trim() &&
+    isValidEmail(form.value.email) &&
+    form.value.password.length >= 8
+  );
+});
+
+const isLoginValid = computed(() => {
+  return loginForm.value.login.trim() && loginForm.value.password.length > 0;
+});
+
+const isValidEmail = (email) => {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+};
+
+const validateRegistration = () => {
+  errors.value = {};
+
+  if (!form.value.login.trim()) {
+    errors.value.login = 'Никнейм обязателен для заполнения';
+  }
+
+  if (!isValidEmail(form.value.email)) {
+    errors.value.email = 'Введите корректный email';
+  }
+
+  if (form.value.password.length < 8) {
+    errors.value.password = 'Пароль должен содержать минимум 8 символов';
+  }
+
+  return Object.keys(errors.value).length === 0;
+};
+
+const submitRegistration = async () => {
+  if (!validateRegistration()) {
+    return;
+  }
+
+  // Очищаем предыдущие сообщения
+  registrationMessage.value = '';
+
+  try {
+    const result = await registerUser(form.value, rememberMe.value);
+
+    if (result.success) {
+      registrationMessage.value = result.message;
+      registrationMessageType.value = 'success';
+
+      if (result.needsConfirmation) {
+        // Очищаем форму после успешной регистрации
+        resetForm();
+      }
+    } else {
+      registrationMessage.value = result.message;
+      registrationMessageType.value = 'error';
+    }
+  } catch (error) {
+    registrationMessage.value = 'Произошла ошибка при регистрации';
+    registrationMessageType.value = 'error';
+    console.error('Registration error:', error);
+  }
+};
+
+const submitLogin = async () => {
+  loginErrors.value = {};
+  loginMessage.value = '';
+
+  if (!loginForm.value.login.trim()) {
+    loginErrors.value.login = 'Введите никнейм или email';
+    return;
+  }
+
+  if (!loginForm.value.password) {
+    loginErrors.value.password = 'Введите пароль';
+    return;
+  }
+
+  isLoginLoading.value = true;
+
+  try {
+    const result = await loginUser(loginForm.value, rememberMe.value);
+
+    if (result.success) {
+      loginMessage.value = 'Вход выполнен успешно!';
+      loginMessageType.value = 'success';
+
+      // Перенаправляем на главную страницу
+      setTimeout(() => {
+        navigateTo('/main');
+      }, 1000);
+    } else {
+      loginMessage.value = result.message;
+      loginMessageType.value = 'error';
+    }
+  } catch (error) {
+    loginMessage.value = 'Произошла ошибка при входе';
+    loginMessageType.value = 'error';
+    console.error('Login error:', error);
+  } finally {
+    isLoginLoading.value = false;
+  }
+};
+
+const resetForm = () => {
+  form.value = {
+    login: '',
+    email: '',
+    password: '',
+  };
+  errors.value = {};
+};
+
+// Очищаем сообщения при переключении табов
+watch(activeTab, () => {
+  registrationMessage.value = '';
+  loginMessage.value = '';
+  errors.value = {};
+  loginErrors.value = {};
+});
+</script>
 
 <style scoped>
 .registration-container {
@@ -291,12 +340,6 @@ const resetForm = () => {
   .logo-image {
     margin-bottom: 20px;
   }
-}
-
-.logo p {
-  color: rgba(255, 255, 255, 0.7);
-  font-size: 14px;
-  margin: 0;
 }
 
 /* Табы */
@@ -355,11 +398,53 @@ const resetForm = () => {
   gap: 16px;
 }
 
-/* Чекбокс */
-.checkbox-wrapper {
-  margin: 8px 0;
+/* Сообщения */
+.message {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 8px;
+  animation: slideIn 0.3s ease;
 }
 
+.message.success {
+  background: rgba(34, 197, 94, 0.1);
+  border: 1px solid rgba(34, 197, 94, 0.3);
+  color: #22c55e;
+}
+
+.message.error {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #ef4444;
+}
+
+.message-icon {
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.message-text {
+  flex: 1;
+  line-height: 1.4;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Чекбокс */
 .checkbox-label {
   display: flex;
   align-items: center;
@@ -419,9 +504,11 @@ const resetForm = () => {
 /* Дополнительные элементы формы */
 .form-extras {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   margin: 8px 0;
+  flex-wrap: wrap;
+  gap: 12px;
 }
 
 .link {
@@ -499,6 +586,11 @@ const resetForm = () => {
   .forgot-password {
     margin-left: 0;
   }
+
+  .message {
+    font-size: 13px;
+    padding: 10px 14px;
+  }
 }
 
 .step-content {
@@ -519,5 +611,26 @@ const resetForm = () => {
 .form-section.loading {
   pointer-events: none;
   opacity: 0.7;
+}
+
+/* Анимация для отключенных элементов */
+.step-content:has(.checkbox-input:disabled) .checkbox-label,
+.step-content:has(input:disabled) {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+/* Улучшенная анимация появления сообщений */
+.message {
+  overflow: hidden;
+  max-height: 100px;
+  transition: all 0.3s ease;
+}
+
+.message:empty {
+  max-height: 0;
+  padding: 0;
+  margin: 0;
+  border: none;
 }
 </style>
