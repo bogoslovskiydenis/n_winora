@@ -12,26 +12,14 @@
 
       <!-- Табы -->
       <div class="tabs">
-        <button
-          class="tab"
-          :class="{ active: activeTab === 'registration' }"
-          @click="activeTab = 'registration'"
-        >
-          Регистрация
-        </button>
-        <button
-          class="tab"
-          :class="{ active: activeTab === 'authorization' }"
-          @click="activeTab = 'authorization'"
-        >
-          Авторизация
-        </button>
+        <NuxtLink to="/registration" class="tab active"> Регистрация </NuxtLink>
+        <NuxtLink to="/login" class="tab"> Авторизация </NuxtLink>
       </div>
 
       <!-- Форма регистрации -->
-      <div v-if="activeTab === 'registration'" class="form-section">
+      <div class="form-section">
         <div class="step-content">
-          <!-- Сообщения -->
+          <!-- Сообщения об успехе или ошибке -->
           <div
             v-if="registrationMessage"
             class="message"
@@ -43,6 +31,7 @@
             <span class="message-text">{{ registrationMessage }}</span>
           </div>
 
+          <!-- Поля ввода -->
           <BaseInput
             v-model="form.login"
             placeholder="Введите ваш никнейм"
@@ -66,6 +55,7 @@
             :disabled="isLoading"
           />
 
+          <!-- Кнопка регистрации -->
           <BaseButton
             variant="primary"
             :disabled="!isRegistrationValid || isLoading"
@@ -77,72 +67,11 @@
         </div>
       </div>
 
-      <!-- Форма авторизации -->
-      <div v-if="activeTab === 'authorization'" class="form-section">
-        <div class="step-content">
-          <!-- Сообщения -->
-          <div v-if="loginMessage" class="message" :class="loginMessageType">
-            <span class="message-icon">
-              {{ loginMessageType === 'success' ? '✅' : '❌' }}
-            </span>
-            <span class="message-text">{{ loginMessage }}</span>
-          </div>
-
-          <BaseInput
-            v-model="loginForm.login"
-            placeholder="Введите ваш никнейм или email"
-            :error="loginErrors.login"
-            :disabled="isLoginLoading"
-          />
-
-          <BaseInput
-            v-model="loginForm.password"
-            type="password"
-            placeholder="Введите пароль"
-            :error="loginErrors.password"
-            :disabled="isLoginLoading"
-          />
-
-          <div class="form-extras">
-            <label class="checkbox-label">
-              <input
-                type="checkbox"
-                v-model="rememberMe"
-                class="checkbox-input"
-                :disabled="isLoginLoading"
-              />
-              <span class="checkbox-custom"></span>
-              <span class="checkbox-text">Запомнить меня</span>
-            </label>
-            <div class="forgot-password">
-              <a href="#" class="link">Восстановить пароль</a>
-            </div>
-          </div>
-
-          <BaseButton
-            variant="primary"
-            :disabled="!isLoginValid || isLoginLoading"
-            :loading="isLoginLoading"
-            @click="submitLogin"
-          >
-            {{ isLoginLoading ? 'ВХОД...' : 'ВХОД' }}
-          </BaseButton>
-        </div>
-      </div>
-
-      <!-- Переключение между формами -->
+      <!-- Ссылка на страницу входа -->
       <div class="form-toggle">
-        <div v-if="activeTab === 'registration'" class="toggle-text">
+        <div class="toggle-text">
           Уже есть аккаунт?
-          <button @click="activeTab = 'authorization'" class="link-button">
-            Войдите
-          </button>
-        </div>
-        <div v-if="activeTab === 'authorization'" class="toggle-text">
-          Нет аккаунта?
-          <button @click="activeTab = 'registration'" class="link-button">
-            Зарегистрируйтесь
-          </button>
+          <NuxtLink to="/login" class="link-button"> Войдите </NuxtLink>
         </div>
       </div>
     </div>
@@ -152,32 +81,23 @@
 <script setup>
 import { ref, computed } from 'vue';
 
-const { registerUser, loginUser, isLoading } = useAuth();
+const { registerUser, isLoading } = useAuth();
 
-const activeTab = ref('registration');
-const isLoginLoading = ref(false);
-const rememberMe = ref(false);
-
-// Сообщения
+// Реактивные переменные для сообщений пользователю
 const registrationMessage = ref('');
-const registrationMessageType = ref('success');
-const loginMessage = ref('');
-const loginMessageType = ref('success');
+const registrationMessageType = ref('success'); // success | error
 
+// Данные формы
 const form = ref({
   login: '',
   email: '',
   password: '',
 });
 
-const loginForm = ref({
-  login: '',
-  password: '',
-});
-
+// Ошибки валидации
 const errors = ref({});
-const loginErrors = ref({});
 
+// Проверка, что все поля формы заполнены корректно
 const isRegistrationValid = computed(() => {
   return (
     form.value.login.trim() &&
@@ -186,15 +106,13 @@ const isRegistrationValid = computed(() => {
   );
 });
 
-const isLoginValid = computed(() => {
-  return loginForm.value.login.trim() && loginForm.value.password.length > 0;
-});
-
+// Простая валидация email
 const isValidEmail = (email) => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return emailRegex.test(email);
 };
 
+// Функция валидации перед отправкой
 const validateRegistration = () => {
   errors.value = {};
 
@@ -213,24 +131,22 @@ const validateRegistration = () => {
   return Object.keys(errors.value).length === 0;
 };
 
+// Отправка формы регистрации
 const submitRegistration = async () => {
   if (!validateRegistration()) {
     return;
   }
 
-  // Очищаем предыдущие сообщения
-  registrationMessage.value = '';
+  registrationMessage.value = ''; // Сброс предыдущего сообщения
 
   try {
-    const result = await registerUser(form.value, rememberMe.value);
+    const result = await registerUser(form.value);
 
     if (result.success) {
       registrationMessage.value = result.message;
       registrationMessageType.value = 'success';
-
       if (result.needsConfirmation) {
-        // Очищаем форму после успешной регистрации
-        resetForm();
+        resetForm(); // Очищаем форму, если нужно подтверждение
       }
     } else {
       registrationMessage.value = result.message;
@@ -243,62 +159,12 @@ const submitRegistration = async () => {
   }
 };
 
-const submitLogin = async () => {
-  loginErrors.value = {};
-  loginMessage.value = '';
-
-  if (!loginForm.value.login.trim()) {
-    loginErrors.value.login = 'Введите никнейм или email';
-    return;
-  }
-
-  if (!loginForm.value.password) {
-    loginErrors.value.password = 'Введите пароль';
-    return;
-  }
-
-  isLoginLoading.value = true;
-
-  try {
-    const result = await loginUser(loginForm.value, rememberMe.value);
-
-    if (result.success) {
-      loginMessage.value = 'Вход выполнен успешно!';
-      loginMessageType.value = 'success';
-
-      // Перенаправляем на главную страницу
-      setTimeout(() => {
-        navigateTo('/main');
-      }, 1000);
-    } else {
-      loginMessage.value = result.message;
-      loginMessageType.value = 'error';
-    }
-  } catch (error) {
-    loginMessage.value = 'Произошла ошибка при входе';
-    loginMessageType.value = 'error';
-    console.error('Login error:', error);
-  } finally {
-    isLoginLoading.value = false;
-  }
-};
-
+// Сброс полей формы и ошибок
 const resetForm = () => {
-  form.value = {
-    login: '',
-    email: '',
-    password: '',
-  };
+  form.value = { login: '', email: '', password: '' };
   errors.value = {};
 };
-
-// Очищаем сообщения при переключении табов
-watch(activeTab, () => {
-  registrationMessage.value = '';
-  loginMessage.value = '';
-  errors.value = {};
-  loginErrors.value = {};
-});
+definePageMeta({ layout: false });
 </script>
 
 <style scoped>
@@ -365,6 +231,7 @@ watch(activeTab, () => {
   font-family: inherit;
   border-bottom: 2px solid transparent;
   border-radius: 0;
+  text-decoration: none;
 }
 
 .tab.active {
@@ -444,95 +311,6 @@ watch(activeTab, () => {
   }
 }
 
-/* Чекбокс */
-.checkbox-label {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  cursor: pointer;
-  font-size: 14px;
-  color: rgba(255, 255, 255, 0.7);
-  user-select: none;
-}
-
-.checkbox-input {
-  position: absolute;
-  opacity: 0;
-  cursor: pointer;
-}
-
-.checkbox-custom {
-  width: 18px;
-  height: 18px;
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  border-radius: 4px;
-  position: relative;
-  transition: all 0.3s ease;
-  background: transparent;
-}
-
-.checkbox-input:checked + .checkbox-custom {
-  background: #4ade80;
-  border-color: #4ade80;
-}
-
-.checkbox-input:checked + .checkbox-custom::after {
-  content: '';
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%) rotate(45deg);
-  width: 4px;
-  height: 8px;
-  border: solid #0a3d2e;
-  border-width: 0 2px 2px 0;
-}
-
-.checkbox-text {
-  font-size: 14px;
-  transition: color 0.2s ease;
-}
-
-.checkbox-label:hover .checkbox-text {
-  color: rgba(255, 255, 255, 0.9);
-}
-
-.checkbox-label:hover .checkbox-custom {
-  border-color: rgba(255, 255, 255, 0.5);
-}
-
-/* Дополнительные элементы формы */
-.form-extras {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin: 8px 0;
-  flex-wrap: wrap;
-  gap: 12px;
-}
-
-.link {
-  color: #4ade80;
-  text-decoration: none;
-  font-weight: 500;
-  transition: color 0.2s ease;
-  font-size: 14px;
-}
-
-.link:hover {
-  color: #22c55e;
-  text-decoration: underline;
-}
-
-.forgot-password .link {
-  font-size: 14px;
-  color: #f97316;
-}
-
-.forgot-password .link:hover {
-  color: #ea580c;
-}
-
 /* Переключение форм */
 .form-toggle {
   text-align: center;
@@ -577,16 +355,6 @@ watch(activeTab, () => {
     height: 60px;
   }
 
-  .form-extras {
-    flex-direction: column;
-    gap: 12px;
-    align-items: flex-start;
-  }
-
-  .forgot-password {
-    margin-left: 0;
-  }
-
   .message {
     font-size: 13px;
     padding: 10px 14px;
@@ -614,7 +382,6 @@ watch(activeTab, () => {
 }
 
 /* Анимация для отключенных элементов */
-.step-content:has(.checkbox-input:disabled) .checkbox-label,
 .step-content:has(input:disabled) {
   opacity: 0.6;
   pointer-events: none;

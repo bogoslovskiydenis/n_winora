@@ -12,7 +12,7 @@ onMounted(() => {
   if (isAuthenticated.value) {
     navigateTo('/main');
   } else {
-    navigateTo('/auth');
+    navigateTo('/login');
   }
 });
 </script>
