@@ -1,3 +1,4 @@
+// composables/useAuth.js
 import { userAPI } from './../utils/api.js';
 
 export const useAuth = () => {
@@ -37,7 +38,10 @@ export const useAuth = () => {
   const registerUser = async (userData) => {
     isLoading.value = true;
     try {
+      console.log('Registering user:', userData);
       const response = await userAPI.register(userData);
+
+      console.log('Registration response:', response);
 
       if (response.status === 'ok') {
         return {
@@ -56,6 +60,16 @@ export const useAuth = () => {
       }
     } catch (error) {
       console.error('Ошибка регистрации:', error);
+
+      // Обработка специфичных ошибок
+      if (error.message.includes('Failed to fetch')) {
+        return {
+          success: false,
+          message:
+            'Ошибка соединения с сервером. Проверьте интернет-подключение.',
+        };
+      }
+
       return {
         success: false,
         message:
@@ -69,7 +83,10 @@ export const useAuth = () => {
   const loginUser = async (credentials, rememberMe = false) => {
     isLoading.value = true;
     try {
+      console.log('Login attempt:', credentials);
       const response = await userAPI.login(credentials);
+
+      console.log('Login response:', response);
 
       if (response.status === 'ok' && response.body?.session) {
         const { id, session, role } = response.body;
@@ -105,6 +122,16 @@ export const useAuth = () => {
     } catch (error) {
       console.error('Ошибка авторизации:', error);
       clearUserData();
+
+      // Обработка специфичных ошибок
+      if (error.message.includes('Failed to fetch')) {
+        return {
+          success: false,
+          message:
+            'Ошибка соединения с сервером. Проверьте интернет-подключение.',
+        };
+      }
+
       return {
         success: false,
         message: error.message || 'Произошла ошибка при авторизации',
@@ -118,7 +145,10 @@ export const useAuth = () => {
     isLoading.value = true;
 
     try {
+      console.log('Confirming registration with token:', token);
       const response = await userAPI.confirmRegistration(token);
+
+      console.log('Confirmation response:', response);
 
       if (response.status === 'ok') {
         return {
@@ -126,14 +156,49 @@ export const useAuth = () => {
           message:
             'Email успешно подтвержден! Теперь вы можете войти в систему.',
         };
+      } else if (response.status === 'error') {
+        // Обработка различных типов ошибок подтверждения
+        const errorMessage = response.body?.message || response.message;
+
+        if (
+          errorMessage?.includes('token') ||
+          errorMessage?.includes('invalid')
+        ) {
+          return {
+            success: false,
+            message: 'Ссылка подтверждения недействительна или устарела.',
+          };
+        }
+
+        return {
+          success: false,
+          message: errorMessage || 'Ошибка подтверждения регистрации',
+        };
       } else {
-        throw new Error('Ошибка подтверждения');
+        throw new Error('Неожиданный формат ответа сервера');
       }
     } catch (error) {
       console.error('Ошибка подтверждения:', error);
+
+      // Обработка специфичных ошибок
+      if (error.message.includes('Failed to fetch')) {
+        return {
+          success: false,
+          message:
+            'Ошибка соединения с сервером. Проверьте интернет-подключение.',
+        };
+      }
+
+      if (error.message.includes('404')) {
+        return {
+          success: false,
+          message: 'Ссылка подтверждения не найдена или устарела.',
+        };
+      }
+
       return {
         success: false,
-        message: error.message || 'Ошибка подтверждения email',
+        message: error.message || 'Произошла ошибка при подтверждении email',
       };
     } finally {
       isLoading.value = false;

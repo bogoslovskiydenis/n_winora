@@ -1,3 +1,4 @@
+// middleware/auth.js
 export default defineNuxtRouteMiddleware((to, from) => {
   // Пропускаем проверку на сервере для избежания ошибок SSR
   if (process.server) {
@@ -8,9 +9,8 @@ export default defineNuxtRouteMiddleware((to, from) => {
 
   // Проверяем наличие пользователя и токена сессии
   const hasUser =
-    user.value && typeof user.value === 'string'
-      ? JSON.parse(user.value)
-      : user.value;
+    user.value &&
+    (typeof user.value === 'string' ? JSON.parse(user.value) : user.value);
   const hasToken = sessionToken.value;
 
   console.log('Auth middleware check:', {
@@ -18,6 +18,8 @@ export default defineNuxtRouteMiddleware((to, from) => {
     hasToken: !!hasToken,
     isAuthenticated: isAuthenticated.value,
     route: to.path,
+    userValue: user.value,
+    tokenValue: sessionToken.value,
   });
 
   // Если нет аутентификации - редирект на login

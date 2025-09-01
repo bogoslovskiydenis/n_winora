@@ -1,10 +1,11 @@
+<!-- pages/users/confirmation-registration/[token].vue -->
 <template>
   <div class="confirmation-container">
     <div class="confirmation-card">
       <!-- Логотип -->
       <div class="logo">
         <img
-          src="../../../assets/images/Winora_logo.png"
+          src="~/assets/images/Winora_logo.png"
           alt="Winora Logo"
           class="logo-image"
         />
@@ -52,11 +53,11 @@
           <div class="welcome-info">
             <div class="info-item">
               <span class="info-icon">🎁</span>
-              <span class="info-text">Бонус за регистрацию: +1000 USDT</span>
+              <span class="info-text">Добро пожаловать в Winora!</span>
             </div>
             <div class="info-item">
               <span class="info-icon">⭐</span>
-              <span class="info-text">Начальный уровень лояльности: 1</span>
+              <span class="info-text">Вы можете начать инвестировать</span>
             </div>
           </div>
         </div>
@@ -77,16 +78,16 @@
           <div class="confirmation-actions">
             <BaseButton
               variant="outline"
-              @click="navigateToAuth"
+              @click="navigateToRegistration"
               class="action-button"
             >
               <span class="btn-icon">🔄</span>
-              Вернуться к регистрации
+              Зарегистрироваться снова
             </BaseButton>
             <BaseButton
               variant="secondary"
               @click="retryConfirmation"
-              :loading="isLoading"
+              :loading="isRetrying"
               class="action-button"
             >
               <span class="btn-icon">↻</span>
@@ -113,13 +114,13 @@
           <h2 class="status-title">Недействительная ссылка</h2>
           <p class="status-description">
             Ссылка подтверждения недействительна или устарела. Пожалуйста,
-            запросите новую ссылку подтверждения.
+            зарегистрируйтесь заново.
           </p>
 
           <div class="confirmation-actions">
             <BaseButton
               variant="primary"
-              @click="navigateToAuth"
+              @click="navigateToRegistration"
               class="action-button"
             >
               <span class="btn-icon">🔄</span>
@@ -133,7 +134,9 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+definePageMeta({
+  layout: false,
+});
 
 const route = useRoute();
 const { confirmRegistration } = useAuth();
@@ -143,48 +146,56 @@ const token = route.params.token;
 
 // Состояния компонента
 const isLoading = ref(true);
+const isRetrying = ref(false);
 const confirmationStatus = ref(null); // 'success', 'error', 'invalid'
 const errorMessage = ref('');
 
 // Функция подтверждения email
 const confirmEmail = async () => {
-  if (!token) {
+  if (!token || typeof token !== 'string') {
+    console.log('No token provided or token is invalid');
     confirmationStatus.value = 'invalid';
     isLoading.value = false;
     return;
   }
 
   try {
+    console.log('Confirming registration with token:', token);
     const result = await confirmRegistration(token);
 
     if (result.success) {
       confirmationStatus.value = 'success';
+      console.log('Registration confirmed successfully');
     } else {
       confirmationStatus.value = 'error';
-      errorMessage.value = result.message;
+      errorMessage.value = result.message || 'Ошибка подтверждения email';
+      console.log('Registration confirmation failed:', result.message);
     }
   } catch (error) {
     confirmationStatus.value = 'error';
-    errorMessage.value = 'Произошла неожиданная ошибка';
+    errorMessage.value = 'Произошла неожиданная ошибка при подтверждении';
     console.error('Confirmation error:', error);
   } finally {
     isLoading.value = false;
+    isRetrying.value = false;
   }
 };
 
 // Навигация
 const navigateToLogin = () => {
-  navigateTo('/auth');
+  navigateTo('/login');
 };
 
-const navigateToAuth = () => {
-  navigateTo('/auth');
+const navigateToRegistration = () => {
+  navigateTo('/registration');
 };
 
 // Повторная попытка подтверждения
 const retryConfirmation = () => {
+  isRetrying.value = true;
   isLoading.value = true;
   confirmationStatus.value = null;
+
   setTimeout(() => {
     confirmEmail();
   }, 500);
@@ -192,6 +203,7 @@ const retryConfirmation = () => {
 
 // Автоматическое подтверждение при загрузке страницы
 onMounted(() => {
+  console.log('Confirmation page mounted with token:', token);
   confirmEmail();
 });
 
@@ -267,17 +279,21 @@ useHead({
 .success .status-icon {
   background: rgba(34, 197, 94, 0.2);
   border: 3px solid rgba(34, 197, 94, 0.3);
+  box-shadow: 0 0 30px rgba(34, 197, 94, 0.3);
+  animation: pulse 2s ease-in-out infinite;
 }
 
 .error .status-icon,
 .invalid .status-icon {
   background: rgba(239, 68, 68, 0.2);
   border: 3px solid rgba(239, 68, 68, 0.3);
+  box-shadow: 0 0 30px rgba(239, 68, 68, 0.3);
 }
 
 .loading .status-icon {
   background: rgba(74, 222, 128, 0.2);
   border: 3px solid rgba(74, 222, 128, 0.3);
+  box-shadow: 0 0 30px rgba(74, 222, 128, 0.3);
 }
 
 .success-icon,
@@ -314,6 +330,16 @@ useHead({
   }
 }
 
+@keyframes pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
 /* Текст */
 .status-title {
   font-size: 24px;
@@ -321,6 +347,19 @@ useHead({
   color: var(--text-primary);
   margin: 0;
   line-height: 1.3;
+}
+
+.loading .status-title {
+  color: #4ade80;
+}
+
+.success .status-title {
+  color: #22c55e;
+}
+
+.error .status-title,
+.invalid .status-title {
+  color: #ef4444;
 }
 
 .status-description {
@@ -420,18 +459,19 @@ useHead({
   }
 }
 
-@keyframes pulse {
-  0%,
-  100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.05);
-  }
+.status-section {
+  animation: statusSlideIn 0.6s ease;
 }
 
-.success .status-icon {
-  animation: pulse 2s ease-in-out infinite;
+@keyframes statusSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
 /* Адаптивность */
@@ -514,7 +554,8 @@ useHead({
 @media (prefers-reduced-motion: reduce) {
   .confirmation-content,
   .success .status-icon,
-  .spinner {
+  .spinner,
+  .status-section {
     animation: none;
   }
 }
@@ -524,49 +565,5 @@ useHead({
 .support-link:focus-visible {
   outline: 2px solid #4ade80;
   outline-offset: 2px;
-}
-
-/* Дополнительные стили для различных состояний */
-.loading .status-title {
-  color: #4ade80;
-}
-
-.success .status-title {
-  color: #22c55e;
-}
-
-.error .status-title,
-.invalid .status-title {
-  color: #ef4444;
-}
-
-/* Анимация появления контента */
-.status-section {
-  animation: statusSlideIn 0.6s ease;
-}
-
-@keyframes statusSlideIn {
-  from {
-    opacity: 0;
-    transform: translateY(30px) scale(0.95);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
-
-/* Эффект свечения для успешного статуса */
-.success .status-icon {
-  box-shadow: 0 0 30px rgba(34, 197, 94, 0.3);
-}
-
-.error .status-icon,
-.invalid .status-icon {
-  box-shadow: 0 0 30px rgba(239, 68, 68, 0.3);
-}
-
-.loading .status-icon {
-  box-shadow: 0 0 30px rgba(74, 222, 128, 0.3);
 }
 </style>

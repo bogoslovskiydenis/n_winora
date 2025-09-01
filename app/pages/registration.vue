@@ -1,10 +1,11 @@
+<!-- pages/registration.vue -->
 <template>
   <div class="registration-container">
     <div class="registration-app">
       <!-- Логотип -->
       <div class="logo">
         <img
-          src="../assets/images/Winora_logo.png"
+          src="~/assets/images/Winora_logo.png"
           alt="Winora Logo"
           class="logo-image"
         />
@@ -28,50 +29,110 @@
             <span class="message-icon">
               {{ registrationMessageType === 'success' ? '✅' : '❌' }}
             </span>
-            <span class="message-text">{{ registrationMessage }}</span>
+            <div class="message-content">
+              <span class="message-text">{{ registrationMessage }}</span>
+              <!-- Дополнительные инструкции для успешной регистрации -->
+              <div
+                v-if="
+                  registrationMessageType === 'success' && showEmailInstructions
+                "
+                class="email-instructions"
+              >
+                <div class="instruction-step">
+                  <span class="step-number">1</span>
+                  <span class="step-text"
+                    >Откройте вашу почту <strong>{{ form.email }}</strong></span
+                  >
+                </div>
+                <div class="instruction-step">
+                  <span class="step-number">2</span>
+                  <span class="step-text">Найдите письмо от Winora</span>
+                </div>
+                <div class="instruction-step">
+                  <span class="step-number">3</span>
+                  <span class="step-text">Нажмите на ссылку подтверждения</span>
+                </div>
+                <div class="instruction-note">
+                  <span class="note-icon">💡</span>
+                  <span class="note-text"
+                    >Не забудьте проверить папку "Спам"</span
+                  >
+                </div>
+              </div>
+            </div>
           </div>
 
-          <!-- Поля ввода -->
-          <BaseInput
-            v-model="form.login"
-            placeholder="Введите ваш никнейм"
-            :error="errors.login"
-            :disabled="isLoading"
-          />
+          <!-- Поля ввода (скрываются при успешной регистрации) -->
+          <div v-if="!showEmailInstructions">
+            <BaseInput
+              v-model="form.login"
+              placeholder="Введите ваш никнейм"
+              :error="errors.login"
+              :disabled="isLoading"
+            />
 
-          <BaseInput
-            v-model="form.email"
-            type="email"
-            placeholder="Введите ваш E-mail"
-            :error="errors.email"
-            :disabled="isLoading"
-          />
+            <BaseInput
+              v-model="form.email"
+              type="email"
+              placeholder="Введите ваш E-mail"
+              :error="errors.email"
+              :disabled="isLoading"
+            />
 
-          <BaseInput
-            v-model="form.password"
-            type="password"
-            placeholder="Придумайте пароль"
-            :error="errors.password"
-            :disabled="isLoading"
-          />
+            <BaseInput
+              v-model="form.password"
+              type="password"
+              placeholder="Придумайте пароль (минимум 8 символов)"
+              :error="errors.password"
+              :disabled="isLoading"
+            />
 
-          <!-- Кнопка регистрации -->
-          <BaseButton
-            variant="primary"
-            :disabled="!isRegistrationValid || isLoading"
-            :loading="isLoading"
-            @click="submitRegistration"
-          >
-            {{ isLoading ? 'РЕГИСТРАЦИЯ...' : 'ЗАРЕГИСТРИРОВАТЬСЯ' }}
-          </BaseButton>
+            <!-- Кнопка регистрации -->
+            <BaseButton
+              variant="primary"
+              :disabled="!isRegistrationValid || isLoading"
+              :loading="isLoading"
+              @click="submitRegistration"
+            >
+              {{ isLoading ? 'РЕГИСТРАЦИЯ...' : 'ЗАРЕГИСТРИРОВАТЬСЯ' }}
+            </BaseButton>
+          </div>
+
+          <!-- Кнопки для успешной регистрации -->
+          <div v-if="showEmailInstructions" class="success-actions">
+            <BaseButton
+              variant="outline"
+              @click="openEmailClient"
+              class="email-btn"
+            >
+              <span class="btn-icon">📧</span>
+              Открыть почту
+            </BaseButton>
+            <BaseButton
+              variant="secondary"
+              @click="resetForm"
+              class="reset-btn"
+            >
+              <span class="btn-icon">🔄</span>
+              Зарегистрировать другой аккаунт
+            </BaseButton>
+          </div>
         </div>
       </div>
 
       <!-- Ссылка на страницу входа -->
-      <div class="form-toggle">
+      <div class="form-toggle" v-if="!showEmailInstructions">
         <div class="toggle-text">
           Уже есть аккаунт?
           <NuxtLink to="/login" class="link-button"> Войдите </NuxtLink>
+        </div>
+      </div>
+
+      <!-- Информация для успешной регистрации -->
+      <div class="form-toggle" v-if="showEmailInstructions">
+        <div class="toggle-text">
+          Уже подтвердили email?
+          <NuxtLink to="/login" class="link-button"> Войти в аккаунт </NuxtLink>
         </div>
       </div>
     </div>
@@ -79,13 +140,16 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
+definePageMeta({
+  layout: false,
+});
 
 const { registerUser, isLoading } = useAuth();
 
 // Реактивные переменные для сообщений пользователю
 const registrationMessage = ref('');
 const registrationMessageType = ref('success'); // success | error
+const showEmailInstructions = ref(false);
 
 // Данные формы
 const form = ref({
@@ -118,6 +182,8 @@ const validateRegistration = () => {
 
   if (!form.value.login.trim()) {
     errors.value.login = 'Никнейм обязателен для заполнения';
+  } else if (form.value.login.length < 3) {
+    errors.value.login = 'Никнейм должен содержать минимум 3 символа';
   }
 
   if (!isValidEmail(form.value.email)) {
@@ -138,6 +204,7 @@ const submitRegistration = async () => {
   }
 
   registrationMessage.value = ''; // Сброс предыдущего сообщения
+  showEmailInstructions.value = false;
 
   try {
     const result = await registerUser(form.value);
@@ -145,16 +212,19 @@ const submitRegistration = async () => {
     if (result.success) {
       registrationMessage.value = result.message;
       registrationMessageType.value = 'success';
+
       if (result.needsConfirmation) {
-        resetForm(); // Очищаем форму, если нужно подтверждение
+        showEmailInstructions.value = true;
       }
     } else {
       registrationMessage.value = result.message;
       registrationMessageType.value = 'error';
+      showEmailInstructions.value = false;
     }
   } catch (error) {
     registrationMessage.value = 'Произошла ошибка при регистрации';
     registrationMessageType.value = 'error';
+    showEmailInstructions.value = false;
     console.error('Registration error:', error);
   }
 };
@@ -163,8 +233,34 @@ const submitRegistration = async () => {
 const resetForm = () => {
   form.value = { login: '', email: '', password: '' };
   errors.value = {};
+  registrationMessage.value = '';
+  showEmailInstructions.value = false;
 };
-definePageMeta({ layout: false });
+
+// Открытие почтового клиента
+const openEmailClient = () => {
+  // Определяем домен email для открытия соответствующего сервиса
+  const email = form.value.email;
+  const domain = email.split('@')[1]?.toLowerCase();
+
+  let mailUrl = `mailto:${email}`;
+
+  // Популярные почтовые сервисы
+  if (domain?.includes('gmail.com')) {
+    mailUrl = 'https://mail.google.com';
+  } else if (domain?.includes('yandex.ru') || domain?.includes('ya.ru')) {
+    mailUrl = 'https://mail.yandex.ru';
+  } else if (domain?.includes('mail.ru')) {
+    mailUrl = 'https://mail.mail.ru';
+  } else if (
+    domain?.includes('outlook.com') ||
+    domain?.includes('hotmail.com')
+  ) {
+    mailUrl = 'https://outlook.live.com';
+  }
+
+  window.open(mailUrl, '_blank');
+};
 </script>
 
 <style scoped>
@@ -178,7 +274,7 @@ definePageMeta({ layout: false });
 }
 
 .registration-app {
-  max-width: 480px;
+  max-width: 520px;
   width: 100%;
   padding: 40px 30px;
 }
@@ -186,7 +282,7 @@ definePageMeta({ layout: false });
 /* Desktop адаптация */
 @media (min-width: 1024px) {
   .registration-app {
-    max-width: 520px;
+    max-width: 560px;
     padding: 50px 40px;
   }
 }
@@ -198,6 +294,8 @@ definePageMeta({ layout: false });
 }
 
 .logo-image {
+  width: 80px;
+  height: 80px;
   margin-bottom: 15px;
   filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
 }
@@ -268,10 +366,10 @@ definePageMeta({ layout: false });
 /* Сообщения */
 .message {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 12px;
-  padding: 12px 16px;
-  border-radius: 8px;
+  padding: 16px;
+  border-radius: 12px;
   font-size: 14px;
   font-weight: 500;
   margin-bottom: 8px;
@@ -291,13 +389,91 @@ definePageMeta({ layout: false });
 }
 
 .message-icon {
+  font-size: 20px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.message-content {
+  flex: 1;
+}
+
+.message-text {
+  display: block;
+  line-height: 1.4;
+  margin-bottom: 16px;
+}
+
+/* Инструкции по email */
+.email-instructions {
+  margin-top: 16px;
+}
+
+.instruction-step {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+  font-size: 13px;
+}
+
+.step-number {
+  width: 24px;
+  height: 24px;
+  background: rgba(34, 197, 94, 0.2);
+  border: 2px solid rgba(34, 197, 94, 0.4);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 12px;
+  flex-shrink: 0;
+}
+
+.step-text {
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.4;
+}
+
+.instruction-note {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 16px;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  font-size: 12px;
+}
+
+.note-icon {
   font-size: 16px;
   flex-shrink: 0;
 }
 
-.message-text {
+.note-text {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* Кнопки действий для успеха */
+.success-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.email-btn,
+.reset-btn {
   flex: 1;
-  line-height: 1.4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn-icon {
+  font-size: 16px;
 }
 
 @keyframes slideIn {
@@ -341,6 +517,7 @@ definePageMeta({ layout: false });
   text-decoration: underline;
 }
 
+/* Адаптивность */
 @media (max-width: 480px) {
   .registration-container {
     padding: 16px;
@@ -357,10 +534,25 @@ definePageMeta({ layout: false });
 
   .message {
     font-size: 13px;
-    padding: 10px 14px;
+    padding: 12px 14px;
+  }
+
+  .success-actions {
+    flex-direction: column;
+  }
+
+  .instruction-step {
+    font-size: 12px;
+  }
+
+  .step-number {
+    width: 20px;
+    height: 20px;
+    font-size: 10px;
   }
 }
 
+/* Стили для лучшей доступности */
 .step-content {
   transition: all 0.3s ease;
 }
@@ -390,7 +582,7 @@ definePageMeta({ layout: false });
 /* Улучшенная анимация появления сообщений */
 .message {
   overflow: hidden;
-  max-height: 100px;
+  max-height: 500px;
   transition: all 0.3s ease;
 }
 
