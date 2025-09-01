@@ -1,38 +1,33 @@
-// middleware/auth.js
 export default defineNuxtRouteMiddleware((to, from) => {
-  const { isAuthenticated, initUser } = useAuth();
-
-  // Инициализируем пользователя если еще не сделали
-  if (process.client && !isAuthenticated.value) {
-    initUser();
-  }
-
-  // Даем время на инициализацию в браузере
-  if (process.client) {
-    // Проверяем есть ли данные в хранилище
-    const savedUser =
-      localStorage.getItem('user') || sessionStorage.getItem('user');
-
-    if (!savedUser) {
-      console.log('Auth middleware: No user found, redirecting to auth');
-      return navigateTo('/auth');
-    }
-
-    // Если данные есть, но useAuth еще не инициализирован
-    if (!isAuthenticated.value) {
-      // Пробуем еще раз инициализировать
-      initUser();
-
-      // Если все еще не авторизован - редирект
-      if (!isAuthenticated.value) {
-        console.log('Auth middleware: User initialization failed');
-        return navigateTo('/auth');
-      }
-    }
-  }
-
-  // На сервере просто пропускаем (SSR)
+  // Пропускаем проверку на сервере для избежания ошибок SSR
   if (process.server) {
     return;
   }
+
+  const { isAuthenticated, user, sessionToken } = useAuth();
+
+  // Проверяем наличие пользователя и токена сессии
+  const hasUser =
+    user.value && typeof user.value === 'string'
+      ? JSON.parse(user.value)
+      : user.value;
+  const hasToken = sessionToken.value;
+
+  console.log('Auth middleware check:', {
+    hasUser: !!hasUser,
+    hasToken: !!hasToken,
+    isAuthenticated: isAuthenticated.value,
+    route: to.path,
+  });
+
+  // Если нет аутентификации - редирект на login
+  if (!hasUser || !hasToken) {
+    console.log(
+      'Auth middleware: No authentication found, redirecting to login'
+    );
+    return navigateTo('/login');
+  }
+
+  // Если аутентификация есть, продолжаем
+  console.log('Auth middleware: User authenticated, allowing access');
 });

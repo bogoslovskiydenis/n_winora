@@ -9,28 +9,66 @@ export default defineNuxtPlugin(() => {
 
   // Регистрируем глобальные функции для совместимости
   if (process.client) {
-    // Существующие функции для обратной совместимости
+    // Исправленная функция логина
     window.loginUser = async (userData, rememberMe = false) => {
-      const credentials = {
-        login: userData.login || userData.email,
-        password: userData.password || '12345678', // временный пароль для демо
-        email: userData.email,
-      };
+      try {
+        // Правильно формируем credentials
+        const credentials = {
+          login: userData.login || userData.email || userData.nickname,
+          password: userData.password,
+        };
 
-      const result = await loginUser(credentials, rememberMe);
+        console.log('Window.loginUser called with:', credentials);
 
-      if (result.success) {
-        navigateTo('/main');
+        const result = await loginUser(credentials, rememberMe);
+
+        if (result.success) {
+          // Небольшая задержка для обновления состояния
+          await nextTick();
+          navigateTo('/main');
+        }
+
+        return result;
+      } catch (error) {
+        console.error('Window loginUser error:', error);
+        return {
+          success: false,
+          message: 'Ошибка при входе в систему',
+        };
       }
-
-      return result;
     };
 
-    window.logoutUser = logoutUser;
-    window.getCurrentUser = getCurrentUser;
+    // Исправленная функция выхода
+    window.logoutUser = () => {
+      console.log('Window.logoutUser called');
+      logoutUser();
+    };
+
+    // Функция получения текущего пользователя
+    window.getCurrentUser = () => {
+      const currentUser = getCurrentUser();
+      console.log('Window.getCurrentUser called:', currentUser);
+      return currentUser;
+    };
 
     // Новые функции для работы с API
-    window.registerUser = registerUser;
-    window.confirmRegistration = confirmRegistration;
+    window.registerUser = async (userData) => {
+      console.log('Window.registerUser called with:', userData);
+      return await registerUser(userData);
+    };
+
+    window.confirmRegistration = async (token) => {
+      console.log('Window.confirmRegistration called with token:', token);
+      return await confirmRegistration(token);
+    };
+
+    // Функция для проверки аутентификации
+    window.checkAuth = () => {
+      const { isAuthenticated } = useAuth();
+      console.log('Window.checkAuth called:', isAuthenticated.value);
+      return isAuthenticated.value;
+    };
+
+    console.log('Auth plugin initialized with global functions');
   }
 });

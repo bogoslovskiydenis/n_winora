@@ -1,17 +1,37 @@
 import { userAPI } from './../utils/api.js';
 
 export const useAuth = () => {
-  const user = useCookie('user');
-  const sessionToken = useCookie('sessionToken');
+  const user = useCookie('user', {
+    default: () => null,
+    serializer: {
+      read: (value) => {
+        try {
+          return value ? JSON.parse(value) : null;
+        } catch {
+          return null;
+        }
+      },
+      write: (value) => {
+        return value ? JSON.stringify(value) : '';
+      },
+    },
+  });
+
+  const sessionToken = useCookie('sessionToken', { default: () => null });
   const isLoading = ref(false);
 
   const initUser = () => {
     // Данные автоматически подтягиваются из cookie благодаря useCookie
+    console.log('InitUser called:', {
+      user: user.value,
+      sessionToken: sessionToken.value,
+    });
   };
 
   const clearUserData = () => {
     user.value = null;
     sessionToken.value = null;
+    console.log('User data cleared');
   };
 
   const registerUser = async (userData) => {
@@ -27,7 +47,6 @@ export const useAuth = () => {
           needsConfirmation: true,
         };
       } else if (response.status === 'error' && response.body?.errors) {
-        // Обрабатываем специфичную ошибку от API
         const errorMessage = Array.isArray(response.body.errors)
           ? response.body.errors.join(', ')
           : 'Ошибка регистрации.';
@@ -61,10 +80,15 @@ export const useAuth = () => {
           role,
         };
 
-        // Устанавливаем cookies
-        const cookieOptions = rememberMe ? { maxAge: 60 * 60 * 24 * 30 } : {}; // 30 дней
-        user.value = JSON.stringify(userData);
+        // Устанавливаем cookies с правильным временем жизни
+        const cookieOptions = rememberMe
+          ? { maxAge: 60 * 60 * 24 * 30, sameSite: 'lax' } // 30 дней
+          : { sameSite: 'lax' }; // Сессионные
+
+        user.value = userData;
         sessionToken.value = session;
+
+        console.log('Login successful:', { userData, session });
 
         return {
           success: true,
@@ -121,7 +145,20 @@ export const useAuth = () => {
     navigateTo('/login');
   };
 
-  const isAuthenticated = computed(() => !!user.value && !!sessionToken.value);
+  // Улучшенная проверка аутентификации
+  const isAuthenticated = computed(() => {
+    const hasUser = !!user.value;
+    const hasToken = !!sessionToken.value;
+    const result = hasUser && hasToken;
+
+    console.log('isAuthenticated check:', { hasUser, hasToken, result });
+    return result;
+  });
+
+  // Добавляем геттер для получения пользователя
+  const getCurrentUser = () => {
+    return user.value;
+  };
 
   return {
     user: readonly(user),
@@ -132,6 +169,7 @@ export const useAuth = () => {
     loginUser,
     confirmRegistration,
     logoutUser,
+    getCurrentUser,
     isAuthenticated,
   };
 };
