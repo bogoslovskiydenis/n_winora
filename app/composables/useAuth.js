@@ -1,4 +1,3 @@
-// composables/useAuth.js
 import { userAPI } from './../utils/api.js';
 
 export const useAuth = () => {
@@ -33,6 +32,21 @@ export const useAuth = () => {
     user.value = null;
     sessionToken.value = null;
     console.log('User data cleared');
+  };
+
+  // Вычисляемое свойство для проверки аутентификации
+  const isAuthenticated = computed(() => {
+    const hasUser = !!user.value;
+    const hasToken = !!sessionToken.value;
+    const result = hasUser && hasToken;
+
+    console.log('isAuthenticated check:', { hasUser, hasToken, result });
+    return result;
+  });
+
+  // Добавляем геттер для получения пользователя
+  const getCurrentUser = () => {
+    return user.value;
   };
 
   const registerUser = async (userData) => {
@@ -210,31 +224,16 @@ export const useAuth = () => {
     navigateTo('/login');
   };
 
-  // Улучшенная проверка аутентификации
-  const isAuthenticated = computed(() => {
-    const hasUser = !!user.value;
-    const hasToken = !!sessionToken.value;
-    const result = hasUser && hasToken;
-
-    console.log('isAuthenticated check:', { hasUser, hasToken, result });
-    return result;
-  });
-
-  // Добавляем геттер для получения пользователя
-  const getCurrentUser = () => {
-    return user.value;
-  };
-
   return {
     user: readonly(user),
     sessionToken: readonly(sessionToken),
     isLoading: readonly(isLoading),
+    isAuthenticated, // Добавляем isAuthenticated
     initUser,
     registerUser,
     loginUser,
     confirmRegistration,
     logoutUser,
     getCurrentUser,
-    isAuthenticated,
   };
 };
