@@ -1,4 +1,3 @@
-// nuxt.config.ts (или nuxt.config.js)
 export default defineNuxtConfig({
   devtools: { enabled: true },
 
@@ -53,13 +52,11 @@ export default defineNuxtConfig({
       // Страница подтверждения email не должна кэшироваться
       '/confirmation/**': {
         ssr: false,
-        index: false,
         headers: { 'Cache-Control': 'no-cache, no-store, must-revalidate' },
       },
       // Страница авторизации
       '/auth': {
         ssr: false,
-        index: false,
       },
       // Главная страница
       '/main': {
