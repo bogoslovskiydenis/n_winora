@@ -221,6 +221,7 @@ export const useAuth = () => {
 
   const logoutUser = () => {
     clearUserData();
+    // Теперь перенаправляем на login вместо main
     navigateTo('/login');
   };
 
@@ -228,7 +229,7 @@ export const useAuth = () => {
     user: readonly(user),
     sessionToken: readonly(sessionToken),
     isLoading: readonly(isLoading),
-    isAuthenticated, // Добавляем isAuthenticated
+    isAuthenticated,
     initUser,
     registerUser,
     loginUser,

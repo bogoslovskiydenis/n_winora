@@ -91,10 +91,7 @@ const isTablet = computed(
 const isDesktop = computed(() => windowWidth.value >= 1024);
 
 const showSidebar = computed(
-  () =>
-    route.name !== 'login' &&
-    route.name !== 'registration' &&
-    route.name !== 'index'
+  () => route.name !== 'login' && route.name !== 'registration'
 );
 
 // Определяем текущий активный роут для мобильной навигации
@@ -142,7 +139,7 @@ const handleLogout = () => {
 };
 
 const navigateToMain = () => {
-  navigateTo('/main');
+  navigateTo('/');
   if (!isDesktop.value) {
     sidebarOpen.value = false;
   }

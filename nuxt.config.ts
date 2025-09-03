@@ -54,11 +54,22 @@ export default defineNuxtConfig({
         ssr: false,
         headers: { 'Cache-Control': 'no-cache, no-store, must-revalidate' },
       },
-      // Страница авторизации
-      '/auth': {
+      // Страницы авторизации
+      '/login': {
         ssr: false,
       },
-      // Главная страница
+      '/register': {
+        ssr: false,
+      },
+      '/registration': {
+        ssr: false,
+      },
+      // Главная страница (теперь это /)
+      '/': {
+        ssr: false,
+        prerender: false,
+      },
+      // Редирект со старого /main
       '/main': {
         ssr: false,
         prerender: false,

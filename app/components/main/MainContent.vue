@@ -2,16 +2,9 @@
   <main class="main-content">
     <div class="content-wrapper">
       <!-- Главная страница -->
-      <div class="main-section" v-if="currentSection === 'main'">
+      <div class="main-section">
         <GameCards />
         <LoyaltySection />
-        <!--        <ChestPromo />-->
-      </div>
-
-      <!-- Другие страницы -->
-      <div v-else class="section-placeholder">
-        <h1>{{ getSectionTitle() }}</h1>
-        <p>Содержимое раздела "{{ getSectionTitle() }}" будет здесь</p>
       </div>
     </div>
   </main>
@@ -20,28 +13,6 @@
 <script setup>
 import GameCards from './GameCards.vue';
 import LoyaltySection from './LoyaltySection.vue';
-import ChestPromo from './ChestPromo.vue';
-
-const props = defineProps({
-  currentSection: {
-    type: String,
-    required: true,
-  },
-});
-
-const getSectionTitle = () => {
-  const titles = {
-    main: 'Главная',
-    investments: 'Инвестиции',
-    chests: 'Сундуки',
-    roulette: 'Рулетка',
-    shop: 'Магазин',
-    rating: 'Рейтинг пользователей',
-    profile: 'Профиль пользователя',
-    support: 'Служба поддержки',
-  };
-  return titles[props.currentSection] || 'Главная';
-};
 </script>
 
 <style scoped>

@@ -12,23 +12,22 @@ export default defineNuxtRouteMiddleware((to, from) => {
     (typeof user.value === 'string' ? JSON.parse(user.value) : user.value);
   const hasToken = sessionToken.value;
 
-  console.log('Auth middleware check:', {
+  console.log('Guest middleware check:', {
     hasUser: !!hasUser,
     hasToken: !!hasToken,
     isAuthenticated: isAuthenticated.value,
     route: to.path,
-    userValue: user.value,
-    tokenValue: sessionToken.value,
   });
 
-  // Если нет аутентификации - редирект на login
-  if (!hasUser || !hasToken) {
-    console.log(
-      'Auth middleware: No authentication found, redirecting to login'
-    );
-    return navigateTo('/login');
+  // Если пользователь авторизован - редирект на главную
+  if (hasUser && hasToken) {
+    console.log('Guest middleware: User authenticated, redirecting to home');
+    return navigateTo('/');
   }
 
-  // Если аутентификация есть, продолжаем
-  console.log('Auth middleware: User authenticated, allowing access');
+  // Если не авторизован, продолжаем на страницу login/registration
+  console.log(
+    'Guest middleware: User not authenticated, allowing access to',
+    to.path
+  );
 });

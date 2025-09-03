@@ -1,37 +1,28 @@
 <template>
-  <div class="index-page">
-    <!-- Автоматическое перенаправление -->
-    <div v-if="!redirected" class="loading-container">
-      <div class="spinner"></div>
-      <p>Загрузка...</p>
+  <div class="main-page">
+    <div class="content-wrapper">
+      <!-- Главная страница -->
+      <div class="main-section">
+        <GameCards />
+        <LoyaltySection />
+        <!-- <ChestPromo /> -->
+      </div>
     </div>
   </div>
 </template>
 
 <script setup>
-// Отключаем layout для этой страницы
+import GameCards from '~/components/main/GameCards.vue';
+import LoyaltySection from '~/components/main/LoyaltySection.vue';
+
+// Применяем middleware для проверки авторизации
 definePageMeta({
-  layout: false,
-});
-
-const { isAuthenticated } = useAuth();
-const redirected = ref(false);
-
-onMounted(() => {
-  // Небольшая задержка для правильной инициализации
-  nextTick(() => {
-    if (isAuthenticated.value) {
-      navigateTo('/main');
-    } else {
-      navigateTo('/login');
-    }
-    redirected.value = true;
-  });
+  middleware: 'auth',
 });
 
 // SEO для главной страницы
 useHead({
-  title: 'Winora - Инвестиционная платформа',
+  title: 'Главная - Winora',
   meta: [
     {
       name: 'description',
@@ -43,40 +34,33 @@ useHead({
 </script>
 
 <style scoped>
-.index-page {
+.main-page {
   min-height: 100vh;
-  background: linear-gradient(135deg, #01614b, #032019 70%);
+  width: 100%;
+}
+
+.content-wrapper {
+  padding: 32px 24px 0;
+  width: 100%;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-direction: column;
+  gap: 24px;
 }
 
-.loading-container {
-  text-align: center;
-  color: white;
+.main-section {
+  width: 100%;
 }
 
-.spinner {
-  width: 40px;
-  height: 40px;
-  border: 3px solid rgba(255, 255, 255, 0.2);
-  border-top: 3px solid #4ade80;
-  border-radius: 50%;
-  margin: 0 auto 16px;
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
+/* Mobile Responsive */
+@media (max-width: 1023px) {
+  .content-wrapper {
+    padding: 24px 16px;
   }
 }
 
-.loading-container p {
-  font-size: 16px;
-  opacity: 0.8;
+@media (max-width: 480px) {
+  .content-wrapper {
+    padding: 20px 12px;
+  }
 }
 </style>

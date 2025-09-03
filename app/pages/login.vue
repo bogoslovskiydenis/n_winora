@@ -127,7 +127,7 @@ const submitLogin = async () => {
     loginMessageType.value = 'success';
 
     setTimeout(() => {
-      navigateTo('/main');
+      navigateTo('/');
     }, 1000);
   } else {
     loginMessage.value = result.message;
