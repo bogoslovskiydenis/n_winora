@@ -89,7 +89,7 @@ definePageMeta({
   layout: false,
 });
 
-const { loginUser, isLoading } = useAuth(); // Получаем isLoading из useAuth
+const { loginUser, isLoading } = useAuth();
 const rememberMe = ref(false);
 
 const loginMessage = ref('');
@@ -137,6 +137,7 @@ const submitLogin = async () => {
 </script>
 
 <style scoped>
+/* Базовые стили */
 .registration-container {
   display: flex;
   align-items: center;
@@ -147,48 +148,47 @@ const submitLogin = async () => {
 }
 
 .registration-app {
-  max-width: 480px;
   width: 100%;
-  padding: 40px 30px;
-}
-
-/* Desktop адаптация */
-@media (min-width: 1024px) {
-  .registration-app {
-    max-width: 520px;
-    padding: 50px 40px;
-  }
+  max-width: 424px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
 }
 
 /* Логотип */
 .logo {
-  text-align: center;
-  margin-bottom: 40px;
+  width: 100%;
+  max-width: 424px;
+  height: 159px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
 }
 
 .logo-image {
-  margin-bottom: 15px;
+  width: 302px;
+  max-width: 100%;
   filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
-}
-
-@media (min-width: 1024px) {
-  .logo-image {
-    margin-bottom: 20px;
-  }
 }
 
 /* Табы */
 .tabs {
+  width: 100%;
+  max-width: 424px;
+  height: 80px;
+  padding: 48px 0 2px 0;
   display: flex;
   background: transparent;
   border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-  padding: 0;
-  margin-bottom: 40px;
+  box-sizing: border-box;
 }
 
 .tab {
   flex: 1;
-  padding: 16px 20px;
   text-align: center;
   color: rgba(255, 255, 255, 0.6);
   cursor: pointer;
@@ -201,6 +201,7 @@ const submitLogin = async () => {
   border-bottom: 2px solid transparent;
   border-radius: 0;
   text-decoration: none;
+  box-sizing: border-box;
 }
 
 .tab.active {
@@ -212,26 +213,29 @@ const submitLogin = async () => {
   color: rgba(255, 255, 255, 0.8);
 }
 
-/* Контент форм */
+/* Форма */
 .form-section {
+  width: 100%;
+  max-width: 424px;
+  height: auto;
+  min-height: 350px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 24px 16px 16px 16px;
+  border-bottom-right-radius: 32px;
+  border-bottom-left-radius: 32px;
+  background: rgba(0, 170, 105, 0.15);
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
   animation: fadeIn 0.5s ease;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
 }
 
 .step-content {
   display: flex;
   flex-direction: column;
   gap: 16px;
+  flex: 1;
+  width: 100%;
 }
 
 /* Сообщения */
@@ -239,12 +243,14 @@ const submitLogin = async () => {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 12px 16px;
-  border-radius: 8px;
+  padding: 16px;
+  border-radius: 12px;
   font-size: 14px;
   font-weight: 500;
   margin-bottom: 8px;
   animation: slideIn 0.3s ease;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .message.success {
@@ -260,24 +266,13 @@ const submitLogin = async () => {
 }
 
 .message-icon {
-  font-size: 16px;
+  font-size: 20px;
   flex-shrink: 0;
 }
 
 .message-text {
   flex: 1;
   line-height: 1.4;
-}
-
-@keyframes slideIn {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
 }
 
 /* Чекбокс */
@@ -372,9 +367,9 @@ const submitLogin = async () => {
 /* Переключение форм */
 .form-toggle {
   text-align: center;
-  margin-top: 32px;
   padding-top: 24px;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  width: 100%;
+  max-width: 424px;
 }
 
 .toggle-text {
@@ -399,18 +394,213 @@ const submitLogin = async () => {
   text-decoration: underline;
 }
 
-@media (max-width: 480px) {
+/* Анимации */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Доступность */
+.tab:focus-visible,
+.link-button:focus-visible {
+  outline: 2px solid #4ade80;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.form-section.loading {
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+.step-content:has(.checkbox-input:disabled) .checkbox-label,
+.step-content:has(input:disabled) {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.message {
+  overflow: hidden;
+  max-height: 500px;
+  transition: all 0.3s ease;
+}
+
+.message:empty {
+  max-height: 0;
+  padding: 0;
+  margin: 0;
+  border: none;
+}
+
+/* АДАПТИВНОСТЬ */
+
+/* Планшеты (768px - 1023px) */
+@media (min-width: 768px) and (max-width: 1023px) {
   .registration-container {
-    padding: 16px;
+    padding: 24px;
   }
 
   .registration-app {
-    padding: 20px 16px;
+    max-width: 500px;
+  }
+
+  .logo {
+    height: 140px;
   }
 
   .logo-image {
-    width: 60px;
+    width: 280px;
+    height: 118px;
+  }
+
+  .tabs {
+    height: 75px;
+    padding-top: 40px;
+  }
+
+  .form-section {
+    min-height: 320px;
+    padding: 22px 18px 18px 18px;
+  }
+
+  .message {
+    font-size: 13px;
+    padding: 14px;
+  }
+}
+
+/* Десктоп (1024px+) */
+@media (min-width: 1024px) {
+  .registration-container {
+    padding: 30px;
+  }
+
+  .registration-app {
+    max-width: 560px;
+  }
+
+  .logo {
+    height: 159px;
+  }
+
+  .logo-image {
+    width: 302px;
+    height: 127px;
+  }
+
+  .tabs {
+    height: 80px;
+    padding-top: 48px;
+  }
+
+  .form-section {
+    min-height: 350px;
+    padding: 24px 16px 16px 16px;
+  }
+}
+
+/* Маленькие планшеты (481px - 767px) */
+@media (min-width: 481px) and (max-width: 767px) {
+  .registration-container {
+    padding: 20px;
+  }
+
+  .logo {
+    height: 120px;
+    padding: 12px;
+  }
+
+  .logo-image {
+    width: 220px;
+    height: 93px;
+  }
+
+  .tabs {
+    height: 65px;
+    padding-top: 30px;
+  }
+
+  .tab {
+    font-size: 15px;
+    padding: 14px 16px;
+  }
+
+  .form-section {
+    min-height: 300px;
+    padding: 20px 14px 14px 14px;
+    border-bottom-right-radius: 24px;
+    border-bottom-left-radius: 24px;
+  }
+
+  .message {
+    font-size: 13px;
+    padding: 14px;
+  }
+}
+
+/* Мобильные устройства (до 480px) */
+@media (max-width: 480px) {
+  .registration-app {
+    max-width: 100%;
+    width: 100%;
+  }
+
+  .logo {
+    height: 100px;
+    padding: 8px;
+  }
+
+  .logo-image {
+    width: 180px;
+    height: 76px;
+  }
+
+  .tabs {
     height: 60px;
+    padding-top: 24px;
+  }
+
+  .tab {
+    font-size: 14px;
+    padding: 12px 8px;
+  }
+
+  .form-section {
+    min-height: 280px;
+    padding: 16px 12px 12px 12px;
+    border-bottom-right-radius: 20px;
+    border-bottom-left-radius: 20px;
+  }
+
+  .step-content {
+    gap: 14px;
+  }
+
+  .message {
+    font-size: 12px;
+    padding: 12px;
+    gap: 10px;
+  }
+
+  .message-icon {
+    font-size: 18px;
   }
 
   .form-extras {
@@ -423,50 +613,101 @@ const submitLogin = async () => {
     margin-left: 0;
   }
 
-  .message {
+  .checkbox-text {
     font-size: 13px;
-    padding: 10px 14px;
+  }
+
+  .link {
+    font-size: 13px;
+  }
+
+  .form-toggle {
+    margin-top: 24px;
+    padding-top: 16px;
+  }
+
+  .toggle-text {
+    font-size: 13px;
   }
 }
 
-.step-content {
-  transition: all 0.3s ease;
+/* Очень маленькие экраны (до 360px) */
+@media (max-width: 360px) {
+  .registration-container {
+    padding: 12px;
+    padding-top: 20px;
+  }
+
+  .logo {
+    height: 80px;
+    padding: 4px;
+  }
+
+  .logo-image {
+    width: 150px;
+    height: 63px;
+  }
+
+  .tabs {
+    height: 55px;
+    padding-top: 20px;
+  }
+
+  .tab {
+    font-size: 13px;
+    padding: 10px 4px;
+  }
+
+  .form-section {
+    min-height: 260px;
+    padding: 14px 10px 10px 10px;
+  }
+
+  .message {
+    font-size: 11px;
+    padding: 10px;
+  }
+
+  .checkbox-text,
+  .link {
+    font-size: 12px;
+  }
+
+  .toggle-text {
+    font-size: 12px;
+  }
 }
 
-.tab:focus-visible {
-  outline: 2px solid #4ade80;
-  outline-offset: 2px;
-}
+/* Landscape ориентация для мобильных */
+@media (max-width: 767px) and (orientation: landscape) {
+  .registration-container {
+    padding: 12px;
+    align-items: flex-start;
+  }
 
-.link-button:focus-visible {
-  outline: 2px solid #4ade80;
-  outline-offset: 2px;
-  border-radius: 4px;
-}
+  .logo {
+    height: 70px;
+    padding: 4px;
+  }
 
-.form-section.loading {
-  pointer-events: none;
-  opacity: 0.7;
-}
+  .logo-image {
+    width: 140px;
+    height: 59px;
+  }
 
-/* Анимация для отключенных элементов */
-.step-content:has(.checkbox-input:disabled) .checkbox-label,
-.step-content:has(input:disabled) {
-  opacity: 0.6;
-  pointer-events: none;
-}
+  .tabs {
+    height: 50px;
+    padding-top: 16px;
+  }
 
-/* Улучшенная анимация появления сообщений */
-.message {
-  overflow: hidden;
-  max-height: 100px;
-  transition: all 0.3s ease;
-}
+  .form-section {
+    min-height: 240px;
+    padding: 12px;
+  }
 
-.message:empty {
-  max-height: 0;
-  padding: 0;
-  margin: 0;
-  border: none;
+  .form-extras {
+    flex-direction: row;
+    justify-content: space-between;
+  }
 }
 </style>

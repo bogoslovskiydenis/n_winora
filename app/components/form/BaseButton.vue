@@ -108,7 +108,7 @@ const buttonClasses = computed(() => [
 
 /* Варианты */
 .base-button--primary {
-  background: linear-gradient(135deg, #00ff87 0%, #00d96f 100%);
+  background: #07cb38;
   color: #0a3d2e;
   box-shadow: 0 4px 15px rgba(0, 255, 135, 0.3);
   border: 2px solid transparent;

@@ -49,6 +49,8 @@
 </template>
 
 <script setup>
+import { ref, computed } from 'vue';
+
 const props = defineProps({
   modelValue: {
     type: [String, Number],
@@ -87,6 +89,7 @@ const inputId = computed(
   () => `input-${Math.random().toString(36).substr(2, 9)}`
 );
 const currentType = computed(() => (showPassword.value ? 'text' : props.type));
+
 const inputClasses = computed(() => [
   'base-input__field',
   {
@@ -110,21 +113,22 @@ const togglePasswordVisibility = () => {
 
 .base-input__wrapper {
   position: relative;
+  width: 100%;
 }
 
 .base-input__field {
   width: 100%;
   padding: 16px 20px;
-  border: 2px solid rgba(255, 255, 255, 0.2);
-  border-radius: 32px;
-  background: rgba(255, 255, 255, 0.05);
-  color: white;
+  border: 1px solid #035116;
+  border-radius: 47px;
+  background: rgba(4, 33, 26, 0.8);
+  color: rgba(255, 255, 255, 0.8);
   font-size: 16px;
   font-family: inherit;
   transition: all 0.3s ease;
   outline: none;
-  backdrop-filter: blur(10px);
   box-sizing: border-box;
+  backdrop-filter: blur(10px);
 }
 
 .base-input__field--with-icon {
@@ -132,55 +136,68 @@ const togglePasswordVisibility = () => {
 }
 
 .base-input__field::placeholder {
-  color: rgba(255, 255, 255, 0.4);
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 16px;
 }
 
 .base-input__field:focus {
-  border-color: #4ade80;
-  background: rgba(255, 255, 255, 0.08);
-  box-shadow: 0 4px 20px rgba(74, 222, 128, 0.2);
+  border-color: #00a659;
+  background: rgba(4, 33, 26, 0.9);
+  box-shadow: 0 0 0 2px rgba(0, 166, 89, 0.2);
+}
+
+.base-input__field:hover:not(:focus) {
+  border-color: #05648a;
+  background: rgba(4, 33, 26, 0.85);
 }
 
 .base-input__field--error {
   border-color: #ef4444;
-  background: rgba(239, 68, 68, 0.05);
+  background: rgba(239, 68, 68, 0.1);
 }
 
 .base-input__field--error:focus {
   border-color: #ef4444;
-  box-shadow: 0 4px 20px rgba(239, 68, 68, 0.2);
+  box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2);
 }
 
 .base-input__field--success {
-  border-color: #4ade80;
-  background: rgba(74, 222, 128, 0.05);
+  border-color: #00a659;
+  background: rgba(0, 166, 89, 0.1);
 }
 
 .base-input__field--disabled {
   opacity: 0.5;
   cursor: not-allowed;
-  background: rgba(255, 255, 255, 0.02);
+  background: rgba(4, 33, 26, 0.4);
+  border-color: rgba(3, 81, 107, 0.5);
 }
 
 .base-input__password-toggle {
   position: absolute;
-  right: 18px;
+  right: 16px;
   top: 50%;
   transform: translateY(-50%);
   background: none;
   border: none;
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 0.6);
   cursor: pointer;
-  padding: 6px;
-  border-radius: 6px;
-  transition: color 0.2s ease;
+  padding: 8px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 2;
 }
 
 .base-input__password-toggle:hover {
-  color: rgba(255, 255, 255, 0.8);
+  color: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.base-input__password-toggle:active {
+  transform: translateY(-50%) scale(0.95);
 }
 
 .base-input__error {
@@ -192,31 +209,28 @@ const togglePasswordVisibility = () => {
 }
 
 .base-input__success {
-  color: #4ade80;
+  color: #00a659;
   font-size: 12px;
   margin-top: 8px;
   margin-left: 4px;
   display: block;
 }
 
+/* Стили для автозаполнения */
 .base-input__field:-webkit-autofill,
 .base-input__field:-webkit-autofill:hover,
 .base-input__field:-webkit-autofill:focus {
-  -webkit-box-shadow: 0 0 0 30px rgba(255, 255, 255, 0.05) inset !important;
-  -webkit-text-fill-color: transparent;
-  -webkit-background-clip: text;
-  background-image: linear-gradient(
-    135deg,
-    #01614b,
-    #032019 70%
-  ); /* Ваш градиент */
-  border-color: rgba(255, 255, 255, 0.2) !important;
+  -webkit-box-shadow: 0 0 0 30px rgba(4, 33, 26, 0.8) inset !important;
+  -webkit-text-fill-color: rgba(255, 255, 255, 0.8) !important;
+  border-color: #03516b !important;
 }
 
+/* Мобильная адаптация */
 @media (max-width: 480px) {
   .base-input__field {
     padding: 14px 18px;
-    font-size: 16px;
+    font-size: 16px; /* Предотвращает зум на iOS */
+    border-radius: 32px;
   }
 
   .base-input__field--with-icon {
@@ -224,8 +238,32 @@ const togglePasswordVisibility = () => {
   }
 
   .base-input__password-toggle {
-    right: 15px;
-    padding: 4px;
+    right: 14px;
+    padding: 6px;
+  }
+}
+
+/* Высокий контраст */
+@media (prefers-contrast: high) {
+  .base-input__field {
+    border-width: 2px;
+    border-color: #00a659;
+    background: rgba(0, 0, 0, 0.8);
+  }
+
+  .base-input__field::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+  }
+}
+
+/* Анимации для пользователей, которые не против них */
+@media (prefers-reduced-motion: no-preference) {
+  .base-input__field {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .base-input__password-toggle {
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   }
 }
 </style>
