@@ -1,15 +1,26 @@
 <template>
   <aside class="sidebar" :class="{ 'sidebar--open': isOpen }">
     <div class="sidebar-content">
+      <!-- Кнопка переключения -->
       <div class="menu-toggle">
         <button class="menu-toggle-btn" @click="$emit('toggle')">
-          <span></span>
-          <span></span>
-          <span></span>
+          <img
+            v-if="!isOpen"
+            src="../../assets/images/navbar/burger_nav.svg"
+            alt="burger"
+            class="toggle-icon"
+          />
+          <img
+            v-else
+            src="../../assets/images/navbar/burger_close.svg"
+            alt="close"
+            class="toggle-icon"
+          />
         </button>
       </div>
 
       <nav class="sidebar-menu">
+        <!-- Логотип -->
         <div class="sidebar-logo">
           <div
             class="logo-icon"
@@ -34,15 +45,10 @@
           </div>
         </div>
 
+        <!-- Карточка пользователя (только при открытом сайдбаре) -->
         <div class="user-card" v-if="isOpen">
           <div class="user-avatar">
-            <img
-              src="../../assets/images/navbar/lvl_nav.svg"
-              alt="W"
-              class="logo-img-small"
-            />
-
-            <span>{{ user?.nickname?.[0]?.toUpperCase() }}</span>
+            <span>{{ user?.nickname?.[0]?.toUpperCase() || 'B' }}</span>
           </div>
           <div class="user-info">
             <div class="user-name">
@@ -55,18 +61,20 @@
           </div>
         </div>
 
+        <!-- Уровень пользователя (только при закрытом сайдбаре) -->
         <div
-          class="menu-item"
+          class="menu-item level-item"
           :data-tooltip="!isOpen ? 'Уровень пользователя: 2' : ''"
           v-if="!isOpen"
         >
           <img
             src="../../assets/images/navbar/lvl_nav.svg"
-            alt="W"
+            alt="Level"
             class="logo-img-small"
           />
         </div>
 
+        <!-- Баланс (только при открытом сайдбаре) -->
         <div class="sidebar-balance" v-if="isOpen">
           <div class="balance-item">
             <span class="balance-icon">💰</span>
@@ -74,42 +82,47 @@
               user?.balance?.toLocaleString() || '150,000'
             }}</span>
           </div>
+          <span class="balance-wallets">КОШЕЛЕК</span>
+
           <div class="balance-item">
             <span class="balance-label">USDT</span>
             <span class="balance-count">{{
               Math.floor((user?.balance || 150000) / 100)
             }}</span>
-            <span class="balance-wallets">КОШЕЛЕК</span>
           </div>
         </div>
-        <NuxtLink
-          to="/wallet"
-          class="menu-item"
-          :data-tooltip="!isOpen ? 'Кошелек' : ''"
-        >
-          <div class="menu-icon-wrapper">
-            <img
-              src="../../assets/images/navbar/wallet_nav.svg"
-              alt="W"
-              class="logo-img-small"
-            />
-          </div>
-          <span class="menu-text" v-if="isOpen">Кошелек</span>
-        </NuxtLink>
+
+        <!-- Пункты меню -->
 
         <NuxtLink
           to="/investments"
           class="menu-item"
           :data-tooltip="!isOpen ? 'Инвестиции' : ''"
         >
+          <span class="menu-text" v-if="isOpen">ИНВЕСТИЦИИ</span>
+
           <div class="menu-icon-wrapper">
             <img
-              src="../../assets/images/navbar/profile.svg"
-              alt="W"
+              src="../../assets/images/navbar/invest_nav.svg"
+              alt="Investments"
               class="logo-img-small"
             />
           </div>
-          <span class="menu-text" v-if="isOpen">ИНВЕСТИЦИИ</span>
+        </NuxtLink>
+        <NuxtLink
+          to="/chest"
+          class="menu-item"
+          :data-tooltip="!isOpen ? 'Сундуки' : ''"
+        >
+          <span class="menu-text" v-if="isOpen">Сундуки</span>
+
+          <div class="menu-icon-wrapper">
+            <img
+              src="../../assets/images/navbar/chest_nav.svg"
+              alt="Chest"
+              class="logo-img-small"
+            />
+          </div>
         </NuxtLink>
 
         <NuxtLink
@@ -117,29 +130,45 @@
           class="menu-item"
           :data-tooltip="!isOpen ? 'Рулетка' : ''"
         >
+          <span class="menu-text" v-if="isOpen">Рулетка</span>
+
           <div class="menu-icon-wrapper">
             <img
               src="../../assets/images/navbar/Spin_nav.svg"
-              alt="W"
+              alt="Spin"
               class="logo-img-small"
             />
           </div>
-          <span class="menu-text" v-if="isOpen">Рулетка</span>
         </NuxtLink>
-
         <NuxtLink
-          to="/chest"
+          to="/profile"
           class="menu-item"
-          :data-tooltip="!isOpen ? 'Сундуки' : ''"
+          :data-tooltip="!isOpen ? 'Профиль Пользователя' : ''"
         >
+          <span class="menu-text" v-if="isOpen">Профиль Пользователя</span>
+
           <div class="menu-icon-wrapper">
             <img
-              src="../../assets/images/navbar/chest_nav.svg"
-              alt="W"
+              src="../../assets/images/navbar/profile.svg"
+              alt="Spin"
               class="logo-img-small"
             />
           </div>
-          <span class="menu-text" v-if="isOpen">Сундуки</span>
+        </NuxtLink>
+        <NuxtLink
+          to="/wallet"
+          class="menu-item"
+          :data-tooltip="!isOpen ? 'Кошелек' : ''"
+        >
+          <span class="menu-text" v-if="isOpen">Кошелек</span>
+
+          <div class="menu-icon-wrapper">
+            <img
+              src="../../assets/images/navbar/wallet_nav.svg"
+              alt="Wallet"
+              class="logo-img-small"
+            />
+          </div>
         </NuxtLink>
 
         <NuxtLink
@@ -147,14 +176,15 @@
           class="menu-item"
           :data-tooltip="!isOpen ? 'Корзина' : ''"
         >
+          <span class="menu-text" v-if="isOpen">Корзина</span>
+
           <div class="menu-icon-wrapper">
             <img
               src="../../assets/images/navbar/basket_nav.svg"
-              alt="W"
+              alt="Basket"
               class="logo-img-small"
             />
           </div>
-          <span class="menu-text" v-if="isOpen">Корзина</span>
         </NuxtLink>
 
         <NuxtLink
@@ -162,16 +192,15 @@
           class="menu-item"
           :data-tooltip="!isOpen ? 'Рейтинг пользователей' : ''"
         >
-          <div class="menu-icon-wrapper">
-            <div class="menu-icon-wrapper">
-              <img
-                src="../../assets/images/navbar/star_nav.svg"
-                alt="W"
-                class="logo-img-small"
-              />
-            </div>
-          </div>
           <span class="menu-text" v-if="isOpen">РЕЙТИНГ ПОЛЬЗОВАТЕЛЕЙ</span>
+
+          <div class="menu-icon-wrapper">
+            <img
+              src="../../assets/images/navbar/star_nav.svg"
+              alt="Rating"
+              class="logo-img-small"
+            />
+          </div>
         </NuxtLink>
 
         <NuxtLink
@@ -179,17 +208,19 @@
           class="menu-item"
           :data-tooltip="!isOpen ? 'Профиль пользователя' : ''"
         >
+          <span class="menu-text" v-if="isOpen">Служба Поддержки</span>
+
           <div class="menu-icon-wrapper">
             <img
               src="../../assets/images/navbar/question_nav.svg"
-              alt="W"
+              alt="Profile"
               class="logo-img-small"
             />
           </div>
-          <span class="menu-text" v-if="isOpen">ПРОФИЛЬ ПОЛЬЗОВАТЕЛЯ</span>
         </NuxtLink>
       </nav>
 
+      <!-- Нижняя часть сайдбара -->
       <div class="sidebar-bottom">
         <button
           class="menu-item referral-btn"
@@ -198,7 +229,7 @@
           <div class="menu-icon-wrapper">
             <img
               src="../../assets/images/navbar/referal_navbar.svg"
-              alt="W"
+              alt="Referral"
               class="logo-img-small"
             />
           </div>
@@ -236,6 +267,7 @@ const onLogoError = () => {
 </script>
 
 <style scoped>
+/* Основной контейнер сайдбара */
 .sidebar {
   width: 80px;
   background: rgba(0, 0, 0, 0.3);
@@ -245,7 +277,7 @@ const onLogoError = () => {
   bottom: 0;
   left: 0;
   z-index: 1000;
-  transition: all 0.3s ease;
+  transition: width 0.3s ease;
   border-right: 1px solid rgba(255, 255, 255, 0.1);
 }
 
@@ -257,9 +289,9 @@ const onLogoError = () => {
   display: flex;
   flex-direction: column;
   height: 100%;
-  position: relative;
 }
 
+/* Переключатель меню */
 .menu-toggle {
   padding: 20px;
   display: flex;
@@ -272,32 +304,14 @@ const onLogoError = () => {
   background: none;
   border: none;
   cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 6px 0;
 }
 
-.menu-toggle-btn span {
+.toggle-icon {
   width: 100%;
-  height: 3px;
-  background: var(--text-primary);
-  border-radius: 2px;
-  transition: all 0.3s ease;
+  height: 100%;
 }
 
-.sidebar--open .menu-toggle-btn span:nth-child(1) {
-  transform: rotate(45deg) translate(8px, 8px);
-}
-
-.sidebar--open .menu-toggle-btn span:nth-child(2) {
-  opacity: 0;
-}
-
-.sidebar--open .menu-toggle-btn span:nth-child(3) {
-  transform: rotate(-45deg) translate(8px, -8px);
-}
-
+/* Логотип */
 .sidebar-logo {
   padding: 20px;
   display: flex;
@@ -309,7 +323,6 @@ const onLogoError = () => {
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  position: relative;
 }
 
 .logo-img-small {
@@ -319,8 +332,7 @@ const onLogoError = () => {
 }
 
 .logo-img-large {
-  width: 60px;
-  height: 60px;
+  height: 44px;
   filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
 }
 
@@ -330,6 +342,7 @@ const onLogoError = () => {
   color: var(--primary-color);
 }
 
+/* Карточка пользователя */
 .user-card {
   padding: 8px;
   display: flex;
@@ -346,40 +359,17 @@ const onLogoError = () => {
 }
 
 .user-avatar {
-  position: relative;
   width: 48px;
   height: 48px;
-  flex-shrink: 0;
-}
-
-.user-avatar-inner {
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
   background: linear-gradient(135deg, #4ade80, #22c55e);
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 24px;
   font-weight: 700;
   color: #0a3d2e;
-}
-
-.user-level {
-  position: absolute;
-  top: -4px;
-  right: -4px;
-  width: 20px;
-  height: 20px;
-  background: #f97316;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 12px;
-  font-weight: 700;
-  color: white;
-  border: 2px solid rgba(0, 0, 0, 0.3);
+  flex-shrink: 0;
 }
 
 .user-info {
@@ -414,43 +404,8 @@ const onLogoError = () => {
   color: #dc2626;
 }
 
-.menu-item .level-number {
-  width: 24px;
-  height: 24px;
-  background: linear-gradient(135deg, #ff6b35, #f7931e);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 18px;
-  font-weight: 700;
-  color: white;
-  margin: 0 auto;
-  transition: all 0.3s ease;
-}
-
-.menu-item:hover .level-number {
-  transform: scale(1.05);
-  box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
-}
-
-.menu-item:has(.level-number) {
-  justify-content: center;
-  padding: 0;
-}
-
-.menu-item:has(.level-number):hover .menu-icon-wrapper {
-  background: transparent;
-}
-
-.level-number {
-  font-size: 18px;
-  font-weight: 700;
-  color: white;
-}
-
+/* Баланс */
 .sidebar-balance {
-  border-radius: 12px;
   padding: 8px;
   display: flex;
   align-items: center;
@@ -497,42 +452,40 @@ const onLogoError = () => {
   margin-left: 4px;
 }
 
+/* Меню */
 .sidebar-menu {
   flex: 1;
   padding: 0 20px;
 }
 
 .menu-item {
-  padding: 8px;
   display: flex;
   align-items: center;
   gap: 16px;
   margin-bottom: 16px;
   text-decoration: none;
-  color: var(--text-secondary);
   font-size: 13px;
   font-weight: 600;
   transition: all 0.3s ease;
-  position: relative;
   border-radius: 8px;
   cursor: pointer;
   border: none;
   background: none;
   width: 100%;
-  text-align: left;
-}
-
-.menu-item.nuxt-link-active {
+  justify-content: space-between;
   color: var(--text-primary);
 }
 
-.menu-item.nuxt-link-active .menu-icon {
-  filter: invert(1);
+.menu-item:hover .menu-icon-wrapper {
+  background: rgba(74, 222, 128, 0.1);
 }
 
-.menu-item:link,
-.menu-item:visited {
-  text-decoration: none;
+.menu-item.nuxt-link-active {
+  color: var(--primary-color);
+}
+
+.level-item {
+  justify-content: center;
 }
 
 .menu-icon-wrapper {
@@ -542,26 +495,12 @@ const onLogoError = () => {
   display: flex;
   align-items: center;
   justify-content: center;
-  position: relative;
   transition: all 0.3s ease;
   flex-shrink: 0;
 }
 
-.menu-item:hover .menu-icon-wrapper {
-  background: rgba(74, 222, 128, 0.1);
-}
-
-.menu-item.active .menu-icon,
-.menu-item.nuxt-link-active .menu-icon {
-  filter: invert(1);
-}
-
-.menu-icon {
-  font-size: 18px;
-}
-
 .menu-text {
-  color: var(--text-primary);
+  color: inherit;
   font-size: 12px;
   font-weight: 600;
   text-transform: uppercase;
@@ -577,29 +516,7 @@ const onLogoError = () => {
   transform: translateX(0);
 }
 
-.menu-badge {
-  position: absolute;
-  top: -4px;
-  right: -4px;
-  font-size: 10px;
-  padding: 2px 6px;
-  border-radius: 8px;
-  min-width: 16px;
-  text-align: center;
-  font-weight: 700;
-  z-index: 2;
-}
-
-.menu-badge.red {
-  background: #ef4444;
-  color: white;
-}
-
-.menu-badge.green {
-  background: #22c55e;
-  color: white;
-}
-
+/* Тултипы */
 [data-tooltip]:not([data-tooltip='']) {
   position: relative;
 }
@@ -633,35 +550,11 @@ const onLogoError = () => {
   transition-delay: 0.5s;
 }
 
-.sidebar:not(.sidebar--open) [data-tooltip]:not([data-tooltip=''])::before {
-  content: '';
-  position: fixed;
-  left: 84px;
-  width: 0;
-  height: 0;
-  border-style: solid;
-  border-width: 6px 8px 6px 0;
-  border-color: transparent rgba(0, 0, 0, 0.95) transparent transparent;
-  z-index: 100001;
-  opacity: 0;
-  visibility: hidden;
-  transition:
-    opacity 0.2s ease,
-    visibility 0.2s ease;
-}
-
-.sidebar:not(.sidebar--open)
-  [data-tooltip]:not([data-tooltip='']):hover::before {
-  opacity: 1;
-  visibility: visible;
-  transition-delay: 0.5s;
-}
-
+/* Нижняя часть */
 .sidebar-bottom {
-  padding: 0 20px;
+  padding: 0 20px 20px;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   padding-top: 20px;
-  margin-top: auto;
 }
 
 .referral-btn {
