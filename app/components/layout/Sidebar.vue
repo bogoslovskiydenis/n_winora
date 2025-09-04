@@ -18,7 +18,7 @@
           >
             <img
               v-if="!isOpen"
-              src="../../assets/images/Winora_logo.png"
+              src="../../assets/images/navbar/logo_nav.svg"
               alt="W"
               class="logo-img-small"
               @error="onLogoError"
@@ -36,10 +36,13 @@
 
         <div class="user-card" v-if="isOpen">
           <div class="user-avatar">
-            <span class="user-level">2</span>
-            <div class="user-avatar-inner">
-              <span>{{ user?.nickname?.[0]?.toUpperCase() || 'B' }}</span>
-            </div>
+            <img
+              src="../../assets/images/navbar/lvl_nav.svg"
+              alt="W"
+              class="logo-img-small"
+            />
+
+            <span>{{ user?.nickname?.[0]?.toUpperCase() }}</span>
           </div>
           <div class="user-info">
             <div class="user-name">
@@ -57,7 +60,11 @@
           :data-tooltip="!isOpen ? 'Уровень пользователя: 2' : ''"
           v-if="!isOpen"
         >
-          <span class="level-number">2</span>
+          <img
+            src="../../assets/images/navbar/lvl_nav.svg"
+            alt="W"
+            class="logo-img-small"
+          />
         </div>
 
         <div class="sidebar-balance" v-if="isOpen">
@@ -75,6 +82,20 @@
             <span class="balance-wallets">КОШЕЛЕК</span>
           </div>
         </div>
+        <NuxtLink
+          to="/wallet"
+          class="menu-item"
+          :data-tooltip="!isOpen ? 'Кошелек' : ''"
+        >
+          <div class="menu-icon-wrapper">
+            <img
+              src="../../assets/images/navbar/wallet_nav.svg"
+              alt="W"
+              class="logo-img-small"
+            />
+          </div>
+          <span class="menu-text" v-if="isOpen">Кошелек</span>
+        </NuxtLink>
 
         <NuxtLink
           to="/investments"
@@ -82,44 +103,58 @@
           :data-tooltip="!isOpen ? 'Инвестиции' : ''"
         >
           <div class="menu-icon-wrapper">
-            <span class="menu-icon">📈</span>
+            <img
+              src="../../assets/images/navbar/profile.svg"
+              alt="W"
+              class="logo-img-small"
+            />
           </div>
           <span class="menu-text" v-if="isOpen">ИНВЕСТИЦИИ</span>
         </NuxtLink>
 
         <NuxtLink
-          to="/chests"
-          class="menu-item"
-          :data-tooltip="!isOpen ? 'Сундуки' : ''"
-        >
-          <div class="menu-icon-wrapper">
-            <span class="menu-icon">🎁</span>
-            <span class="menu-badge red">999</span>
-          </div>
-          <span class="menu-text" v-if="isOpen">СУНДУКИ</span>
-        </NuxtLink>
-
-        <NuxtLink
-          to="/roulette"
+          to="/spin"
           class="menu-item"
           :data-tooltip="!isOpen ? 'Рулетка' : ''"
         >
           <div class="menu-icon-wrapper">
-            <span class="menu-icon">🎰</span>
-            <span class="menu-badge green">7</span>
+            <img
+              src="../../assets/images/navbar/Spin_nav.svg"
+              alt="W"
+              class="logo-img-small"
+            />
           </div>
-          <span class="menu-text" v-if="isOpen">РУЛЕТКА</span>
+          <span class="menu-text" v-if="isOpen">Рулетка</span>
         </NuxtLink>
 
         <NuxtLink
-          to="/shop"
+          to="/chest"
           class="menu-item"
-          :data-tooltip="!isOpen ? 'Магазин' : ''"
+          :data-tooltip="!isOpen ? 'Сундуки' : ''"
         >
           <div class="menu-icon-wrapper">
-            <span class="menu-icon">🛒</span>
+            <img
+              src="../../assets/images/navbar/chest_nav.svg"
+              alt="W"
+              class="logo-img-small"
+            />
           </div>
-          <span class="menu-text" v-if="isOpen">МАГАЗИН</span>
+          <span class="menu-text" v-if="isOpen">Сундуки</span>
+        </NuxtLink>
+
+        <NuxtLink
+          to="/basket"
+          class="menu-item"
+          :data-tooltip="!isOpen ? 'Корзина' : ''"
+        >
+          <div class="menu-icon-wrapper">
+            <img
+              src="../../assets/images/navbar/basket_nav.svg"
+              alt="W"
+              class="logo-img-small"
+            />
+          </div>
+          <span class="menu-text" v-if="isOpen">Корзина</span>
         </NuxtLink>
 
         <NuxtLink
@@ -128,7 +163,13 @@
           :data-tooltip="!isOpen ? 'Рейтинг пользователей' : ''"
         >
           <div class="menu-icon-wrapper">
-            <span class="menu-icon">⭐</span>
+            <div class="menu-icon-wrapper">
+              <img
+                src="../../assets/images/navbar/star_nav.svg"
+                alt="W"
+                class="logo-img-small"
+              />
+            </div>
           </div>
           <span class="menu-text" v-if="isOpen">РЕЙТИНГ ПОЛЬЗОВАТЕЛЕЙ</span>
         </NuxtLink>
@@ -139,21 +180,13 @@
           :data-tooltip="!isOpen ? 'Профиль пользователя' : ''"
         >
           <div class="menu-icon-wrapper">
-            <span class="menu-icon">👤</span>
+            <img
+              src="../../assets/images/navbar/question_nav.svg"
+              alt="W"
+              class="logo-img-small"
+            />
           </div>
           <span class="menu-text" v-if="isOpen">ПРОФИЛЬ ПОЛЬЗОВАТЕЛЯ</span>
-        </NuxtLink>
-
-        <NuxtLink
-          to="/support"
-          class="menu-item"
-          :data-tooltip="!isOpen ? 'Служба поддержки' : ''"
-        >
-          <div class="menu-icon-wrapper">
-            <span class="menu-icon">💬</span>
-            <span class="menu-badge green">?</span>
-          </div>
-          <span class="menu-text" v-if="isOpen">СЛУЖБА ПОДДЕРЖКИ</span>
         </NuxtLink>
       </nav>
 
@@ -163,7 +196,11 @@
           :data-tooltip="!isOpen ? 'Реферальная ссылка' : ''"
         >
           <div class="menu-icon-wrapper">
-            <span class="menu-icon">🔗</span>
+            <img
+              src="../../assets/images/navbar/referal_navbar.svg"
+              alt="W"
+              class="logo-img-small"
+            />
           </div>
           <span class="menu-text" v-if="isOpen">ВАША РЕФЕРАЛЬНАЯ ССЫЛКА</span>
           <span class="referral-arrow" v-if="isOpen">→</span>
@@ -294,11 +331,10 @@ const onLogoError = () => {
 }
 
 .user-card {
+  padding: 8px;
   display: flex;
   align-items: center;
   gap: 16px;
-  padding: 16px 20px;
-  margin-bottom: 24px;
   opacity: 0;
   transform: translateX(-10px);
   transition: all 0.3s ease;
@@ -414,10 +450,8 @@ const onLogoError = () => {
 }
 
 .sidebar-balance {
-  background: rgba(0, 0, 0, 0.2);
   border-radius: 12px;
-  padding: 12px 16px;
-  margin: 0 20px 24px;
+  padding: 8px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -469,10 +503,10 @@ const onLogoError = () => {
 }
 
 .menu-item {
+  padding: 8px;
   display: flex;
   align-items: center;
   gap: 16px;
-  padding: 0;
   margin-bottom: 16px;
   text-decoration: none;
   color: var(--text-secondary);
@@ -490,10 +524,6 @@ const onLogoError = () => {
 
 .menu-item.nuxt-link-active {
   color: var(--text-primary);
-}
-
-.menu-item.nuxt-link-active .menu-icon-wrapper {
-  background: #4ade80;
 }
 
 .menu-item.nuxt-link-active .menu-icon {
@@ -519,11 +549,6 @@ const onLogoError = () => {
 
 .menu-item:hover .menu-icon-wrapper {
   background: rgba(74, 222, 128, 0.1);
-}
-
-.menu-item.active .menu-icon-wrapper,
-.menu-item.nuxt-link-active .menu-icon-wrapper {
-  background: #4ade80;
 }
 
 .menu-item.active .menu-icon,
