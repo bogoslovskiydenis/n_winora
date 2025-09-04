@@ -48,16 +48,26 @@
         <!-- Карточка пользователя (только при открытом сайдбаре) -->
         <div class="user-card" v-if="isOpen">
           <div class="user-avatar">
-            <span>{{ user?.nickname?.[0]?.toUpperCase() || 'B' }}</span>
+            <div class="avatar-level">
+              <img src="../../assets/images/navbar/lvl_nav.svg" />
+            </div>
+            <div class="avatar-info">
+              <span class="level-label">УРОВЕНЬ</span>
+            </div>
           </div>
           <div class="user-info">
             <div class="user-name">
-              {{ user?.nickname || 'bogoslovskydenis' }}
+              {{ user?.nickname || 'ArcticPulse' }}
             </div>
             <div class="user-email">
-              {{ user?.email || 'bogoslovskydenis@gmail.com' }}
+              {{ user?.email || 'email@host.com' }}
             </div>
-            <button class="user-exit" @click="$emit('logout')">ВЫХОД</button>
+          </div>
+          <div class="user-action">
+            <img src="../../assets/images/navbar/user_change_icon.svg" />
+            <button class="user-exit" @click="$emit('logout')">
+              <span>ВЫХОД</span>
+            </button>
           </div>
         </div>
 
@@ -79,28 +89,26 @@
           <div class="balance-item">
             <span class="balance-icon">💰</span>
             <span class="balance-value">{{
-              user?.balance?.toLocaleString() || '150,000'
+              user?.balance?.toLocaleString() || '10000'
             }}</span>
           </div>
-          <span class="balance-wallets">КОШЕЛЕК</span>
 
           <div class="balance-item">
             <span class="balance-label">USDT</span>
             <span class="balance-count">{{
-              Math.floor((user?.balance || 150000) / 100)
+              Math.floor((user?.balance || 150000) / 100) || '100'
             }}</span>
           </div>
+          <span class="balance-wallets">КОШЕЛЕК</span>
         </div>
 
         <!-- Пункты меню -->
-
         <NuxtLink
           to="/investments"
           class="menu-item"
           :data-tooltip="!isOpen ? 'Инвестиции' : ''"
         >
           <span class="menu-text" v-if="isOpen">ИНВЕСТИЦИИ</span>
-
           <div class="menu-icon-wrapper">
             <img
               src="../../assets/images/navbar/invest_nav.svg"
@@ -109,13 +117,13 @@
             />
           </div>
         </NuxtLink>
+
         <NuxtLink
           to="/chest"
           class="menu-item"
           :data-tooltip="!isOpen ? 'Сундуки' : ''"
         >
           <span class="menu-text" v-if="isOpen">Сундуки</span>
-
           <div class="menu-icon-wrapper">
             <img
               src="../../assets/images/navbar/chest_nav.svg"
@@ -131,7 +139,6 @@
           :data-tooltip="!isOpen ? 'Рулетка' : ''"
         >
           <span class="menu-text" v-if="isOpen">Рулетка</span>
-
           <div class="menu-icon-wrapper">
             <img
               src="../../assets/images/navbar/Spin_nav.svg"
@@ -140,28 +147,28 @@
             />
           </div>
         </NuxtLink>
+
         <NuxtLink
           to="/profile"
           class="menu-item"
           :data-tooltip="!isOpen ? 'Профиль Пользователя' : ''"
         >
           <span class="menu-text" v-if="isOpen">Профиль Пользователя</span>
-
           <div class="menu-icon-wrapper">
             <img
               src="../../assets/images/navbar/profile.svg"
-              alt="Spin"
+              alt="Profile"
               class="logo-img-small"
             />
           </div>
         </NuxtLink>
+
         <NuxtLink
           to="/wallet"
           class="menu-item"
           :data-tooltip="!isOpen ? 'Кошелек' : ''"
         >
           <span class="menu-text" v-if="isOpen">Кошелек</span>
-
           <div class="menu-icon-wrapper">
             <img
               src="../../assets/images/navbar/wallet_nav.svg"
@@ -177,7 +184,6 @@
           :data-tooltip="!isOpen ? 'Корзина' : ''"
         >
           <span class="menu-text" v-if="isOpen">Корзина</span>
-
           <div class="menu-icon-wrapper">
             <img
               src="../../assets/images/navbar/basket_nav.svg"
@@ -193,7 +199,6 @@
           :data-tooltip="!isOpen ? 'Рейтинг пользователей' : ''"
         >
           <span class="menu-text" v-if="isOpen">РЕЙТИНГ ПОЛЬЗОВАТЕЛЕЙ</span>
-
           <div class="menu-icon-wrapper">
             <img
               src="../../assets/images/navbar/star_nav.svg"
@@ -209,7 +214,6 @@
           :data-tooltip="!isOpen ? 'Профиль пользователя' : ''"
         >
           <span class="menu-text" v-if="isOpen">Служба Поддержки</span>
-
           <div class="menu-icon-wrapper">
             <img
               src="../../assets/images/navbar/question_nav.svg"
@@ -351,6 +355,10 @@ const onLogoError = () => {
   opacity: 0;
   transform: translateX(-10px);
   transition: all 0.3s ease;
+  border-radius: 16px;
+  background: url('~/assets/images/navbar/card_bg.png');
+  backdrop-filter: blur(10px);
+  margin: 0 8px 16px 8px;
 }
 
 .sidebar--open .user-card {
@@ -359,21 +367,55 @@ const onLogoError = () => {
 }
 
 .user-avatar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.avatar-level {
   width: 48px;
   height: 48px;
-  background: linear-gradient(135deg, #4ade80, #22c55e);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 24px;
+  position: relative;
+}
+
+.level-number {
+  font-size: 20px;
   font-weight: 700;
-  color: #0a3d2e;
-  flex-shrink: 0;
+  color: white;
+}
+
+.avatar-info {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.level-label {
+  font-size: 8px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.6);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .user-info {
   flex: 1;
+}
+.user-action {
+  display: flex;
+  align-items: end;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.user-action img {
+  display: flex;
+  justify-content: right;
 }
 
 .user-name {
@@ -389,24 +431,32 @@ const onLogoError = () => {
 }
 
 .user-exit {
-  background: none;
-  border: none;
-  color: #ef4444;
+  background: #00000033;
+  display: flex;
+  color: #ffffff;
+  border: 1px solid #07cb38;
   font-size: 12px;
   font-weight: 600;
   cursor: pointer;
-  padding: 0;
   text-align: left;
   transition: color 0.2s ease;
-}
-
-.user-exit:hover {
-  color: #dc2626;
+  border-radius: 32px;
+  width: 76px;
+  height: 26px;
+  gap: 10px;
+  padding: 8px 16px;
+  align-items: center;
+  justify-content: center;
 }
 
 /* Баланс */
 .sidebar-balance {
-  padding: 8px;
+  padding: 0 8px 0 8px;
+  background: #00aa6926;
+  height: 42px;
+  gap: 8px;
+  border-radius: 14px;
+  border-top: 1px solid #ffffff0d;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -421,9 +471,14 @@ const onLogoError = () => {
 }
 
 .balance-item {
+  width: 110px;
+  background: #00000040;
+  height: 26px;
+  gap: 4px;
+  border-radius: 16px;
   display: flex;
   align-items: center;
-  gap: 6px;
+  opacity: 1;
 }
 
 .balance-value {
@@ -443,13 +498,17 @@ const onLogoError = () => {
 }
 
 .balance-wallets {
-  background: var(--primary-color);
-  color: #0a3d2e;
+  display: flex;
+  height: 26px;
+  width: 100%;
+  background: #07cb38;
+  color: #070202;
   font-size: 9px;
   font-weight: 700;
   padding: 2px 6px;
-  border-radius: 6px;
-  margin-left: 4px;
+  align-items: center;
+  border-radius: 32px;
+  justify-content: center;
 }
 
 /* Меню */
