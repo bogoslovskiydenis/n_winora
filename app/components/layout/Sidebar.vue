@@ -274,14 +274,7 @@ const onLogoError = () => {
 /* Основной контейнер сайдбара */
 .sidebar {
   width: 80px;
-  background:
-    linear-gradient(180deg, #01614b 0%, #032019 100%),
-    linear-gradient(0deg, rgba(0, 0, 0, 0.56), rgba(0, 0, 0, 0.56)),
-    radial-gradient(
-      91.87% 42.67% at 50.13% -9.91%,
-      rgba(255, 255, 255, 0.1) 3.42%,
-      rgba(255, 255, 255, 0) 100%
-    );
+  background: #000000;
   backdrop-filter: blur(10px);
   position: fixed;
   top: 0;
@@ -294,6 +287,14 @@ const onLogoError = () => {
 
 .sidebar--open {
   width: 320px;
+  background:
+    linear-gradient(180deg, #01614b 0%, #032019 100%),
+    linear-gradient(0deg, rgba(0, 0, 0, 0.56), rgba(0, 0, 0, 0.56)),
+    radial-gradient(
+      91.87% 42.67% at 50.13% -9.91%,
+      rgba(255, 255, 255, 0.1) 3.42%,
+      rgba(255, 255, 255, 0) 100%
+    );
 }
 
 .sidebar-content {
@@ -413,6 +414,7 @@ const onLogoError = () => {
 .user-info {
   flex: 1;
 }
+
 .user-action {
   display: flex;
   align-items: end;
