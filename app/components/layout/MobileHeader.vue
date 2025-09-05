@@ -7,7 +7,7 @@
         <NuxtLink to="/main" class="logo-link" @click="$emit('navigate-home')">
           <div class="logo-container">
             <img
-              src="~/assets/images/Winora_logo.png"
+              src="~/assets/images/logo_mob_header.svg"
               alt="Winora"
               class="logo-image"
               @error="onLogoError"
@@ -22,17 +22,20 @@
         <div class="balance-container">
           <!-- Основной баланс W -->
           <div class="balance-item balance-item--primary">
-            <div class="balance-icon">W</div>
+            <div class="balance-icon">
+              <img src="~/assets/images/balance-icon.svg" />
+            </div>
             <span class="balance-value">{{ formattedWinBalance }}</span>
           </div>
-
-          <!-- Разделитель -->
-          <div class="balance-divider">×</div>
-
-          <!-- USDT баланс -->
+        </div>
+        <!-- USDT баланс -->
+        <div class="balance-usdt">
           <div class="balance-item balance-item--secondary">
             <span class="balance-label">USDT</span>
             <span class="balance-value">{{ formattedUsdtBalance }}</span>
+            <button class="action-btn" @click="$emit('top-up-balance')">
+              <img src="~/assets/images/add_balance.svg" />
+            </button>
           </div>
         </div>
       </div>
@@ -40,12 +43,6 @@
       <!-- Правая часть - Действия -->
       <div class="mobile-header__right">
         <!-- Кнопка пополнения -->
-        <button
-          class="action-btn action-btn--add"
-          @click="$emit('top-up-balance')"
-        >
-          <span class="btn-icon">+</span>
-        </button>
 
         <!-- Уведомления -->
         <button
@@ -53,10 +50,7 @@
           @click="toggleNotifications"
           :class="{ 'action-btn--active': showNotifications }"
         >
-          <span class="btn-icon">🔔</span>
-          <span v-if="notificationCount > 0" class="notification-badge">
-            {{ notificationCount }}
-          </span>
+          <img src="~/assets/images/notif.svg" />
         </button>
       </div>
     </div>
@@ -176,11 +170,6 @@ const notifications = ref([
   },
 ]);
 
-// Вычисляемые свойства
-const notificationCount = computed(
-  () => notifications.value.filter((n) => !n.read).length
-);
-
 // Форматируем балансы как в дизайне
 const formattedWinBalance = computed(() => {
   const balance = props.user?.winBalance || 10000;
@@ -247,27 +236,28 @@ onUnmounted(() => {
 <style scoped>
 /* Основной хедер */
 .mobile-header {
-  background: linear-gradient(
-    90deg,
-    rgba(26, 75, 60, 0.95) 0%,
-    rgba(10, 47, 35, 0.95) 100%
-  );
-  backdrop-filter: blur(15px);
-  border-bottom: 1px solid rgba(74, 222, 128, 0.2);
-  padding: 12px 20px;
-  margin-bottom: 20px;
-  position: relative;
+  height: 45px;
+  gap: 8px;
+  border-bottom-width: 1px;
+  padding: 8px;
+  background: linear-gradient(180deg, #1b1b1b 0%, #323232 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.mobile-header--inline {
-  margin: 0 0 20px 0;
+..mobile-header--inline {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .mobile-header__content {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   gap: 16px;
+  width: 100%;
 }
 
 /* Логотип */
@@ -307,55 +297,81 @@ onUnmounted(() => {
   flex: 1;
   display: flex;
   justify-content: center;
+  gap: 4px;
 }
 
 .balance-container {
+  width: 80px;
+  height: 26px;
   display: flex;
   align-items: center;
-  gap: 12px;
-  background: rgba(0, 0, 0, 0.2);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(74, 222, 128, 0.2);
-  border-radius: 20px;
-  padding: 8px 16px;
+  gap: 4px;
+  padding-right: 8px;
+  padding-left: 1px;
+  border-radius: 16px;
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  background: rgba(0, 0, 0, 0.25);
+}
+
+.balance-usdt {
+  width: 93px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  gap: 4px;
+  border-radius: 16px;
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  background: rgba(0, 0, 0, 0.25);
 }
 
 .balance-item {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 4px;
 }
 
 .balance-item--primary .balance-icon {
   width: 24px;
   height: 24px;
-  background: linear-gradient(135deg, #fbbf24, #f59e0b);
-  border-radius: 50%;
+
   display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 12px;
-  font-weight: 900;
-  color: white;
 }
 
 .balance-item--primary .balance-value {
-  font-size: 16px;
+  font-family: Roboto, serif;
   font-weight: 700;
-  color: #fbbf24;
+  font-style: Condensed Bold;
+  font-size: 16px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  text-align: right;
+  color: #c8c503;
 }
 
 .balance-item--secondary .balance-label {
+  font-family: Roboto;
+  font-weight: 400;
+  font-style: Condensed Regular;
   font-size: 12px;
-  font-weight: 600;
-  color: rgba(255, 255, 255, 0.8);
+  leading-trim: CAP_HEIGHT;
+  line-height: 118%;
+  letter-spacing: 0%;
+  text-align: center;
+  vertical-align: middle;
   text-transform: uppercase;
 }
 
 .balance-item--secondary .balance-value {
-  font-size: 16px;
+  font-family: Roboto, serif;
   font-weight: 700;
-  color: #4ade80;
+  font-style: Condensed Bold;
+  font-size: 16px;
+  leading-trim: CAP_HEIGHT;
+  line-height: 100%;
+  letter-spacing: 0%;
+  text-align: right;
+  color: #07cb38;
 }
 
 .balance-divider {
@@ -373,70 +389,16 @@ onUnmounted(() => {
 }
 
 .action-btn {
-  position: relative;
-  width: 40px;
-  height: 40px;
-  border: none;
-  border-radius: 50%;
-  cursor: pointer;
-  transition: all 0.2s ease;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: inherit;
+  background: none;
 }
-
-.action-btn--add {
-  background: #4ade80;
-  color: #0a2f23;
-  box-shadow: 0 4px 12px rgba(74, 222, 128, 0.3);
-}
-
-.action-btn--add:hover {
-  background: #22c55e;
-  transform: scale(1.05);
-  box-shadow: 0 6px 16px rgba(74, 222, 128, 0.4);
-}
-
-.action-btn--add .btn-icon {
-  font-size: 20px;
-  font-weight: 700;
-}
-
-.action-btn--notifications {
-  background: rgba(255, 255, 255, 0.1);
-  color: rgba(255, 255, 255, 0.8);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.action-btn--notifications:hover,
-.action-btn--notifications.action-btn--active {
-  background: rgba(255, 255, 255, 0.15);
-  color: white;
-  border-color: rgba(255, 255, 255, 0.3);
+.action-btn img {
+  width: 26px;
+  height: 26px;
 }
 
 .btn-icon {
   font-size: 18px;
-}
-
-.notification-badge {
-  position: absolute;
-  top: -4px;
-  right: -4px;
-  background: #ef4444;
-  color: white;
-  font-size: 10px;
-  font-weight: 700;
-  padding: 2px 6px;
-  border-radius: 8px;
-  min-width: 16px;
-  height: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  line-height: 1;
-  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3);
 }
 
 /* Dropdown уведомлений */
@@ -643,11 +605,6 @@ onUnmounted(() => {
   .balance-container {
     gap: 8px;
     padding: 6px 12px;
-  }
-
-  .action-btn {
-    width: 36px;
-    height: 36px;
   }
 
   .btn-icon {

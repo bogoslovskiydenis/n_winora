@@ -77,6 +77,11 @@
 </template>
 
 <script setup>
+import MobileHeader from './../components/layout/MobileHeader.vue';
+import Header from './../components/layout/Header.vue';
+import Sidebar from './../components/layout/Sidebar.vue';
+import MobileBottomNav from './../components/layout/MobileBottomNav.vue';
+
 const route = useRoute();
 const { user, logoutUser } = useAuth();
 
