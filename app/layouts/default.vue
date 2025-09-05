@@ -1,7 +1,5 @@
 <template>
   <div class="layout">
-    <a href="#main-content" class="skip-link">Перейти к основному содержанию</a>
-
     <!-- Desktop Sidebar -->
     <Sidebar
       v-if="showSidebar && !isMobile"
@@ -308,7 +306,6 @@ useHead({
 /* Адаптивные стили */
 @media (max-width: 1023px) {
   .main-wrapper {
-    margin-left: 0;
   }
 
   .main-wrapper--sidebar-open {

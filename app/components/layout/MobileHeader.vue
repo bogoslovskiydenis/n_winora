@@ -246,12 +246,6 @@ onUnmounted(() => {
   justify-content: center;
 }
 
-..mobile-header--inline {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 .mobile-header__content {
   display: flex;
   align-items: center;
@@ -595,7 +589,6 @@ onUnmounted(() => {
 @media (max-width: 480px) {
   .mobile-header {
     padding: 10px 16px;
-    margin-bottom: 16px;
   }
 
   .mobile-header__content {

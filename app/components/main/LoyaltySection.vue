@@ -12,7 +12,7 @@
           <!-- Левая часть - информация об уровне -->
           <div class="loyalty-level">
             <div class="level-badge-wrapper">
-              <span class="level-badge">{{ currentLevel }}</span>
+              <img src="../../assets/images/navbar/lvl_nav.svg" alt="" />
             </div>
             <div class="level-info">
               <div class="level-title">Ваш уровень лояльности</div>
@@ -26,44 +26,57 @@
                   <span class="remaining">{{ nextLevelRemaining }} USD</span>
                 </div>
               </div>
-              <router-link to="/profile" class="level-link"
-                >Узнать больше
+              <router-link to="/profile" class="level-link">
+                Узнать больше
               </router-link>
             </div>
           </div>
 
           <!-- Правая часть - бонусы -->
           <div class="loyalty-rewards">
-            <!-- Текущий уровень -->
-            <div class="reward-column">
-              <div class="reward-header">
-                <div class="reward-title">Бонусы за текущий уровень</div>
-              </div>
-              <div class="reward-list">
-                <div
-                  v-for="bonus in currentBonuses"
-                  :key="bonus.name"
-                  class="reward-item"
-                >
-                  <span class="reward-name">{{ bonus.name }}</span>
-                  <span class="reward-value">{{ bonus.value }}</span>
+            <!-- Кнопка-аккордеон для мобильной версии -->
+            <button
+              class="bonus-toggle"
+              :class="{ expanded: isBonusExpanded }"
+              @click="toggleBonus"
+            >
+              БОНУСЫ
+              <span class="bonus-toggle-icon">▼</span>
+            </button>
+
+            <!-- Контент бонусов -->
+            <div class="bonus-content" :class="{ expanded: isBonusExpanded }">
+              <!-- Текущий уровень -->
+              <div class="reward-column">
+                <div class="reward-header">
+                  <div class="reward-title">Бонусы за текущий уровень</div>
+                </div>
+                <div class="reward-list">
+                  <div
+                    v-for="bonus in currentBonuses"
+                    :key="bonus.name"
+                    class="reward-item"
+                  >
+                    <span class="reward-name">{{ bonus.name }}</span>
+                    <span class="reward-value">{{ bonus.value }}</span>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <!-- Следующий уровень -->
-            <div class="reward-column next-level">
-              <div class="reward-header">
-                <div class="reward-title">Бонусы за следующий уровень</div>
-              </div>
-              <div class="reward-list">
-                <div
-                  v-for="bonus in nextBonuses"
-                  :key="bonus.name"
-                  class="reward-item"
-                >
-                  <span class="reward-name">{{ bonus.name }}</span>
-                  <span class="reward-value green">{{ bonus.value }}</span>
+              <!-- Следующий уровень -->
+              <div class="reward-column next-level">
+                <div class="reward-header">
+                  <div class="reward-title">Бонусы за следующий уровень</div>
+                </div>
+                <div class="reward-list">
+                  <div
+                    v-for="bonus in nextBonuses"
+                    :key="bonus.name"
+                    class="reward-item"
+                  >
+                    <span class="reward-name">{{ bonus.name }}</span>
+                    <span class="reward-value green">{{ bonus.value }}</span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -98,9 +111,9 @@
         </div>
       </div>
     </div>
+
     <div class="investment-banner-section">
       <div class="investment-banner">
-        <!-- Задний фон с картинкой (уже реализован через ::before) -->
         <!-- Заголовок -->
         <div class="banner-header">
           <h2 class="banner-title">Время выбрать</h2>
@@ -127,11 +140,13 @@
   </section>
 </template>
 
-<script setup lang="ts">
+<script setup>
 // Реактивные данные для уровня пользователя
-const currentLevel = ref(2);
 const depositAmount = ref(1370);
 const nextLevelRemaining = ref(130);
+
+// Состояние аккордеона для мобильной версии
+const isBonusExpanded = ref(false);
 
 // Бонусы для текущего уровня (согласно дизайну)
 const currentBonuses = ref([
@@ -147,14 +162,18 @@ const nextBonuses = ref([
   { name: 'Сундуки', value: '3' }, // Правильное значение из дизайна
 ]);
 
+// Функция переключения аккордеона бонусов
+const toggleBonus = () => {
+  isBonusExpanded.value = !isBonusExpanded.value;
+};
+
 // Обработчик клика на кнопку инвестиций
 const handleInvestmentClick = () => {
   navigateTo('/investments');
 };
 
 // Функция для обновления данных (для будущей интеграции с API)
-const updateLoyaltyData = (userData: any) => {
-  currentLevel.value = userData.level || 2;
+const updateLoyaltyData = (userData) => {
   depositAmount.value = userData.totalDeposits || 1370;
   nextLevelRemaining.value = userData.nextLevelRemaining || 130;
 
@@ -163,7 +182,7 @@ const updateLoyaltyData = (userData: any) => {
 };
 
 // Функция для обновления бонусов в зависимости от уровня
-const updateBonuses = (level: number) => {
+const updateBonuses = (level) => {
   // Логика для разных уровней
   switch (level) {
     case 2:
@@ -193,6 +212,12 @@ const updateBonuses = (level: number) => {
 }
 
 .loyalty-section {
+  width: 644px;
+  height: 160px;
+  max-width: 644px;
+  gap: 16px;
+  border-top-width: 1px;
+  border-radius: 16px 16px 24px 24px;
   display: flex;
 }
 
@@ -210,6 +235,7 @@ const updateBonuses = (level: number) => {
   justify-content: center;
   align-items: center;
   position: relative;
+  padding: 10px;
 }
 
 .loyalty-icon {
@@ -223,7 +249,7 @@ const updateBonuses = (level: number) => {
 .loyalty-title {
   font-size: 16px;
   font-weight: 700;
-  color: var(--primary-color);
+  color: #4ade80;
   letter-spacing: 1px;
 }
 
@@ -232,19 +258,21 @@ const updateBonuses = (level: number) => {
    =========================================== */
 
 .loyalty-content {
-  padding: 20px;
   display: flex;
-  gap: 32px;
+  gap: 16px;
+  padding: 10px;
   align-items: flex-start;
 }
 
 .loyalty-level {
-  padding: 10px;
   border-radius: 8px;
   background-color: #00000042;
   display: flex;
   align-items: flex-start;
   flex: 1;
+  padding: 10px;
+  gap: 12px;
+  height: 109px;
 }
 
 .level-badge-wrapper {
@@ -252,40 +280,10 @@ const updateBonuses = (level: number) => {
   flex-shrink: 0;
 }
 
-.level-badge {
+.level-badge-wrapper img {
   width: 60px;
   height: 60px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 28px;
-  font-weight: 700;
-  color: white;
-  border: 3px solid rgba(255, 107, 53, 0.3);
-  box-shadow: 0 8px 24px rgba(255, 107, 53, 0.2);
-  position: relative;
-  z-index: 1;
-}
-
-.level-badge::before {
-  content: '';
-  position: absolute;
-  top: -5px;
-  left: -5px;
-  right: -5px;
-  bottom: -5px;
-  background: linear-gradient(135deg, #ff6b35, #f7931e);
-  border-radius: 50%;
-  z-index: -1;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.level-badge:hover::before {
-  opacity: 0.3;
-  animation: pulse 2s infinite;
 }
 
 .level-info {
@@ -296,17 +294,20 @@ const updateBonuses = (level: number) => {
 .level-title {
   font-size: 18px;
   font-weight: 600;
-  color: var(--text-primary);
+  color: #ffffff;
+  margin-bottom: 8px;
 }
 
 .level-details {
+  margin-bottom: 8px;
 }
 
 .level-deposit,
 .level-next {
   font-size: 14px;
-  color: var(--text-secondary);
+  color: rgba(255, 255, 255, 0.7);
   line-height: 1.4;
+  margin-bottom: 4px;
 }
 
 .amount {
@@ -321,7 +322,7 @@ const updateBonuses = (level: number) => {
 
 .level-link {
   font-size: 14px;
-  color: var(--primary-color);
+  color: #4ade80;
   text-decoration: none;
   font-weight: 500;
   padding: 2px 0;
@@ -330,8 +331,8 @@ const updateBonuses = (level: number) => {
 }
 
 .level-link:hover {
-  border-bottom-color: var(--primary-color);
-  color: var(--primary-light);
+  border-bottom-color: #4ade80;
+  color: #22c55e;
 }
 
 /* ===========================================
@@ -341,11 +342,23 @@ const updateBonuses = (level: number) => {
 .loyalty-rewards {
   border-radius: 8px;
   background-color: #ffffff1a;
-  padding: 10px;
   display: flex;
-  gap: 24px;
+  gap: 16px;
   flex: 1;
-  min-width: 0;
+  padding: 10px;
+  height: 109px;
+}
+
+/* Скрываем аккордеон на десктопе */
+.bonus-toggle {
+  display: none;
+}
+
+.bonus-content {
+  display: flex;
+  gap: 16px;
+  flex: 1;
+  width: 100%;
 }
 
 .reward-column {
@@ -354,6 +367,7 @@ const updateBonuses = (level: number) => {
 }
 
 .reward-header {
+  margin-bottom: 8px;
 }
 
 .reward-title {
@@ -368,7 +382,7 @@ const updateBonuses = (level: number) => {
 .reward-list {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 4px;
 }
 
 .reward-item {
@@ -378,6 +392,7 @@ const updateBonuses = (level: number) => {
   transition: all 0.3s ease;
   position: relative;
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 4px 0;
 }
 
 .reward-item:last-child {
@@ -391,7 +406,7 @@ const updateBonuses = (level: number) => {
 
 .reward-name {
   font-size: 13px;
-  color: var(--text-primary);
+  color: #ffffff;
   font-weight: 500;
 }
 
@@ -417,6 +432,8 @@ const updateBonuses = (level: number) => {
   height: 160px;
   margin-bottom: 32px;
   background-image: url('./../../assets/images/cadrs_investitions_bg.png');
+  background-size: cover;
+  background-position: center;
 }
 
 .investment-banner-section:last-child {
@@ -429,6 +446,8 @@ const updateBonuses = (level: number) => {
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
+  height: 100%;
+  padding: 16px;
 }
 
 /* Декоративный фон с сеткой */
@@ -471,7 +490,7 @@ const updateBonuses = (level: number) => {
 
 .banner-header {
   text-align: center;
-  margin-bottom: auto;
+  z-index: 2;
 }
 
 .banner-title {
@@ -502,44 +521,12 @@ const updateBonuses = (level: number) => {
   align-items: center;
   gap: 16px;
   margin: 0 auto;
+  z-index: 2;
 }
 
-.investment-case {
-  position: relative;
-  width: 60px;
-  height: 60px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 2px solid rgba(74, 222, 128, 0.3);
-  border-radius: 12px;
-  background: rgba(0, 0, 0, 0.2);
-  backdrop-filter: blur(10px);
-  transition: all 0.3s ease;
-  cursor: pointer;
-}
-
-.investment-case:hover {
-  transform: translateY(-4px);
-  border-color: rgba(74, 222, 128, 0.6);
-  box-shadow: 0 8px 32px rgba(74, 222, 128, 0.3);
-}
-
-.case-icon {
-  font-size: 24px;
-  filter: hue-rotate(120deg) saturate(1.5);
-}
-
-/* Особый стиль для центрального портфеля */
-.investment-case.featured {
-  width: 80px;
-  height: 80px;
-  border-color: rgba(74, 222, 128, 0.8);
-  background: rgba(74, 222, 128, 0.1);
-}
-
-.investment-case.featured .case-icon {
-  font-size: 32px;
+.investment-cases img {
+  max-width: 60px;
+  height: auto;
 }
 
 /* ===========================================
@@ -547,7 +534,6 @@ const updateBonuses = (level: number) => {
    =========================================== */
 
 .investment-buy-btn {
-  bottom: 20px;
   background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
   border: none;
   border-radius: 50px;
@@ -562,7 +548,7 @@ const updateBonuses = (level: number) => {
   box-shadow: 0 4px 20px rgba(249, 115, 22, 0.4);
   position: relative;
   overflow: hidden;
-  margin-top: auto;
+  z-index: 2;
 }
 
 .investment-buy-btn::before {
@@ -597,70 +583,325 @@ const updateBonuses = (level: number) => {
 
 @media (max-width: 1200px) {
   .loyalty-investment-wrapper {
-    grid-template-columns: 1fr;
+    flex-direction: column;
+    align-items: center;
   }
 
   .loyalty-section {
-    height: 100%;
+    width: 100%;
+    max-width: 644px;
+    height: auto;
+  }
+
+  .investment-banner-section {
+    width: 100%;
+    max-width: 644px;
   }
 }
 
 @media (max-width: 768px) {
+  .loyalty-investment-wrapper {
+    flex-direction: column;
+    gap: 12px;
+    padding: 0 16px;
+  }
+
+  .loyalty-section {
+    width: 100%;
+    height: auto;
+    max-width: none;
+  }
+
   .loyalty-card {
-    padding: 20px;
+    padding: 0;
+  }
+
+  .loyalty-header {
+    padding: 16px;
   }
 
   .loyalty-content {
-    gap: 20px;
+    flex-direction: column;
+    gap: 0;
+    height: auto;
+    padding: 0;
   }
 
   .loyalty-level {
-    text-align: center;
-    gap: 16px;
+    padding: 16px;
+    width: 100%;
+    background-color: transparent;
+    border-radius: 0;
+    gap: 12px;
   }
 
+  .level-badge-wrapper img {
+    width: 50px;
+    height: 50px;
+  }
+
+  .level-info {
+    flex: 1;
+  }
+
+  .level-title {
+    font-size: 16px;
+    margin-bottom: 8px;
+  }
+
+  .level-deposit,
+  .level-next {
+    font-size: 13px;
+    margin-bottom: 4px;
+  }
+
+  .level-link {
+    margin-top: 8px;
+    display: inline-block;
+  }
+
+  /* Секция БОНУСЫ - кнопка-аккордеон */
   .loyalty-rewards {
-    gap: 16px;
+    display: flex;
+    align-items: center;
+    padding: 0;
+    gap: 0;
+    width: 100%;
+    background: transparent;
+    border-radius: 0;
+    flex-direction: column;
+  }
+
+  .bonus-toggle {
+    display: flex;
+    width: 100%;
+    background: linear-gradient(90deg, #22c55e 0%, #16a34a 100%);
+    border: none;
+    border-radius: 32px;
+    padding: 16px 24px;
+    color: white;
+    font-size: 16px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin: 16px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 20px rgba(34, 197, 94, 0.3);
+  }
+
+  .bonus-toggle:hover {
+    background: linear-gradient(90deg, #16a34a 0%, #15803d 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(34, 197, 94, 0.4);
+  }
+
+  .bonus-toggle-icon {
+    font-size: 14px;
+    transition: transform 0.3s ease;
+  }
+
+  .bonus-toggle.expanded .bonus-toggle-icon {
+    transform: rotate(180deg);
+  }
+
+  .bonus-content {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 16px;
+    margin: 0 16px 16px 16px;
+    padding: 0;
+    display: flex;
+    gap: 20px;
+    overflow: hidden;
+    max-height: 0;
+    transition: all 0.3s ease;
+  }
+
+  .bonus-content.expanded {
+    max-height: 300px;
+    padding: 16px;
+  }
+
+  .reward-column {
+    flex: 1;
+    min-width: 120px;
+  }
+
+  .reward-title {
+    font-size: 11px;
+    text-align: center;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(249, 158, 11, 0.2);
+  }
+
+  .reward-list {
+    gap: 8px;
+  }
+
+  .reward-item {
+    padding: 8px 0;
+    flex-direction: column;
+    text-align: center;
+    gap: 4px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .reward-item:last-child {
+    border-bottom: none;
+  }
+
+  .reward-name {
+    font-size: 12px;
+  }
+
+  .reward-value {
+    font-size: 13px;
+    min-width: auto;
+  }
+
+  .investment-banner-section {
+    width: 100%;
+    max-width: none;
+    height: 160px;
+    margin-bottom: 16px;
   }
 
   .investment-banner {
-    padding: 20px 16px;
-    min-height: 240px;
+    padding: 16px;
+    height: 100%;
+  }
+
+  .banner-title {
+    font-size: 14px;
   }
 
   .banner-main-title {
-    font-size: 24px;
+    font-size: 22px;
   }
 
   .investment-cases {
     gap: 12px;
   }
 
-  .investment-case {
-    width: 50px;
-    height: 50px;
-  }
-
-  .investment-case .case-icon {
-    font-size: 20px;
-  }
-
-  .investment-case.featured {
-    width: 65px;
-    height: 65px;
-  }
-
-  .investment-case.featured .case-icon {
-    font-size: 26px;
-  }
-
   .investment-buy-btn {
-    padding: 10px 30px;
+    padding: 10px 24px;
+    font-size: 12px;
+    width: auto;
+    min-width: 100px;
+  }
+}
+
+@media (max-width: 480px) {
+  .loyalty-investment-wrapper {
+    padding: 0 12px;
+    gap: 12px;
+  }
+
+  .loyalty-header {
+    padding: 12px 16px;
+  }
+
+  .loyalty-title {
+    font-size: 14px;
+  }
+
+  .loyalty-level {
+    padding: 12px 16px;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .level-badge-wrapper {
+    margin-bottom: 12px;
+  }
+
+  .level-badge-wrapper img {
+    width: 45px;
+    height: 45px;
+  }
+
+  .level-title {
+    font-size: 14px;
+    margin-bottom: 8px;
+  }
+
+  .level-deposit,
+  .level-next {
+    font-size: 12px;
+    text-align: center;
+  }
+
+  .bonus-toggle {
+    margin: 12px;
+    padding: 14px 20px;
+    font-size: 14px;
+  }
+
+  .bonus-content {
+    margin: 0 12px 12px 12px;
+    padding: 0;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .bonus-content.expanded {
+    display: flex;
+    flex-direction: row;
+    padding: 12px;
+  }
+
+  .reward-column {
+    min-width: auto;
+  }
+
+  .reward-title {
+    font-size: 10px;
+    margin-bottom: 8px;
+  }
+
+  .reward-item {
+    padding: 6px 0;
+  }
+
+  .reward-name {
+    font-size: 11px;
+  }
+
+  .reward-value {
     font-size: 12px;
   }
 
   .investment-banner-section {
-    margin-bottom: 16px;
+    height: 140px;
+  }
+
+  .investment-banner {
+    padding: 12px;
+  }
+
+  .banner-title {
+    font-size: 12px;
+  }
+
+  .banner-main-title {
+    font-size: 18px;
+  }
+
+  .investment-cases img {
+    width: 40px;
+    height: auto;
+  }
+
+  .investment-buy-btn {
+    padding: 8px 20px;
+    font-size: 11px;
+    min-width: 90px;
+    height: 36px;
   }
 }
 
@@ -676,10 +917,6 @@ const updateBonuses = (level: number) => {
   50% {
     box-shadow: 0 8px 32px rgba(255, 107, 53, 0.4);
   }
-}
-
-.level-badge {
-  animation: levelPulse 3s infinite;
 }
 
 @keyframes techGridMove {
@@ -716,16 +953,13 @@ const updateBonuses = (level: number) => {
 
 @media (prefers-reduced-motion: reduce) {
   .loyalty-card,
-  .level-badge,
   .reward-item,
   .banner-main-title,
-  .investment-case.featured,
   .tech-grid,
   .circuit-pattern {
     animation: none;
   }
 
-  .investment-case:hover,
   .investment-buy-btn:hover,
   .reward-item:hover {
     transform: none;
@@ -734,8 +968,9 @@ const updateBonuses = (level: number) => {
 
 /* Фокус для клавиатурной навигации */
 .level-link:focus-visible,
-.investment-buy-btn:focus-visible {
-  outline: 2px solid var(--primary-color);
+.investment-buy-btn:focus-visible,
+.bonus-toggle:focus-visible {
+  outline: 2px solid #4ade80;
   outline-offset: 2px;
   border-radius: 4px;
 }
