@@ -26,9 +26,9 @@
                   <span class="remaining">{{ nextLevelRemaining }} USD</span>
                 </div>
               </div>
-              <router-link to="/profile" class="level-link">
+              <NuxtLink to="/profile" class="level-link">
                 Узнать больше
-              </router-link>
+              </NuxtLink>
             </div>
           </div>
 
@@ -39,6 +39,7 @@
               class="bonus-toggle"
               :class="{ expanded: isBonusExpanded }"
               @click="toggleBonus"
+              type="button"
             >
               БОНУСЫ
               <span class="bonus-toggle-icon">▼</span>
@@ -151,15 +152,15 @@ const isBonusExpanded = ref(false);
 // Бонусы для текущего уровня (согласно дизайну)
 const currentBonuses = ref([
   { name: 'Кешбек', value: '5%' },
-  { name: 'Спины', value: '-' }, // Тире для пустых значений
-  { name: 'Сундуки', value: '-' }, // Тире для пустых значений
+  { name: 'Спины', value: '-' },
+  { name: 'Сундуки', value: '-' },
 ]);
 
 // Бонусы для следующего уровня (согласно дизайну)
 const nextBonuses = ref([
   { name: 'Кешбек', value: '7%' },
-  { name: 'Спины', value: '2' }, // Правильное значение из дизайна
-  { name: 'Сундуки', value: '3' }, // Правильное значение из дизайна
+  { name: 'Спины', value: '2' },
+  { name: 'Сундуки', value: '3' },
 ]);
 
 // Функция переключения аккордеона бонусов
@@ -176,14 +177,11 @@ const handleInvestmentClick = () => {
 const updateLoyaltyData = (userData) => {
   depositAmount.value = userData.totalDeposits || 1370;
   nextLevelRemaining.value = userData.nextLevelRemaining || 130;
-
-  // Обновляем бонусы на основе уровня
   updateBonuses(userData.level || 2);
 };
 
 // Функция для обновления бонусов в зависимости от уровня
 const updateBonuses = (level) => {
-  // Логика для разных уровней
   switch (level) {
     case 2:
       currentBonuses.value = [
@@ -197,7 +195,6 @@ const updateBonuses = (level) => {
         { name: 'Сундуки', value: '3' },
       ];
       break;
-    // Добавить другие уровни по необходимости
     default:
       break;
   }
@@ -259,6 +256,7 @@ const updateBonuses = (level) => {
 
 .loyalty-content {
   display: flex;
+  height: 109px;
   gap: 16px;
   padding: 10px;
   align-items: flex-start;
@@ -272,7 +270,6 @@ const updateBonuses = (level) => {
   flex: 1;
   padding: 10px;
   gap: 12px;
-  height: 109px;
 }
 
 .level-badge-wrapper {
@@ -346,7 +343,6 @@ const updateBonuses = (level) => {
   gap: 16px;
   flex: 1;
   padding: 10px;
-  height: 109px;
 }
 
 /* Скрываем аккордеон на десктопе */
@@ -691,17 +687,26 @@ const updateBonuses = (level) => {
     margin: 16px;
     transition: all 0.3s ease;
     box-shadow: 0 4px 20px rgba(34, 197, 94, 0.3);
+    /* Добавляем стили для iOS */
+    -webkit-appearance: none;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+    user-select: none;
   }
 
-  .bonus-toggle:hover {
+  .bonus-toggle:hover,
+  .bonus-toggle:active,
+  .bonus-toggle:focus {
     background: linear-gradient(90deg, #16a34a 0%, #15803d 100%);
     transform: translateY(-2px);
     box-shadow: 0 8px 32px rgba(34, 197, 94, 0.4);
+    outline: none;
   }
 
   .bonus-toggle-icon {
     font-size: 14px;
     transition: transform 0.3s ease;
+    will-change: transform;
   }
 
   .bonus-toggle.expanded .bonus-toggle-icon {
@@ -717,11 +722,14 @@ const updateBonuses = (level) => {
     gap: 20px;
     overflow: hidden;
     max-height: 0;
-    transition: all 0.3s ease;
+    transition:
+      max-height 0.4s ease,
+      padding 0.4s ease;
+    will-change: max-height;
   }
 
   .bonus-content.expanded {
-    max-height: 300px;
+    max-height: 400px;
     padding: 16px;
   }
 
@@ -792,6 +800,9 @@ const updateBonuses = (level) => {
     font-size: 12px;
     width: auto;
     min-width: 100px;
+    -webkit-appearance: none;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
   }
 }
 
@@ -850,9 +861,10 @@ const updateBonuses = (level) => {
   }
 
   .bonus-content.expanded {
+    padding: 12px;
     display: flex;
     flex-direction: row;
-    padding: 12px;
+    max-height: 300px;
   }
 
   .reward-column {
@@ -973,5 +985,18 @@ const updateBonuses = (level) => {
   outline: 2px solid #4ade80;
   outline-offset: 2px;
   border-radius: 4px;
+}
+
+/* Дополнительные стили для iOS Safari */
+@supports (-webkit-overflow-scrolling: touch) {
+  .bonus-toggle {
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+  }
+
+  .bonus-content {
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+  }
 }
 </style>
