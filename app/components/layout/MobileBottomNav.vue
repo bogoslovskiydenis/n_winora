@@ -9,7 +9,10 @@
       :class="{ 'nav-item--active': activeRoute === 'shop' }"
     >
       <div class="nav-item__icon-wrapper">
-        <div class="nav-item__icon">🛒</div>
+        <img
+          :alt="''"
+          src="./../../assets/images/mobile_sidebar/mobile_nav_bucket.svg"
+        />
         <span v-if="shopBadge" class="nav-item__badge red">{{
           shopBadge
         }}</span>
@@ -23,7 +26,10 @@
       :class="{ 'nav-item--active': activeRoute === 'investments-create' }"
     >
       <div class="nav-item__icon-wrapper">
-        <div class="nav-item__icon nav-item__icon--create">⊕</div>
+        <img
+          :alt="''"
+          src="./../../assets/images/mobile_sidebar/create_invest.svg"
+        />
       </div>
       <span class="nav-item__label">Создать<br />инвестицию</span>
     </NuxtLink>
@@ -34,7 +40,7 @@
       :class="{ 'nav-item--active': activeRoute === 'investments' }"
     >
       <div class="nav-item__icon-wrapper">
-        <div class="nav-item__icon">💼</div>
+        <img :alt="''" src="./../../assets/images/mobile_sidebar/invest.svg" />
         <span v-if="investmentsBadge" class="nav-item__badge green">{{
           investmentsBadge
         }}</span>
@@ -48,7 +54,7 @@
       @click="toggleMenu"
     >
       <div class="nav-item__icon-wrapper">
-        <div class="nav-item__icon">☰</div>
+        <img :alt="''" src="./../../assets/images/navbar/burger_nav.svg" />
       </div>
       <span class="nav-item__label">Меню</span>
     </button>
@@ -237,19 +243,23 @@ onUnmounted(() => {
 <style scoped>
 /* Основная навигация */
 .mobile-bottom-nav {
+  background: radial-gradient(
+    66.23% 145.07% at 50.13% -56.34%,
+    #353535 51.68%,
+    #202020 100%
+  );
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
   z-index: 1000;
-  background: rgba(0, 0, 0, 0.95);
+  /* background: rgba(0, 0, 0, 0.95); */
   backdrop-filter: blur(10px);
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   padding: 8px 0 calc(8px + env(safe-area-inset-bottom));
   display: flex;
   justify-content: space-around;
   align-items: center;
-  /* Убираем трансформацию - навигация всегда видна */
 }
 
 /* Элементы навигации */
@@ -345,8 +355,16 @@ onUnmounted(() => {
 }
 
 .mobile-menu {
+  background:
+    linear-gradient(180deg, #01614b 0%, #032019 100%),
+    linear-gradient(0deg, rgba(0, 0, 0, 0.56), rgba(0, 0, 0, 0.56)),
+    radial-gradient(
+      91.87% 42.67% at 50.13% -9.91%,
+      rgba(255, 255, 255, 0.1) 3.42%,
+      rgba(255, 255, 255, 0) 100%
+    );
   width: 100%;
-  background: rgba(0, 0, 0, 0.95);
+  /* background: rgba(0, 0, 0, 0.95); */
   backdrop-filter: blur(20px);
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 20px 20px 0 0;
