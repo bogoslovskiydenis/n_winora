@@ -74,6 +74,15 @@ export const userAPI = {
     });
   },
 
+  resetPassword: async (email) => {
+    return await apiRequest('/users/reset-password', {
+      method: 'POST',
+      body: {
+        email: email,
+      },
+    });
+  },
+
   // Логин
   login: async (credentials) => {
     return await apiRequest('/users/login', {
@@ -146,4 +155,14 @@ export const handleApiResponse = (response, context = '') => {
     success: false,
     message: 'Неожиданный формат ответа от сервера',
   };
+};
+
+// Функция для сброса пароля
+export const resetPassword = async (email) => {
+  return await apiRequest('/users/reset-password', {
+    method: 'POST',
+    body: {
+      email: email,
+    },
+  });
 };

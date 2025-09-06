@@ -54,7 +54,7 @@
               <span class="checkbox-text">Запомнить меня</span>
             </label>
             <div class="forgot-password">
-              <a href="#" class="link">Восстановить пароль</a>
+              <a href="/forgot-password" class="link">Восстановить пароль</a>
             </div>
           </div>
 
