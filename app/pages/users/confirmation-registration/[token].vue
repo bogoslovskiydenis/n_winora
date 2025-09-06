@@ -1,4 +1,3 @@
-<!-- pages/users/confirmation-registration/[token].vue -->
 <template>
   <div class="confirmation-container">
     <div class="confirmation-card">

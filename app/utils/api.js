@@ -74,15 +74,6 @@ export const userAPI = {
     });
   },
 
-  resetPassword: async (email) => {
-    return await apiRequest('/users/reset-password', {
-      method: 'POST',
-      body: {
-        email: email,
-      },
-    });
-  },
-
   // Логин
   login: async (credentials) => {
     return await apiRequest('/users/login', {
@@ -104,7 +95,35 @@ export const userAPI = {
     });
   },
 
-  // Получение данных пользователя (если есть такой endpoint)
+  // Сброс пароля (отправка email)
+  resetPassword: async (email) => {
+    return await apiRequest('/users/reset-password', {
+      method: 'POST',
+      body: {
+        email: email,
+      },
+    });
+  },
+
+  // Проверка валидности токена для сброса пароля
+  checkResetPasswordToken: async (token) => {
+    return await apiRequest(`/users/check-reset-password/${token}`, {
+      method: 'GET',
+    });
+  },
+
+  // Установка нового пароля
+  setNewPassword: async (token, password) => {
+    return await apiRequest('/users/set-new-password', {
+      method: 'POST',
+      body: {
+        password: password,
+        token: token,
+      },
+    });
+  },
+
+  // Получение данных пользователя
   getProfile: async (sessionToken) => {
     return await apiRequest('/users/profile', {
       method: 'GET',
@@ -155,14 +174,4 @@ export const handleApiResponse = (response, context = '') => {
     success: false,
     message: 'Неожиданный формат ответа от сервера',
   };
-};
-
-// Функция для сброса пароля
-export const resetPassword = async (email) => {
-  return await apiRequest('/users/reset-password', {
-    method: 'POST',
-    body: {
-      email: email,
-    },
-  });
 };
