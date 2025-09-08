@@ -143,11 +143,6 @@ onUnmounted(() => {
   margin-bottom: 20px;
 }
 
-.card-icon {
-  font-size: 20px;
-  color: #f97316;
-}
-
 .card-header h3 {
   font-size: 16px;
   font-weight: 700;
@@ -248,7 +243,7 @@ onUnmounted(() => {
 
 .preset-info {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 12px;
   padding: 20px;
   box-shadow: 0px 1px 5px 0px #00000040;
@@ -258,7 +253,10 @@ onUnmounted(() => {
   position: relative;
   z-index: 1;
 }
-
+.preset-info img {
+  width: 32px;
+  height: 32px;
+}
 .preset_container {
   display: flex;
   flex-direction: column;

@@ -8,7 +8,10 @@
         :selected-preset="selectedPreset"
         @update-preset="$emit('update-preset', $event)"
       />
-
+      <BettingControls
+        :betting-mode="bettingMode"
+        @update-betting-mode="$emit('update-betting-mode', $event)"
+      />
       <!-- Эквалайзер -->
       <EqualizerSettings
         :settings="settings"
@@ -20,12 +23,6 @@
 
     <!-- Правая колонка -->
     <div class="right-column">
-      <!-- Контролы ставок -->
-      <BettingControls
-        :betting-mode="bettingMode"
-        @update-betting-mode="$emit('update-betting-mode', $event)"
-      />
-
       <!-- Предпросмотр инвестиции -->
       <InvestmentPreview
         :selected-preset="selectedPreset"

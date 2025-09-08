@@ -1,4 +1,3 @@
-<!-- components/investments/InvestmentPreview.vue -->
 <template>
   <div class="investment-card preview-card">
     <div class="card-header">
@@ -163,13 +162,6 @@ const handleCreateInvestment = () => {
 
 <style scoped>
 .investment-card {
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 16px;
-  padding: 24px;
-  position: sticky;
-  top: 24px;
 }
 
 .card-header {
@@ -372,10 +364,6 @@ const handleCreateInvestment = () => {
 }
 
 @media (max-width: 480px) {
-  .investment-card {
-    padding: 16px;
-  }
-
   .preview-row {
     flex-direction: column;
     align-items: flex-start;

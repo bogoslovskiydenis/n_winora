@@ -2,12 +2,12 @@
 <template>
   <div class="investment-card equalizer-card">
     <div class="card-header">
-      <span class="card-icon">🎛️</span>
+      <img alt="equalizer" src="~/assets/images/equalizer.svg" />
       <h3>ЭКВАЛАЙЗЕР</h3>
     </div>
 
     <div class="equalizer-info">
-      <div class="info-icon">ℹ️</div>
+      <img src="~/assets/images/info.svg" alt="info" />
       <div class="equalizer-description">
         <strong>Эквалайзер</strong><br />
         Настройте параметры инвестирования для оптимизации доходности
@@ -191,11 +191,6 @@ const updatePlatform = (key, value) => {
 
 <style scoped>
 .investment-card {
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 16px;
-  padding: 24px;
 }
 
 .card-header {
@@ -203,11 +198,6 @@ const updatePlatform = (key, value) => {
   align-items: center;
   gap: 12px;
   margin-bottom: 20px;
-}
-
-.card-icon {
-  font-size: 20px;
-  color: #f97316;
 }
 
 .card-header h3 {
@@ -223,25 +213,31 @@ const updatePlatform = (key, value) => {
   align-items: flex-start;
   gap: 12px;
   padding: 12px;
-  background: rgba(74, 222, 128, 0.1);
-  border-radius: 8px;
+  box-shadow: 0px 1px 5px 0px #00000040;
+  border-top: 1px solid #00b27d33;
+  border-radius: 16px;
+  background: #00000033;
   margin-bottom: 20px;
 }
 
-.info-icon {
-  color: #4ade80;
-  font-size: 18px;
-  flex-shrink: 0;
-}
-
 .equalizer-description {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
   font-size: 13px;
   color: rgba(255, 255, 255, 0.8);
   line-height: 1.4;
+  text-align: center;
 }
 
 .equalizer-description strong {
   color: white;
+}
+.equalizer-info img {
+  width: 32px;
+  height: 32px;
 }
 
 .settings-grid {
@@ -258,21 +254,19 @@ const updatePlatform = (key, value) => {
 
 .setting-item {
   padding: 16px;
-  background: rgba(0, 0, 0, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 8px;
-  transition: all 0.3s ease;
 }
 
 .setting-item:hover {
-  background: rgba(0, 0, 0, 0.3);
-  border-color: rgba(255, 255, 255, 0.15);
+  box-shadow: 0px 1px 5px 0px #00000040;
+  border-top: 1px solid #00b27d33;
+  border-radius: 16px;
+  background: #00000033;
 }
 
 .setting-checkbox {
   display: flex;
   align-items: flex-start;
-  gap: 12px;
+  gap: 16px;
   cursor: pointer;
   margin-bottom: 8px;
 }
@@ -287,7 +281,7 @@ const updatePlatform = (key, value) => {
   width: 18px;
   height: 18px;
   background: transparent;
-  border: 2px solid rgba(255, 255, 255, 0.3);
+  border: 2px solid #07cb3899;
   border-radius: 3px;
   display: flex;
   align-items: center;
@@ -300,9 +294,8 @@ const updatePlatform = (key, value) => {
 }
 
 .setting-checkbox input:checked + .checkmark {
-  background: #4ade80;
-  border-color: #4ade80;
-  color: #0a2f23;
+  border-color: #07cb3899;
+  color: #07cb3899;
 }
 
 .setting-text {

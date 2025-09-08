@@ -1,36 +1,44 @@
-<!-- components/investments/BettingControls.vue -->
 <template>
-  <div class="investment-card betting-card">
-    <div class="card-header">
-      <span class="card-icon">🎯</span>
-      <h3>ТИП СТАВОК</h3>
-    </div>
+  <div class="betting-selector-card">
+    <!-- Основной переключатель -->
+    <div class="betting-toggle-container">
+      <div class="betting-toggle">
+        <!-- Анимированный фон -->
+        <div
+          class="toggle-background"
+          :class="{ 'toggle-right': bettingMode === 'betting' }"
+        ></div>
 
-    <div class="betting-controls">
-      <div class="control-group">
+        <!-- Кнопка Гэмблинг -->
         <button
-          class="betting-btn"
+          class="toggle-button gambling"
           :class="{ active: bettingMode === 'gambling' }"
           @click="$emit('update-betting-mode', 'gambling')"
         >
-          <span class="btn-icon">🎲</span>
-          Гэмблинг
+          <span class="button-icon">🎲</span>
+          <span class="button-text">Гэмблинг</span>
         </button>
+
+        <!-- Кнопка Беттинг -->
         <button
-          class="betting-btn"
+          class="toggle-button betting"
           :class="{ active: bettingMode === 'betting' }"
           @click="$emit('update-betting-mode', 'betting')"
         >
-          <span class="btn-icon">🎯</span>
-          Беттинг
+          <span class="button-icon">🎯</span>
+          <span class="button-text">Беттинг</span>
+          <span class="lock-icon">🔒</span>
         </button>
       </div>
+    </div>
 
-      <div class="betting-info">
+    <!-- Информационная секция -->
+    <div class="info-section" v-if="showInfo">
+      <div class="info-content">
         <div class="info-icon">🔒</div>
-        <div class="betting-info-content">
-          <span class="betting-info-title">{{ getBettingTitle() }}</span>
-          <p>{{ getBettingDescription() }}</p>
+        <div class="info-text">
+          <div class="info-title">{{ getBettingTitle() }}</div>
+          <div class="info-description">{{ getBettingDescription() }}</div>
         </div>
       </div>
     </div>
@@ -42,7 +50,12 @@ const props = defineProps({
   bettingMode: {
     type: String,
     required: true,
+    default: 'gambling',
     validator: (value) => ['gambling', 'betting'].includes(value),
+  },
+  showInfo: {
+    type: Boolean,
+    default: true,
   },
 });
 
@@ -55,7 +68,7 @@ const getBettingTitle = () => {
 const getBettingDescription = () => {
   const descriptions = {
     gambling:
-      'Высокорискованные ставки с большим потенциалом прибыли. Подходит для опытных игроков.',
+      'Вспомогательная информация, которая появляется на экране и помогает пользователю при работе',
     betting:
       'Сбалансированный подход к ставкам с умеренными рисками. Рекомендуется для начинающих.',
   };
@@ -64,130 +77,264 @@ const getBettingDescription = () => {
 </script>
 
 <style scoped>
-.investment-card {
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 16px;
-  padding: 24px;
+.betting-selector-card {
 }
 
-.card-header {
+/* Контейнер переключателя */
+.betting-toggle-container {
+  margin-bottom: 16px;
+}
+
+.betting-toggle {
+  position: relative;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 50px;
+  padding: 0;
   display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 20px;
+  overflow: hidden;
 }
 
-.card-icon {
-  font-size: 20px;
-  color: #f97316;
+/* Анимированный фон */
+.toggle-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+  border-radius: 50px 0 0 50px;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow:
+    0 4px 12px rgba(34, 197, 94, 0.3),
+    0 2px 6px rgba(34, 197, 94, 0.2);
+  z-index: 1;
 }
 
-.card-header h3 {
-  font-size: 16px;
-  font-weight: 700;
-  color: #f97316;
-  margin: 0;
-  letter-spacing: 0.5px;
+.toggle-background.toggle-right {
+  transform: translateX(100%);
+  border-radius: 0 50px 50px 0;
 }
 
-.betting-controls {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.control-group {
-  display: flex;
-  gap: 12px;
-}
-
-.betting-btn {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 20px;
+/* Кнопки переключателя */
+.toggle-button {
+  flex: 1;
   background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 6px;
-  color: rgba(255, 255, 255, 0.7);
-  font-size: 13px;
+  border: none;
+  border-radius: 42px;
+  padding: 12px 20px;
   cursor: pointer;
   transition: all 0.3s ease;
   font-family: inherit;
-  flex: 1;
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
   justify-content: center;
+  gap: 8px;
+  min-height: 44px;
 }
 
-.betting-btn:hover:not(.active) {
-  background: rgba(255, 255, 255, 0.05);
-  border-color: rgba(255, 255, 255, 0.3);
-  color: rgba(255, 255, 255, 0.9);
+.button-icon {
+  font-size: 16px;
+  transition: all 0.3s ease;
 }
 
-.betting-btn.active {
-  background: #4ade80;
-  color: #0a2f23;
-  border-color: #4ade80;
-  font-weight: 600;
-}
-
-.btn-icon {
+.button-text {
   font-size: 14px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  letter-spacing: 0.3px;
 }
 
-.betting-info {
+.lock-icon {
+  font-size: 12px;
+  opacity: 0.7;
+  transition: all 0.3s ease;
+}
+
+/* Неактивные кнопки */
+.toggle-button:not(.active) .button-text {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.toggle-button:not(.active) .button-icon {
+  opacity: 0.6;
+}
+
+.toggle-button:not(.active) .lock-icon {
+  opacity: 0.4;
+}
+
+/* Активные кнопки */
+.toggle-button.active .button-text {
+  color: #0f172a;
+  font-weight: 700;
+}
+
+.toggle-button.active .button-icon {
+  opacity: 1;
+}
+
+.toggle-button.active .lock-icon {
+  color: #0f172a;
+  opacity: 0.8;
+}
+
+/* Hover эффекты */
+.toggle-button:not(.active):hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.toggle-button:not(.active):hover .button-text {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.toggle-button:not(.active):hover .button-icon {
+  opacity: 0.8;
+}
+
+/* Информационная секция */
+.info-section {
+  box-shadow: 0px 1px 5px 0px #00000040;
+  background: #00000033;
+  border-top: 1px solid #00b27d33;
+  border-radius: 16px;
+  padding: 16px;
+  animation: fadeIn 0.3s ease;
+}
+
+.info-content {
   display: flex;
   align-items: flex-start;
   gap: 12px;
-  padding: 16px;
-  background: rgba(0, 0, 0, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
 }
 
 .info-icon {
+  font-size: 18px;
   color: #4ade80;
-  font-size: 16px;
   flex-shrink: 0;
+  margin-top: 2px;
 }
 
-.betting-info-content {
+.info-text {
   flex: 1;
 }
 
-.betting-info-title {
-  font-weight: 600;
-  color: white;
+.info-title {
   font-size: 14px;
-  display: block;
+  font-weight: 600;
+  color: #4ade80;
   margin-bottom: 4px;
 }
 
-.betting-info-content p {
+.info-description {
   font-size: 12px;
-  color: rgba(255, 255, 255, 0.6);
-  margin: 0;
-  line-height: 1.4;
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.5;
+}
+
+/* Анимации */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+  .toggle-button {
+    padding: 10px 16px;
+    min-height: 40px;
+  }
+
+  .button-text {
+    font-size: 13px;
+  }
+
+  .button-icon {
+    font-size: 14px;
+  }
+
+  .info-content {
+    gap: 10px;
+  }
+
+  .info-icon {
+    font-size: 16px;
+  }
+
+  .info-title {
+    font-size: 13px;
+  }
+
+  .info-description {
+    font-size: 11px;
+  }
 }
 
 @media (max-width: 480px) {
-  .investment-card {
-    padding: 16px;
+  .betting-selector-card {
+    padding: 12px;
   }
 
-  .control-group {
-    gap: 8px;
+  .betting-toggle {
+    padding: 3px;
   }
 
-  .betting-btn {
-    padding: 8px 16px;
+  .toggle-button {
+    padding: 8px 12px;
+    min-height: 36px;
+    gap: 6px;
+  }
+
+  .button-text {
     font-size: 12px;
   }
 
-  .betting-info {
+  .button-icon {
+    font-size: 13px;
+  }
+
+  .lock-icon {
+    font-size: 10px;
+  }
+
+  .info-section {
     padding: 12px;
   }
+}
+
+/* Дополнительные варианты размеров */
+.betting-selector-card.compact {
+  padding: 12px;
+  margin-bottom: 12px;
+}
+
+.betting-selector-card.compact .toggle-button {
+  padding: 8px 16px;
+  min-height: 36px;
+}
+
+.betting-selector-card.compact .button-text {
+  font-size: 12px;
+}
+
+.betting-selector-card.large {
+  padding: 24px;
+}
+
+.betting-selector-card.large .toggle-button {
+  padding: 16px 24px;
+  min-height: 52px;
+}
+
+.betting-selector-card.large .button-text {
+  font-size: 16px;
 }
 </style>
