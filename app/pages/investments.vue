@@ -24,6 +24,7 @@
         :betting-mode="bettingMode"
         :settings="settings"
         :selected-platforms="selectedPlatforms"
+        :show-hints="showHints"
         @update-preset="selectedPreset = $event"
         @update-betting-mode="bettingMode = $event"
         @update-settings="updateSettings"
@@ -56,6 +57,22 @@ const activeTab = ref('create');
 const showHints = ref(true);
 const selectedPreset = ref('user');
 const bettingMode = ref('betting');
+
+// Загрузка и сохранение состояния подсказок
+onMounted(() => {
+  if (process.client) {
+    const saved = localStorage.getItem('showHints');
+    if (saved !== null) {
+      showHints.value = JSON.parse(saved);
+    }
+  }
+});
+
+watch(showHints, (newValue) => {
+  if (process.client) {
+    localStorage.setItem('showHints', JSON.stringify(newValue));
+  }
+});
 
 const settings = ref({
   highRtp: false,

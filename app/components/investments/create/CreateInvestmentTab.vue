@@ -1,4 +1,4 @@
-<!-- components/investments/CreateInvestmentTab.vue -->
+<!-- components/investments/create/CreateInvestmentTab.vue -->
 <template>
   <div class="create-investment">
     <!-- Левая колонка -->
@@ -6,16 +6,19 @@
       <!-- Пресет -->
       <PresetSelector
         :selected-preset="selectedPreset"
+        :show-hints="showHints"
         @update-preset="$emit('update-preset', $event)"
       />
       <BettingControls
         :betting-mode="bettingMode"
+        :show-hints="showHints"
         @update-betting-mode="$emit('update-betting-mode', $event)"
       />
       <!-- Эквалайзер -->
       <EqualizerSettings
         :settings="settings"
         :selected-platforms="selectedPlatforms"
+        :show-hints="showHints"
         @update-settings="$emit('update-settings', $event)"
         @update-platforms="$emit('update-platforms', $event)"
       />
@@ -28,6 +31,7 @@
         :selected-preset="selectedPreset"
         :betting-mode="bettingMode"
         :settings="settings"
+        :show-hints="showHints"
       />
     </div>
   </div>
@@ -55,6 +59,11 @@ defineProps({
   selectedPlatforms: {
     type: Object,
     required: true,
+  },
+  // Добавляем пропс для управления подсказками
+  showHints: {
+    type: Boolean,
+    default: true,
   },
 });
 

@@ -39,7 +39,8 @@
         </div>
       </div>
 
-      <div class="preset-info">
+      <!-- Секция подсказок - управляется общей кнопкой -->
+      <div v-show="showHints" class="preset-info">
         <img src="./../../../assets/images/info.svg" alt="info" />
 
         <div class="preset_container">
@@ -69,6 +70,11 @@ const props = defineProps({
   selectedPreset: {
     type: String,
     required: true,
+  },
+  // Получаем состояние подсказок извне
+  showHints: {
+    type: Boolean,
+    default: true,
   },
 });
 
@@ -241,6 +247,7 @@ onUnmounted(() => {
   color: #4ade80;
 }
 
+/* Секция подсказок */
 .preset-info {
   display: flex;
   align-items: flex-start;
@@ -252,11 +259,26 @@ onUnmounted(() => {
   background: #00000033;
   position: relative;
   z-index: 1;
+  transition: all 0.3s ease;
+  animation: fadeInUp 0.4s ease-out;
 }
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .preset-info img {
   width: 32px;
   height: 32px;
 }
+
 .preset_container {
   display: flex;
   flex-direction: column;

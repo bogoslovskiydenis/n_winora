@@ -1,4 +1,3 @@
-<!-- components/investments/EqualizerSettings.vue -->
 <template>
   <div class="investment-card equalizer-card">
     <div class="card-header">
@@ -6,7 +5,8 @@
       <h3>ЭКВАЛАЙЗЕР</h3>
     </div>
 
-    <div class="equalizer-info">
+    <!-- Секция подсказок - управляется общей кнопкой -->
+    <div v-show="showHints" class="equalizer-info">
       <img src="~/assets/images/info.svg" alt="info" />
       <div class="equalizer-description">
         <strong>Эквалайзер</strong><br />
@@ -165,6 +165,11 @@ const props = defineProps({
     type: Object,
     required: true,
   },
+  // Получаем состояние подсказок извне
+  showHints: {
+    type: Boolean,
+    default: true,
+  },
 });
 
 const emit = defineEmits(['update-settings', 'update-platforms']);
@@ -208,6 +213,7 @@ const updatePlatform = (key, value) => {
   letter-spacing: 0.5px;
 }
 
+/* Секция подсказок */
 .equalizer-info {
   display: flex;
   align-items: flex-start;
@@ -218,6 +224,19 @@ const updatePlatform = (key, value) => {
   border-radius: 16px;
   background: #00000033;
   margin-bottom: 20px;
+  transition: all 0.3s ease;
+  animation: fadeInUp 0.4s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .equalizer-description {
@@ -235,6 +254,7 @@ const updatePlatform = (key, value) => {
 .equalizer-description strong {
   color: white;
 }
+
 .equalizer-info img {
   width: 32px;
   height: 32px;

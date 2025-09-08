@@ -1,11 +1,23 @@
 <template>
   <div class="investment-card preview-card">
-    <div class="card-header">
+    <div class="card-header" @click="togglePreview">
       <span class="card-icon">👁️</span>
       <h3>ПРЕДПРОСМОТР ИНВЕСТИЦИИ</h3>
+      <div class="collapse-arrow" :class="{ rotated: !showPreview }">
+        <svg width="12" height="8" viewBox="0 0 12 8" fill="none">
+          <path
+            d="M1 1L6 6L11 1"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </div>
     </div>
 
-    <div class="preview-info">
+    <!-- Секция подсказок - управляется общей кнопкой -->
+    <div v-show="showHints" class="preview-info">
       <div class="info-icon">ℹ️</div>
       <div class="preview-description">
         <strong>Подсказка</strong><br />
@@ -13,72 +25,75 @@
       </div>
     </div>
 
-    <div class="investment-preview">
-      <div class="preview-row">
-        <span class="preview-label">Тип</span>
-        <span class="preview-value">
-          {{ getBettingTitle() }}
-          <span class="preview-icon">🔒</span>
-        </span>
-      </div>
-      <div class="preview-row">
-        <span class="preview-label">Стратегия</span>
-        <span class="preview-value">
-          {{ getPresetTitle() }}
-          <span class="preview-icon">📊</span>
-        </span>
-      </div>
-      <div class="preview-row">
-        <span class="preview-label">Статус</span>
-        <span class="preview-value status-frozen">
-          Заморожена
-          <span class="preview-icon">❄️</span>
-        </span>
-      </div>
-      <div class="preview-row">
-        <span class="preview-label">Прогнозируемая доходность</span>
-        <span class="preview-value">{{ getProfitability() }}</span>
-      </div>
-      <div class="preview-row">
-        <span class="preview-label">Период</span>
-        <span class="preview-value">∞</span>
-      </div>
-      <div class="preview-row">
-        <span class="preview-label">Риски</span>
-        <span class="preview-value risk-level" :class="getRiskClass()">
-          {{ getRiskPercentage() }}
-        </span>
-      </div>
-      <div class="preview-row">
-        <span class="preview-label">Сумма инвестиции</span>
-        <span class="preview-value amount">100 USD</span>
-      </div>
-      <div class="preview-row">
-        <span class="preview-label">Доступен к переводу прибыль</span>
-        <span class="preview-value profit">20 USD</span>
-      </div>
-    </div>
-
-    <div class="bonus-section">
-      <div class="bonus-header">
-        <span class="bonus-icon">🎁</span>
-        <span class="bonus-title">Бонус за первую инвестицию</span>
-      </div>
-      <div class="bonus-items">
-        <div class="bonus-item">
-          <span class="bonus-name">Спины Фортуны</span>
-          <span class="bonus-count">2</span>
+    <!-- Основной контент - управляется кликом по заголовку -->
+    <div v-show="showPreview" class="collapsible-content">
+      <div class="investment-preview">
+        <div class="preview-row">
+          <span class="preview-label">Тип</span>
+          <span class="preview-value">
+            {{ getBettingTitle() }}
+            <span class="preview-icon">🔒</span>
+          </span>
         </div>
-        <div class="bonus-item">
-          <span class="bonus-name">Сундуки</span>
-          <span class="bonus-count">2</span>
+        <div class="preview-row">
+          <span class="preview-label">Стратегия</span>
+          <span class="preview-value">
+            {{ getPresetTitle() }}
+            <span class="preview-icon">📊</span>
+          </span>
+        </div>
+        <div class="preview-row">
+          <span class="preview-label">Статус</span>
+          <span class="preview-value status-frozen">
+            Заморожена
+            <span class="preview-icon">❄️</span>
+          </span>
+        </div>
+        <div class="preview-row">
+          <span class="preview-label">Прогнозируемая доходность</span>
+          <span class="preview-value">{{ getProfitability() }}</span>
+        </div>
+        <div class="preview-row">
+          <span class="preview-label">Период</span>
+          <span class="preview-value">∞</span>
+        </div>
+        <div class="preview-row">
+          <span class="preview-label">Риски</span>
+          <span class="preview-value risk-level" :class="getRiskClass()">
+            {{ getRiskPercentage() }}
+          </span>
+        </div>
+        <div class="preview-row">
+          <span class="preview-label">Сумма инвестиции</span>
+          <span class="preview-value amount">100 USD</span>
+        </div>
+        <div class="preview-row">
+          <span class="preview-label">Доступен к переводу прибыль</span>
+          <span class="preview-value profit">20 USD</span>
         </div>
       </div>
-    </div>
 
-    <button class="create-investment-btn" @click="handleCreateInvestment">
-      ПЕРЕЙТИ К ОПЛАТЕ
-    </button>
+      <div class="bonus-section">
+        <div class="bonus-header">
+          <span class="bonus-icon">🎁</span>
+          <span class="bonus-title">Бонус за первую инвестицию</span>
+        </div>
+        <div class="bonus-items">
+          <div class="bonus-item">
+            <span class="bonus-name">Спины Фортуны</span>
+            <span class="bonus-count">2</span>
+          </div>
+          <div class="bonus-item">
+            <span class="bonus-name">Сундуки</span>
+            <span class="bonus-count">2</span>
+          </div>
+        </div>
+      </div>
+
+      <button class="create-investment-btn" @click="handleCreateInvestment">
+        ПЕРЕЙТИ К ОПЛАТЕ
+      </button>
+    </div>
   </div>
 </template>
 
@@ -96,7 +111,20 @@ const props = defineProps({
     type: Object,
     required: true,
   },
+  // Получаем состояние подсказок извне
+  showHints: {
+    type: Boolean,
+    default: true,
+  },
 });
+
+// Состояние для сворачивания/разворачивания превью
+const showPreview = ref(true);
+
+// Функция переключения видимости превью
+const togglePreview = () => {
+  showPreview.value = !showPreview.value;
+};
 
 // Словари для названий
 const presetTitles = {
@@ -169,6 +197,15 @@ const handleCreateInvestment = () => {
   align-items: center;
   gap: 12px;
   margin-bottom: 20px;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.2s ease;
+  padding: 8px;
+  border-radius: 6px;
+}
+
+.card-header:hover {
+  background: rgba(255, 255, 255, 0.05);
 }
 
 .card-icon {
@@ -182,8 +219,22 @@ const handleCreateInvestment = () => {
   color: #f97316;
   margin: 0;
   letter-spacing: 0.5px;
+  flex: 1;
 }
 
+.collapse-arrow {
+  color: rgba(255, 255, 255, 0.6);
+  transition: transform 0.3s ease;
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+}
+
+.collapse-arrow.rotated {
+  transform: rotate(180deg);
+}
+
+/* Секция подсказок */
 .preview-info {
   display: flex;
   align-items: flex-start;
@@ -192,6 +243,19 @@ const handleCreateInvestment = () => {
   background: rgba(74, 222, 128, 0.1);
   border-radius: 8px;
   margin-bottom: 20px;
+  transition: all 0.3s ease;
+  animation: fadeInUp 0.4s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .info-icon {
@@ -208,6 +272,22 @@ const handleCreateInvestment = () => {
 
 .preview-description strong {
   color: white;
+}
+
+/* Сворачиваемый контент */
+.collapsible-content {
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .investment-preview {
@@ -364,6 +444,14 @@ const handleCreateInvestment = () => {
 }
 
 @media (max-width: 480px) {
+  .card-header {
+    padding: 6px;
+  }
+
+  .card-header h3 {
+    font-size: 15px;
+  }
+
   .preview-row {
     flex-direction: column;
     align-items: flex-start;

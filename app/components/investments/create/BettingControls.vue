@@ -32,8 +32,8 @@
       </div>
     </div>
 
-    <!-- Информационная секция -->
-    <div class="info-section" v-if="showInfo">
+    <!-- Информационная секция - управляется общей кнопкой -->
+    <div v-show="showHints" class="info-section">
       <div class="info-content">
         <div class="info-icon">🔒</div>
         <div class="info-text">
@@ -53,7 +53,8 @@ const props = defineProps({
     default: 'gambling',
     validator: (value) => ['gambling', 'betting'].includes(value),
   },
-  showInfo: {
+  // Получаем состояние подсказок извне
+  showHints: {
     type: Boolean,
     default: true,
   },
@@ -201,7 +202,19 @@ const getBettingDescription = () => {
   border-top: 1px solid #00b27d33;
   border-radius: 16px;
   padding: 16px;
-  animation: fadeIn 0.3s ease;
+  transition: all 0.3s ease;
+  animation: fadeInUp 0.4s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .info-content {
@@ -232,18 +245,6 @@ const getBettingDescription = () => {
   font-size: 12px;
   color: rgba(255, 255, 255, 0.7);
   line-height: 1.5;
-}
-
-/* Анимации */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
 }
 
 /* Адаптивность */
