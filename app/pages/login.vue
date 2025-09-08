@@ -43,16 +43,6 @@
           />
 
           <div class="form-extras">
-            <label class="checkbox-label">
-              <input
-                type="checkbox"
-                v-model="rememberMe"
-                class="checkbox-input"
-                :disabled="isLoading"
-              />
-              <span class="checkbox-custom"></span>
-              <span class="checkbox-text">Запомнить меня</span>
-            </label>
             <div class="forgot-password">
               <a href="/forgot-password" class="link">Восстановить пароль</a>
             </div>
@@ -275,67 +265,10 @@ const submitLogin = async () => {
   line-height: 1.4;
 }
 
-/* Чекбокс */
-.checkbox-label {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  cursor: pointer;
-  font-size: 14px;
-  color: rgba(255, 255, 255, 0.7);
-  user-select: none;
-}
-
-.checkbox-input {
-  position: absolute;
-  opacity: 0;
-  cursor: pointer;
-}
-
-.checkbox-custom {
-  width: 18px;
-  height: 18px;
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  border-radius: 4px;
-  position: relative;
-  transition: all 0.3s ease;
-  background: transparent;
-}
-
-.checkbox-input:checked + .checkbox-custom {
-  background: #4ade80;
-  border-color: #4ade80;
-}
-
-.checkbox-input:checked + .checkbox-custom::after {
-  content: '';
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%) rotate(45deg);
-  width: 4px;
-  height: 8px;
-  border: solid #0a3d2e;
-  border-width: 0 2px 2px 0;
-}
-
-.checkbox-text {
-  font-size: 14px;
-  transition: color 0.2s ease;
-}
-
-.checkbox-label:hover .checkbox-text {
-  color: rgba(255, 255, 255, 0.9);
-}
-
-.checkbox-label:hover .checkbox-custom {
-  border-color: rgba(255, 255, 255, 0.5);
-}
-
 /* Дополнительные элементы формы */
 .form-extras {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   margin: 8px 0;
   flex-wrap: wrap;
