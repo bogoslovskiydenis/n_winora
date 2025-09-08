@@ -6,7 +6,7 @@
       <div class="header-toggle">
         <div class="toggle-wrapper" @click="toggleHints">
           <div class="toggle-icon">
-            <span class="info-icon">ℹ️</span>
+            <img src="../../assets/images/info.svg" alt="info" />
           </div>
           <div class="toggle-switch" :class="{ active: showHints }">
             <div class="toggle-slider"></div>
@@ -57,7 +57,12 @@ const toggleHints = () => {
   position: absolute;
   right: 0;
   top: 50%;
+
   transform: translateY(-50%);
+  border-radius: 16px;
+  padding: 1px 6px 1px 5px;
+  border: 1px solid #00000040;
+  background: #00000040;
 }
 
 .header-toggle {
@@ -73,19 +78,11 @@ const toggleHints = () => {
 }
 
 .toggle-icon {
-  width: 32px;
-  height: 32px;
-  background: rgba(255, 165, 0, 0.2);
-  border-radius: 50%;
+  width: 16px;
+  height: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 2px solid #ffa500;
-}
-
-.info-icon {
-  font-size: 16px;
-  color: #ffa500;
 }
 
 .toggle-switch {
@@ -95,7 +92,7 @@ const toggleHints = () => {
   border-radius: 12px;
   position: relative;
   transition: all 0.3s ease;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 2px solid #07cb3899;
 }
 
 .toggle-switch.active {
@@ -103,8 +100,8 @@ const toggleHints = () => {
 }
 
 .toggle-slider {
-  width: 20px;
-  height: 20px;
+  width: 16px;
+  height: 16px;
   background: white;
   border-radius: 50%;
   position: absolute;

@@ -1,7 +1,6 @@
-<!-- components/investments/InvestmentsInfoBanner.vue -->
 <template>
   <div class="info-banner">
-    <div class="info-icon">⚠️</div>
+    <img src="./../../assets/images/info.svg" alt="info" />
     <div class="info-text">
       Вспомогательная информация, которая появляется на экране и помогает
       пользователю при работе
@@ -27,26 +26,28 @@
 <style scoped>
 .info-banner {
   display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  padding: 16px;
-  background: rgba(249, 115, 22, 0.1);
-  border: 1px solid rgba(249, 115, 22, 0.3);
+  align-items: center;
+  gap: 16px;
+  padding: 10px;
+  box-shadow: 0px 1px 5px 0px #00000040;
+  background: #00000033;
+  border-top: 1px solid #00b27d33;
   border-radius: 12px;
   margin-bottom: 24px;
   animation: slideIn 0.3s ease;
 }
-
-.info-icon {
-  font-size: 20px;
-  color: #f97316;
-  flex-shrink: 0;
+.info-banner img {
+  width: 32px;
+  height: 32px;
 }
 
 .info-text {
+  font-family: Roboto, serif;
+  font-weight: 400;
+  font-style: Condensed Regular;
   font-size: 14px;
-  color: rgba(255, 255, 255, 0.7);
-  line-height: 1.5;
+  line-height: 100%;
+  color: #ffffff;
 }
 
 @keyframes slideIn {

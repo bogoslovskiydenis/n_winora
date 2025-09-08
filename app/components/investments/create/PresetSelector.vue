@@ -1,37 +1,61 @@
-<!-- components/investments/PresetSelector.vue -->
 <template>
   <div class="investment-card preset-card">
     <div class="card-header">
-      <span class="card-icon">⚙️</span>
+      <img src="./../../../assets/images/Preset.svg" alt="Preset" />
       <h3>ПРЕСЕТ</h3>
     </div>
 
     <div class="preset-selector">
-      <select
-        :value="selectedPreset"
-        @change="$emit('update-preset', $event.target.value)"
-        class="preset-dropdown"
-      >
-        <option value="user">Пользовательский</option>
-        <option value="conservative">Консервативный</option>
-        <option value="balanced">Сбалансированный</option>
-        <option value="aggressive">Агрессивный</option>
-      </select>
+      <div class="select-wrapper" ref="selectWrapper">
+        <div
+          class="preset-dropdown"
+          @click="toggleDropdown"
+          :class="{ active: isOpen }"
+        >
+          <span class="selected-text">{{ getPresetTitle() }}</span>
+          <div class="select-arrow" :class="{ rotated: isOpen }">
+            <svg width="12" height="8" viewBox="0 0 12 8" fill="none">
+              <path
+                d="M1 1L6 6L11 1"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </div>
+        </div>
+
+        <div v-if="isOpen" class="dropdown-list">
+          <div
+            v-for="preset in presetOptions"
+            :key="preset.value"
+            class="dropdown-item"
+            :class="{ selected: selectedPreset === preset.value }"
+            @click="selectPreset(preset.value)"
+          >
+            {{ preset.label }}
+          </div>
+        </div>
+      </div>
 
       <div class="preset-info">
-        <div class="info-icon">ℹ️</div>
-        <div class="preset-description">
-          <strong>{{ getPresetTitle() }}</strong
-          ><br />
-          {{ getPresetDescription() }}
-        </div>
-        <div class="preset-dots">
-          <span
-            v-for="preset in presetList"
-            :key="preset"
-            class="dot"
-            :class="{ active: selectedPreset === preset }"
-          ></span>
+        <img src="./../../../assets/images/info.svg" alt="info" />
+
+        <div class="preset_container">
+          <div class="preset-description">
+            <strong>{{ getPresetTitle() }}</strong
+            ><br />
+            {{ getPresetDescription() }}
+          </div>
+          <div class="preset-dots">
+            <span
+              v-for="preset in presetList"
+              :key="preset"
+              class="dot"
+              :class="{ active: selectedPreset === preset }"
+            ></span>
+          </div>
         </div>
       </div>
     </div>
@@ -39,6 +63,8 @@
 </template>
 
 <script setup>
+import { ref, onMounted, onUnmounted } from 'vue';
+
 const props = defineProps({
   selectedPreset: {
     type: String,
@@ -46,9 +72,19 @@ const props = defineProps({
   },
 });
 
-defineEmits(['update-preset']);
+const emit = defineEmits(['update-preset']);
+
+const isOpen = ref(false);
+const selectWrapper = ref(null);
 
 const presetList = ['user', 'conservative', 'balanced', 'aggressive'];
+
+const presetOptions = [
+  { value: 'user', label: 'Пользовательский' },
+  { value: 'conservative', label: 'Консервативный' },
+  { value: 'balanced', label: 'Сбалансированный' },
+  { value: 'aggressive', label: 'Агрессивный' },
+];
 
 const presetTitles = {
   user: 'Пользовательский',
@@ -74,17 +110,32 @@ const getPresetDescription = () => {
     'Настройте инвестицию под свои предпочтения'
   );
 };
+
+const toggleDropdown = () => {
+  isOpen.value = !isOpen.value;
+};
+
+const selectPreset = (value) => {
+  emit('update-preset', value);
+  isOpen.value = false;
+};
+
+const handleClickOutside = (event) => {
+  if (selectWrapper.value && !selectWrapper.value.contains(event.target)) {
+    isOpen.value = false;
+  }
+};
+
+onMounted(() => {
+  document.addEventListener('click', handleClickOutside);
+});
+
+onUnmounted(() => {
+  document.removeEventListener('click', handleClickOutside);
+});
 </script>
 
 <style scoped>
-.investment-card {
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 16px;
-  padding: 24px;
-}
-
 .card-header {
   display: flex;
   align-items: center;
@@ -111,6 +162,12 @@ const getPresetDescription = () => {
   gap: 16px;
 }
 
+.select-wrapper {
+  position: relative;
+  width: 100%;
+  z-index: 100;
+}
+
 .preset-dropdown {
   width: 100%;
   padding: 12px 16px;
@@ -122,55 +179,114 @@ const getPresetDescription = () => {
   cursor: pointer;
   font-family: inherit;
   transition: all 0.3s ease;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  user-select: none;
 }
 
 .preset-dropdown:hover {
   border-color: rgba(255, 255, 255, 0.2);
 }
 
-.preset-dropdown:focus {
-  outline: none;
+.preset-dropdown.active {
   border-color: #4ade80;
   box-shadow: 0 0 0 2px rgba(74, 222, 128, 0.2);
 }
 
-.preset-dropdown option {
-  background: #1a1a1a;
+.selected-text {
+  flex: 1;
+}
+
+.select-arrow {
+  color: rgba(255, 255, 255, 0.6);
+  transition: transform 0.3s ease;
+  display: flex;
+  align-items: center;
+}
+
+.select-arrow.rotated {
+  transform: rotate(180deg);
+}
+
+.dropdown-list {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  margin-top: 4px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(10px);
+  overflow: hidden;
+  z-index: 101;
+}
+
+.dropdown-item {
+  padding: 12px 16px;
   color: white;
-  padding: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.dropdown-item:last-child {
+  border-bottom: none;
+}
+
+.dropdown-item:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.dropdown-item.selected {
+  background: rgba(74, 222, 128, 0.2);
+  color: #4ade80;
 }
 
 .preset-info {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 12px;
-  padding: 12px;
-  background: rgba(74, 222, 128, 0.1);
-  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0px 1px 5px 0px #00000040;
+  border-top: 1px solid #00b27d33;
+  border-radius: 16px;
+  background: #00000033;
+  position: relative;
+  z-index: 1;
 }
 
-.info-icon {
-  color: #4ade80;
-  font-size: 18px;
-  flex-shrink: 0;
+.preset_container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  flex: 1;
 }
 
 .preset-description {
-  font-size: 13px;
+  font-size: 14px;
   color: rgba(255, 255, 255, 0.8);
-  line-height: 1.4;
-  flex: 1;
+  line-height: 1.5;
+  text-align: center;
 }
 
 .preset-description strong {
   color: white;
+  font-size: 16px;
+  font-weight: 700;
 }
 
 .preset-dots {
   display: flex;
-  flex-direction: column;
-  gap: 6px;
-  margin-left: 8px;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  gap: 8px;
 }
 
 .dot {
@@ -187,18 +303,17 @@ const getPresetDescription = () => {
 }
 
 @media (max-width: 480px) {
-  .investment-card {
-    padding: 16px;
-  }
-
   .preset-info {
-    flex-direction: column;
-    gap: 8px;
+    padding: 16px;
+    gap: 10px;
   }
 
-  .preset-dots {
-    flex-direction: row;
-    margin-left: 0;
+  .preset-description {
+    font-size: 13px;
+  }
+
+  .preset-description strong {
+    font-size: 15px;
   }
 }
 </style>

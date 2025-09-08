@@ -1,4 +1,3 @@
-<!-- components/investments/InvestmentsTabNavigation.vue -->
 <template>
   <div class="tabs">
     <button
@@ -6,7 +5,7 @@
       :class="{ active: activeTab === 'create' }"
       @click="$emit('tab-change', 'create')"
     >
-      <span class="tab-icon">⊕</span>
+      <img src="./../../assets/images/create_invest.svg" alt="create_invest" />
       Создать инвестицию
     </button>
     <button
@@ -14,7 +13,7 @@
       :class="{ active: activeTab === 'my' }"
       @click="$emit('tab-change', 'my')"
     >
-      <span class="tab-icon">📊</span>
+      <img src="./../../assets/images/invest.svg" alt="invest" />
       Мои инвестиции
     </button>
   </div>
@@ -68,7 +67,7 @@ defineEmits(['tab-change']);
 }
 
 .tab.active {
-  color: #4ade80;
+  color: white;
   border-bottom-color: #4ade80;
 }
 
