@@ -9,8 +9,8 @@
     <div v-show="showHints" class="equalizer-info">
       <img src="~/assets/images/info.svg" alt="info" />
       <div class="equalizer-description">
-        <strong>Эквалайзер</strong><br />
-        Настройте параметры инвестирования для оптимизации доходности
+        <div class="equalizer-title">{{ equalizerTitle() }}</div>
+        <div class="equalizer-desc">{{ equalizerDescription() }}</div>
       </div>
     </div>
 
@@ -192,6 +192,10 @@ const updateSetting = (key, value) => {
 const updatePlatform = (key, value) => {
   emit('update-platforms', { [key]: value });
 };
+
+const equalizerTitle = () => 'Эквалайзер';
+const equalizerDescription = () =>
+  'Минимальные риски, стабильная, но невысокая доходность.';
 </script>
 
 <style scoped>
@@ -251,8 +255,17 @@ const updatePlatform = (key, value) => {
   text-align: center;
 }
 
-.equalizer-description strong {
-  color: white;
+.equalizer-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 4px;
+}
+
+.equalizer-desc {
+  font-size: 12px;
+  color: #ffffff;
+  line-height: 1.5;
 }
 
 .equalizer-info img {

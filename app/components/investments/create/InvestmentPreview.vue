@@ -1,7 +1,7 @@
 <template>
   <div class="investment-card preview-card">
     <div class="card-header" @click="togglePreview">
-      <span class="card-icon">👁️</span>
+      <img src="~/assets/images/pass.svg" alt="pass" />
       <h3>ПРЕДПРОСМОТР ИНВЕСТИЦИИ</h3>
       <div class="collapse-arrow" :class="{ rotated: !showPreview }">
         <svg width="12" height="8" viewBox="0 0 12 8" fill="none">
@@ -18,10 +18,10 @@
 
     <!-- Секция подсказок - управляется общей кнопкой -->
     <div v-show="showHints" class="preview-info">
-      <div class="info-icon">ℹ️</div>
+      <img src="~/assets/images/info.svg" alt="info" />
       <div class="preview-description">
-        <strong>Подсказка</strong><br />
-        Предпросмотр инвестиции
+        <div class="preview-title">{{ previewTitle() }}</div>
+        <div class="preview-desc">{{ previewDescription() }}</div>
       </div>
     </div>
 
@@ -76,7 +76,10 @@
       <div class="bonus-section">
         <div class="bonus-header">
           <span class="bonus-icon">🎁</span>
-          <span class="bonus-title">Бонус за первую инвестицию</span>
+          <span class="bonus-title"
+            >ЧТО ЭТО ЗА РАЗДЕЛ ?? это пуш или что ? если пуш почему он в
+            инвестициях ?</span
+          >
         </div>
         <div class="bonus-items">
           <div class="bonus-item">
@@ -186,6 +189,9 @@ const handleCreateInvestment = () => {
   // Переход к оплате или другая логика
   navigateTo('/payment'); // или показать модальное окно
 };
+
+const previewTitle = () => 'Подсказка';
+const previewDescription = () => 'Предпросмотр инвестиции';
 </script>
 
 <style scoped>
@@ -247,6 +253,50 @@ const handleCreateInvestment = () => {
   animation: fadeInUp 0.4s ease-out;
 }
 
+.preview-info {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px;
+  box-shadow: 0px 1px 5px 0px #00000040;
+  border-top: 1px solid #00b27d33;
+  border-radius: 16px;
+  background: #00000033;
+  margin-bottom: 20px;
+  transition: all 0.3s ease;
+  animation: fadeInUp 0.4s ease-out;
+}
+
+.preview-description {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.4;
+  text-align: center;
+}
+
+.preview-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 4px;
+}
+
+.preview-desc {
+  font-size: 12px;
+  color: #ffffff;
+  line-height: 1.5;
+}
+
+.preview-info img {
+  width: 32px;
+  height: 32px;
+}
+
 @keyframes fadeInUp {
   from {
     opacity: 0;
@@ -256,12 +306,6 @@ const handleCreateInvestment = () => {
     opacity: 1;
     transform: translateY(0);
   }
-}
-
-.info-icon {
-  color: #4ade80;
-  font-size: 18px;
-  flex-shrink: 0;
 }
 
 .preview-description {

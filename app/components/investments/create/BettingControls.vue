@@ -35,7 +35,7 @@
     <!-- Информационная секция - управляется общей кнопкой -->
     <div v-show="showHints" class="info-section">
       <div class="info-content">
-        <div class="info-icon">🔒</div>
+        <img src="~/assets/images/lock.svg" alt="" />
         <div class="info-text">
           <div class="info-title">{{ getBettingTitle() }}</div>
           <div class="info-description">{{ getBettingDescription() }}</div>
@@ -79,6 +79,16 @@ const getBettingDescription = () => {
 
 <style scoped>
 .betting-selector-card {
+}
+.info-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.4;
+  text-align: center;
 }
 
 /* Контейнер переключателя */
@@ -219,7 +229,7 @@ const getBettingDescription = () => {
 
 .info-content {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 12px;
 }
 
@@ -237,13 +247,13 @@ const getBettingDescription = () => {
 .info-title {
   font-size: 14px;
   font-weight: 600;
-  color: #4ade80;
+  color: #ffffff;
   margin-bottom: 4px;
 }
 
 .info-description {
   font-size: 12px;
-  color: rgba(255, 255, 255, 0.7);
+  color: #ffffff;
   line-height: 1.5;
 }
 
