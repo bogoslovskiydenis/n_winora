@@ -6,38 +6,14 @@
     </div>
 
     <div class="preset-selector">
-      <div class="select-wrapper" ref="selectWrapper">
-        <div
-          class="preset-dropdown"
-          @click="toggleDropdown"
-          :class="{ active: isOpen }"
-        >
-          <span class="selected-text">{{ getPresetTitle() }}</span>
-          <div class="select-arrow" :class="{ rotated: isOpen }">
-            <svg width="12" height="8" viewBox="0 0 12 8" fill="none">
-              <path
-                d="M1 1L6 6L11 1"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-            </svg>
-          </div>
-        </div>
-
-        <div v-if="isOpen" class="dropdown-list">
-          <div
-            v-for="preset in presetOptions"
-            :key="preset.value"
-            class="dropdown-item"
-            :class="{ selected: selectedPreset === preset.value }"
-            @click="selectPreset(preset.value)"
-          >
-            {{ preset.label }}
-          </div>
-        </div>
-      </div>
+      <!-- Используем CustomSelect вместо собственного dropdown -->
+      <CustomSelect
+        v-model="selectedPreset"
+        :options="presetOptions"
+        placeholder="Выберите пресет"
+        variant="large"
+        @update:modelValue="handlePresetChange"
+      />
 
       <!-- Секция подсказок - управляется общей кнопкой -->
       <div v-show="showHints" class="preset-info">
@@ -64,7 +40,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue';
+import CustomSelect from '../CustomSelect.vue';
 
 const props = defineProps({
   selectedPreset: {
@@ -79,9 +55,6 @@ const props = defineProps({
 });
 
 const emit = defineEmits(['update-preset']);
-
-const isOpen = ref(false);
-const selectWrapper = ref(null);
 
 const presetList = ['user', 'conservative', 'balanced', 'aggressive'];
 
@@ -117,28 +90,9 @@ const getPresetDescription = () => {
   );
 };
 
-const toggleDropdown = () => {
-  isOpen.value = !isOpen.value;
-};
-
-const selectPreset = (value) => {
+const handlePresetChange = (value) => {
   emit('update-preset', value);
-  isOpen.value = false;
 };
-
-const handleClickOutside = (event) => {
-  if (selectWrapper.value && !selectWrapper.value.contains(event.target)) {
-    isOpen.value = false;
-  }
-};
-
-onMounted(() => {
-  document.addEventListener('click', handleClickOutside);
-});
-
-onUnmounted(() => {
-  document.removeEventListener('click', handleClickOutside);
-});
 </script>
 
 <style scoped>
@@ -161,90 +115,6 @@ onUnmounted(() => {
   display: flex;
   flex-direction: column;
   gap: 16px;
-}
-
-.select-wrapper {
-  position: relative;
-  width: 100%;
-  z-index: 100;
-}
-
-.preset-dropdown {
-  width: 100%;
-  padding: 12px 16px;
-  background: rgba(0, 0, 0, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
-  color: white;
-  font-size: 14px;
-  cursor: pointer;
-  font-family: inherit;
-  transition: all 0.3s ease;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  user-select: none;
-}
-
-.preset-dropdown:hover {
-  border-color: rgba(255, 255, 255, 0.2);
-}
-
-.preset-dropdown.active {
-  border-color: #4ade80;
-  box-shadow: 0 0 0 2px rgba(74, 222, 128, 0.2);
-}
-
-.selected-text {
-  flex: 1;
-}
-
-.select-arrow {
-  color: rgba(255, 255, 255, 0.6);
-  transition: transform 0.3s ease;
-  display: flex;
-  align-items: center;
-}
-
-.select-arrow.rotated {
-  transform: rotate(180deg);
-}
-
-.dropdown-list {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  right: 0;
-  background: rgba(0, 0, 0, 0.9);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
-  margin-top: 4px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-  backdrop-filter: blur(10px);
-  overflow: hidden;
-  z-index: 101;
-}
-
-.dropdown-item {
-  padding: 12px 16px;
-  color: white;
-  font-size: 14px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-.dropdown-item:last-child {
-  border-bottom: none;
-}
-
-.dropdown-item:hover {
-  background: rgba(255, 255, 255, 0.1);
-}
-
-.dropdown-item.selected {
-  background: rgba(74, 222, 128, 0.2);
-  color: #4ade80;
 }
 
 /* Секция подсказок */
