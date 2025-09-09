@@ -77,8 +77,6 @@ defineEmits([
 
 <style scoped>
 .create-investment {
-  display: grid;
-  grid-template-columns: 1fr 400px;
   gap: 32px;
   align-items: start;
 }
@@ -92,7 +90,6 @@ defineEmits([
 
 @media (max-width: 1200px) {
   .create-investment {
-    grid-template-columns: 1fr;
     gap: 24px;
   }
 
