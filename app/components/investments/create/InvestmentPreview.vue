@@ -17,13 +17,13 @@
     </div>
 
     <!-- Секция подсказок - управляется общей кнопкой -->
-    <div v-show="showHints" class="preview-info">
-      <img src="~/assets/images/info.svg" alt="info" />
-      <div class="preview-description">
-        <div class="preview-title">{{ previewTitle() }}</div>
-        <div class="preview-desc">{{ previewDescription() }}</div>
-      </div>
-    </div>
+    <InfoBanner
+      :show="showHints"
+      title="Подсказка"
+      message="Предпросмотр инвестиции"
+      variant="default"
+      size="medium"
+    />
 
     <!-- Основной контент - управляется кликом по заголовку -->
     <div v-show="showPreview" class="collapsible-content">
@@ -101,6 +101,8 @@
 </template>
 
 <script setup>
+import InfoBanner from '../InfoBanner.vue';
+
 const props = defineProps({
   selectedPreset: {
     type: String,

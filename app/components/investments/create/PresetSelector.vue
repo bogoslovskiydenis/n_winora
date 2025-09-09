@@ -16,15 +16,15 @@
       />
 
       <!-- Секция подсказок - управляется общей кнопкой -->
-      <div v-show="showHints" class="preset-info">
-        <img src="./../../../assets/images/info.svg" alt="info" />
-
-        <div class="preset_container">
-          <div class="preset-description">
-            <strong>{{ getPresetTitle() }}</strong
-            ><br />
-            {{ getPresetDescription() }}
-          </div>
+      <InfoBanner
+        :show="showHints"
+        :title="getPresetTitle()"
+        :message="getPresetDescription()"
+        variant="preset"
+        icon="info"
+      >
+        <!-- Используем слот для кастомного контента (точки) -->
+        <template #extra>
           <div class="preset-dots">
             <span
               v-for="preset in presetList"
@@ -33,14 +33,15 @@
               :class="{ active: selectedPreset === preset }"
             ></span>
           </div>
-        </div>
-      </div>
+        </template>
+      </InfoBanner>
     </div>
   </div>
 </template>
 
 <script setup>
 import CustomSelect from '../CustomSelect.vue';
+import InfoBanner from '../InfoBanner.vue';
 
 const props = defineProps({
   selectedPreset: {
@@ -177,6 +178,7 @@ const handlePresetChange = (value) => {
   justify-content: center;
   flex-direction: row;
   gap: 8px;
+  margin-top: 12px;
 }
 
 .dot {

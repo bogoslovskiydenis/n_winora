@@ -33,19 +33,19 @@
     </div>
 
     <!-- Информационная секция - управляется общей кнопкой -->
-    <div v-show="showHints" class="info-section">
-      <div class="info-content">
-        <img src="~/assets/images/lock.svg" alt="" />
-        <div class="info-text">
-          <div class="info-title">{{ getBettingTitle() }}</div>
-          <div class="info-description">{{ getBettingDescription() }}</div>
-        </div>
-      </div>
-    </div>
+    <InfoBanner
+      :show="showHints"
+      :title="getBettingTitle()"
+      :message="getBettingDescription()"
+      variant="info"
+      icon="lock"
+    />
   </div>
 </template>
 
 <script setup>
+import InfoBanner from '../InfoBanner.vue';
+
 const props = defineProps({
   bettingMode: {
     type: String,

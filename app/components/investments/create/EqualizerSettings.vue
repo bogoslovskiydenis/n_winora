@@ -6,13 +6,13 @@
     </div>
 
     <!-- Секция подсказок - управляется общей кнопкой -->
-    <div v-show="showHints" class="equalizer-info">
-      <img src="~/assets/images/info.svg" alt="info" />
-      <div class="equalizer-description">
-        <div class="equalizer-title">{{ equalizerTitle() }}</div>
-        <div class="equalizer-desc">{{ equalizerDescription() }}</div>
-      </div>
-    </div>
+    <InfoBanner
+      :show="showHints"
+      :title="equalizerTitle()"
+      :message="equalizerDescription()"
+      variant="equalizer"
+      icon="equalizer"
+    />
 
     <div class="equalizer-settings">
       <div class="settings-grid">
@@ -316,6 +316,7 @@
 <script setup>
 import { ref, reactive, watch, onMounted } from 'vue';
 import CustomSelect from '~/components/investments/CustomSelect.vue';
+import InfoBanner from '../InfoBanner.vue';
 
 const props = defineProps({
   settings: {
