@@ -67,12 +67,12 @@ const props = defineProps({
 // Вычисляем путь к иконке
 const iconSrc = computed(() => {
   const iconMap = {
-    info: '~/assets/images/info.svg',
+    info: '/images/info.svg',
     warning: '~/assets/images/warning.svg',
     success: '~/assets/images/success.svg',
-    lock: '~/assets/images/lock.svg',
+    lock: 'images/lock.svg',
     preset: '~/assets/images/Preset.svg',
-    equalizer: '~/assets/images/equalizer.svg',
+    equalizer: '/images/info.svg',
   };
 
   return iconMap[props.icon] || '~/assets/images/info.svg';

@@ -8,11 +8,11 @@
     <div class="preset-selector">
       <!-- Используем CustomSelect вместо собственного dropdown -->
       <CustomSelect
-        v-model="selectedPreset"
+        :model-value="selectedPreset"
         :options="presetOptions"
         placeholder="Выберите пресет"
         variant="large"
-        @update:modelValue="handlePresetChange"
+        @update:model-value="handlePresetChange"
       />
 
       <!-- Секция подсказок - управляется общей кнопкой -->

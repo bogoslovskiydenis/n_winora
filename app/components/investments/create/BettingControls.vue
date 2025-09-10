@@ -205,17 +205,6 @@ const getBettingDescription = () => {
   opacity: 0.8;
 }
 
-/* Информационная секция */
-.info-section {
-  box-shadow: 0px 1px 5px 0px #00000040;
-  background: #00000033;
-  border-top: 1px solid #00b27d33;
-  border-radius: 16px;
-  padding: 16px;
-  transition: all 0.3s ease;
-  animation: fadeInUp 0.4s ease-out;
-}
-
 @keyframes fadeInUp {
   from {
     opacity: 0;
@@ -225,36 +214,6 @@ const getBettingDescription = () => {
     opacity: 1;
     transform: translateY(0);
   }
-}
-
-.info-content {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.info-icon {
-  font-size: 18px;
-  color: #4ade80;
-  flex-shrink: 0;
-  margin-top: 2px;
-}
-
-.info-text {
-  flex: 1;
-}
-
-.info-title {
-  font-size: 14px;
-  font-weight: 600;
-  color: #ffffff;
-  margin-bottom: 4px;
-}
-
-.info-description {
-  font-size: 12px;
-  color: #ffffff;
-  line-height: 1.5;
 }
 
 /* Адаптивность */
@@ -270,22 +229,6 @@ const getBettingDescription = () => {
 
   .button-icon {
     font-size: 14px;
-  }
-
-  .info-content {
-    gap: 10px;
-  }
-
-  .info-icon {
-    font-size: 16px;
-  }
-
-  .info-title {
-    font-size: 13px;
-  }
-
-  .info-description {
-    font-size: 11px;
   }
 }
 
