@@ -2,7 +2,10 @@
   <div class="investment-card">
     <!-- Заголовок инвестиции -->
     <div class="investment-header">
-      <div class="investment-number">{{ investment.name }}</div>
+      <div class="investment-number">
+        <span class="investment-label">ИНВЕСТИЦИЯ</span>
+        <span class="investment-id">{{ '№3456' }}</span>
+      </div>
     </div>
 
     <!-- Верхняя секция с прогнозами -->
@@ -22,7 +25,9 @@
         <div class="forecast-label">ДОСТУПНАЯ К ПЕРЕВОДУ П...</div>
         <div class="forecast-value available">
           <span class="available-icon">💰</span>
-          {{ investment.availableProfit || '20' }} USD
+          <span class="available-text"
+            >{{ investment.availableProfit || '20' }} USD</span
+          >
         </div>
       </div>
     </div>
@@ -53,18 +58,18 @@
           <span class="detail-icon">{{ getStatusIcon() }}</span>
         </div>
       </div>
+      <div class="reinvestment-section">
+        <div class="reinvestment-info">
+          <img src="./../../../assets/images/schedule.svg" />
+          <span class="reinvest-text"
+            >Реинвестирование прибыли через
+            {{ investment.reinvestDays || '5' }} дней</span
+          >
+        </div>
+      </div>
     </div>
 
     <!-- Секция реинвестирования -->
-    <div class="reinvestment-section">
-      <div class="reinvestment-info">
-        <span class="reinvest-icon">⏰</span>
-        <span class="reinvest-text"
-          >Реинвестирование прибыли через
-          {{ investment.reinvestDays || '5' }} дней</span
-        >
-      </div>
-    </div>
 
     <!-- Кнопки управления -->
     <div class="investment-actions">
@@ -167,22 +172,34 @@ const getRiskClass = () => {
 
 /* Заголовок */
 .investment-header {
+  display: flex;
+  justify-content: center;
   text-align: center;
+  gap: 16px;
   margin-bottom: 16px;
 }
 
 .investment-number {
+  display: flex;
+  gap: 16px;
   font-size: 16px;
   font-weight: 700;
-  color: #ffa500;
   letter-spacing: 1px;
   text-transform: uppercase;
+}
+
+.investment-label {
+  color: #ffffff;
+}
+
+.investment-id {
+  color: #f97c39;
 }
 
 /* Верхняя секция прогнозов */
 .investment-forecasts {
   display: flex;
-  gap: 12px;
+  gap: 8px;
   margin-bottom: 20px;
 }
 
@@ -190,23 +207,27 @@ const getRiskClass = () => {
   flex: 1;
   border-bottom: 1px solid #ffffff2e;
   text-align: center;
-  min-width: 100px;
   border-radius: 8px;
   padding: 8px;
-  background: #00000040;
+  background: rgba(0, 0, 0, 0.3);
+  min-width: 0; /* Важно для корректного сжатия */
 }
 
 .forecast-label {
   font-family: Roboto, sans-serif;
   font-weight: 500;
-  font-style: Condensed Medium;
-  font-size: 12px;
-  leading-trim: CAP_HEIGHT;
-  line-height: 100%;
-  letter-spacing: 0%;
-  text-align: center;
-  vertical-align: middle;
+  font-size: 9px;
+  line-height: 1.1;
+  letter-spacing: 0.3px;
+  text-align: left;
   text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 8px;
+  /* Обрезка текста с тремя точками */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 100%;
 }
 
 .forecast-value {
@@ -214,9 +235,9 @@ const getRiskClass = () => {
   align-items: center;
   justify-content: space-around;
   gap: 4px;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 700;
-  margin-bottom: 4px;
+  text-align: center;
 }
 
 .forecast-value.profit {
@@ -224,17 +245,32 @@ const getRiskClass = () => {
 }
 
 .forecast-value.available {
+  display: flex;
   color: #ffd700;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.available-text {
+  flex: 1;
+  text-align: center;
+}
+
+.available-icon {
+  font-size: 12px;
+  margin-left: auto;
 }
 
 .forecast-period {
   font-size: 14px;
   color: rgba(255, 255, 255, 0.8);
+  margin-top: 2px;
 }
 
-.profit-icon,
-.available-icon {
-  font-size: 10px;
+.profit-icon {
+  font-size: 12px;
+  margin-bottom: 2px;
 }
 
 /* Основная информация */
@@ -302,10 +338,11 @@ const getRiskClass = () => {
 /* Секция реинвестирования */
 .reinvestment-section {
   background: rgba(0, 178, 125, 0.1);
-  border: 1px dashed rgba(0, 178, 125, 0.3);
+  border: 1px solid #ffffff40;
   border-radius: 8px;
-  padding: 10px 12px;
-  margin-bottom: 20px;
+  margin-top: 20px;
+  padding: 16px;
+  gap: 16px;
 }
 
 .reinvestment-info {
@@ -329,7 +366,7 @@ const getRiskClass = () => {
 .investment-actions {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 12px;
 }
 
 .action-btn {
@@ -348,7 +385,6 @@ const getRiskClass = () => {
 
 .action-btn.settings {
   background: #00000033;
-
   color: rgba(255, 255, 255, 0.8);
   border: 1px solid #07cb38;
 }
@@ -367,7 +403,8 @@ const getRiskClass = () => {
 }
 
 .action-btn.withdraw:hover {
-  background: #07cb38;
+  background: #06b532;
+  transform: translateY(-1px);
 }
 
 /* Адаптивность */
@@ -379,6 +416,18 @@ const getRiskClass = () => {
   .investment-forecasts {
     flex-direction: column;
     gap: 8px;
+  }
+
+  .forecast-item {
+    padding: 12px;
+  }
+
+  .forecast-label {
+    font-size: 10px;
+  }
+
+  .forecast-value {
+    font-size: 12px;
   }
 
   .investment-details {
