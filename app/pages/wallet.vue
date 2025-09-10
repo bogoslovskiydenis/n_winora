@@ -8,7 +8,7 @@
           <div class="header-toggle">
             <div class="toggle-wrapper" @click="toggleHints">
               <div class="toggle-icon">
-                <span>ℹ️</span>
+                <img src="./../assets/images/info.svg" alt="info" />
               </div>
               <div class="toggle-switch" :class="{ active: showHints }">
                 <div class="toggle-slider"></div>
@@ -50,24 +50,24 @@
       <div class="tab-content">
         <!-- Вкладка пополнения -->
         <div v-if="activeTab === 'deposit'" class="deposit-content">
-          <!-- Информационный блок -->
-          <div class="info-block" v-if="showHints">
-            <div class="info-icon">⚠️</div>
-            <div class="info-content">
-              <p class="info-text">
-                Вспомогательная информация, которая появляется на экране и
-                помогает пользователю при работе
-              </p>
-            </div>
-          </div>
+          <!-- Информационный блок с новым компонентом InfoBanner -->
+          <InfoBanner
+            :show="showHints"
+            message="Вспомогательная информация, которая появляется на экране и помогает пользователю при работе"
+            variant="warning"
+            icon="info"
+            size="medium"
+          />
 
           <!-- Шаги пополнения -->
           <div class="steps-section">
             <!-- Шаг 1: Выберете счет -->
-            <div class="step-item">
-              <div class="step-number">1</div>
-              <div class="step-content">
+            <div class="step-container">
+              <div class="step-header">
+                <div class="step-number">1</div>
                 <h3 class="step-title">Выберете счет</h3>
+              </div>
+              <div class="step-content">
                 <div class="account-options">
                   <div
                     class="account-option"
@@ -102,11 +102,12 @@
             </div>
 
             <!-- Шаг 2: Выберете метод пополнения -->
-            <div class="step-item">
-              <div class="step-number">2</div>
-              <div class="step-content">
+            <div class="step-container">
+              <div class="step-header">
+                <div class="step-number">2</div>
                 <h3 class="step-title">Выберете метод пополнения</h3>
-
+              </div>
+              <div class="step-content">
                 <!-- Выбор через CustomSelect -->
                 <div class="method-selector">
                   <CustomSelect
@@ -123,7 +124,7 @@
                     class="method-section"
                     v-if="selectedMethodType === 'crypto'"
                   >
-                    <h4 class="method-section-title">Криптa</h4>
+                    <h4 class="method-section-title">Крипта</h4>
                     <div class="crypto-options">
                       <div
                         class="crypto-option"
@@ -174,10 +175,12 @@
             </div>
 
             <!-- Шаг 3: Введите сумму пополнения -->
-            <div class="step-item">
-              <div class="step-number">3</div>
-              <div class="step-content">
+            <div class="step-container">
+              <div class="step-header">
+                <div class="step-number">3</div>
                 <h3 class="step-title">Введите сумму пополнения</h3>
+              </div>
+              <div class="step-content">
                 <div class="amount-input-section">
                   <div class="amount-input-wrapper">
                     <input
@@ -191,11 +194,12 @@
                   </div>
                   <div class="amount-note">
                     Минимальная сумма пополнения:
-                    <span class="min-amount">10$</span>
+                    <span class="min-amount">100$</span>
                   </div>
                 </div>
               </div>
             </div>
+
             <!-- Кнопка пополнения -->
             <div class="deposit-button-section">
               <button
@@ -231,6 +235,7 @@
 
 <script setup>
 import { ref, computed } from 'vue';
+import InfoBanner from '~/components/investments/InfoBanner.vue';
 
 // Импорт компонента CustomSelect (нужно создать отдельно)
 // import CustomSelect from '~/components/CustomSelect.vue';
@@ -295,8 +300,9 @@ const handleDeposit = () => {
 }
 
 .wallet-container {
+  max-width: 644px;
   margin: 0 auto;
-  background: linear-gradient(135deg, #1a4d3a 0%, #0d2818 100%);
+  background: #00aa6926;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -466,38 +472,21 @@ const handleDeposit = () => {
 }
 
 /* ===========================================
-   ИНФОРМАЦИОННЫЙ БЛОК
+   ИНФОРМАЦИОННЫЙ БЛОК (Теперь используется InfoBanner)
    =========================================== */
 
-.info-block {
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  padding: 16px 20px;
-  background: rgba(255, 193, 7, 0.1);
+.deposit-content .info-banner {
   margin: 0 20px 16px;
-  border-radius: 12px;
-  border: 1px solid rgba(255, 193, 7, 0.2);
-}
-
-.info-icon {
-  font-size: 20px;
-  color: #ffc107;
-}
-
-.info-content {
-  flex: 1;
-}
-
-.info-text {
-  margin: 0;
-  font-size: 13px;
-  line-height: 1.4;
-  color: rgba(255, 255, 255, 0.9);
+  background: #00000033;
+  border-top: 1px solid #00b27d33;
+  box-shadow: 0px 1px 5px 0px #00000040;
+  padding: 10px 16px 8px 10px;
+  gap: 16px;
+  border-radius: 16px;
 }
 
 /* ===========================================
-   ШАГИ ПОПОЛНЕНИЯ
+   НОВАЯ СТРУКТУРА ШАГОВ
    =========================================== */
 
 .steps-section {
@@ -505,35 +494,38 @@ const handleDeposit = () => {
   padding: 0 20px;
 }
 
-.step-item {
-  display: flex;
-  gap: 16px;
+.step-container {
   margin-bottom: 24px;
+}
+
+.step-container:last-child {
+  margin-bottom: 0;
+}
+
+.step-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
 }
 
 .step-number {
   width: 32px;
   height: 32px;
-  border-radius: 50%;
-  background: #4ade80;
-  color: #000;
+  color: #f97c39;
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: 700;
   font-size: 16px;
-  flex-shrink: 0;
-}
-
-.step-content {
-  flex: 1;
 }
 
 .step-title {
   font-size: 16px;
   font-weight: 600;
   color: #ffffff;
-  margin: 0 0 16px 0;
+  margin: 0;
+  flex: 1;
 }
 
 /* Опции счетов */
@@ -803,6 +795,24 @@ const handleDeposit = () => {
   .tab-icon {
     font-size: 14px;
   }
+
+  .step-header {
+    gap: 12px;
+  }
+
+  .step-number {
+    width: 28px;
+    height: 28px;
+    font-size: 14px;
+  }
+
+  .step-title {
+    font-size: 15px;
+  }
+
+  .step-content {
+    margin-left: 40px;
+  }
 }
 
 @media (max-width: 480px) {
@@ -818,6 +828,24 @@ const handleDeposit = () => {
 
   .tab-icon {
     font-size: 12px;
+  }
+
+  .step-header {
+    gap: 10px;
+  }
+
+  .step-number {
+    width: 24px;
+    height: 24px;
+    font-size: 12px;
+  }
+
+  .step-title {
+    font-size: 14px;
+  }
+
+  .step-content {
+    margin-left: 34px;
   }
 }
 </style>
