@@ -97,11 +97,20 @@
         ПЕРЕЙТИ К ОПЛАТЕ
       </button>
     </div>
+
+    <!-- Модальное окно оплаты -->
+    <PaymentModal
+      :is-visible="showPaymentModal"
+      :investment-data="investmentModalData"
+      @close="closePaymentModal"
+      @payment-success="handlePaymentSuccess"
+    />
   </div>
 </template>
 
 <script setup>
 import InfoBanner from '../InfoBanner.vue';
+import PaymentModal from '../../modal/PaymentModal.vue';
 
 const props = defineProps({
   selectedPreset: {
@@ -125,6 +134,9 @@ const props = defineProps({
 
 // Состояние для сворачивания/разворачивания превью
 const showPreview = ref(true);
+
+// Состояние модального окна
+const showPaymentModal = ref(false);
 
 // Функция переключения видимости превью
 const togglePreview = () => {
@@ -180,16 +192,49 @@ const getRiskClass = () => {
   return riskClasses[props.selectedPreset] || 'risk-medium';
 };
 
+// Данные для модального окна
+const investmentModalData = computed(() => ({
+  type: getBettingTitle(),
+  strategy: getPresetTitle(),
+  amount: 100,
+  profitability: getProfitability(),
+  risks: getRiskPercentage(),
+  preset: props.selectedPreset,
+  bettingMode: props.bettingMode,
+  settings: props.settings,
+}));
+
+// Обработчик создания инвестиции - теперь открывает модальное окно
 const handleCreateInvestment = () => {
-  // Здесь будет логика создания инвестиции
-  console.log('Создание инвестиции:', {
+  console.log('Открытие модального окна оплаты:', {
     preset: props.selectedPreset,
     bettingMode: props.bettingMode,
     settings: props.settings,
   });
 
-  // Переход к оплате или другая логика
-  navigateTo('/payment'); // или показать модальное окно
+  showPaymentModal.value = true;
+};
+
+// Закрытие модального окна
+const closePaymentModal = () => {
+  showPaymentModal.value = false;
+};
+
+// Обработчик успешной оплаты
+const handlePaymentSuccess = (paymentData) => {
+  console.log('Инвестиция успешно оплачена:', paymentData);
+
+  // Здесь можно добавить логику:
+  // - Отправить данные на сервер
+  // - Показать уведомление об успехе
+  // - Перенаправить пользователя
+  // - Обновить состояние приложения
+
+  // Пример уведомления
+  alert('Инвестиция успешно создана и оплачена!');
+
+  // Можно также эмитировать событие родительскому компоненту
+  // emit('investment-created', paymentData);
 };
 
 const previewTitle = () => 'Подсказка';
@@ -216,11 +261,6 @@ const previewDescription = () => 'Предпросмотр инвестиции'
   background: rgba(255, 255, 255, 0.05);
 }
 
-.card-icon {
-  font-size: 20px;
-  color: #f97316;
-}
-
 .card-header h3 {
   font-size: 16px;
   font-weight: 700;
@@ -242,58 +282,6 @@ const previewDescription = () => 'Предпросмотр инвестиции'
   transform: rotate(180deg);
 }
 
-/* Секция подсказок */
-.preview-info {
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  padding: 12px;
-  background: rgba(74, 222, 128, 0.1);
-  border-radius: 8px;
-  margin-bottom: 20px;
-  transition: all 0.3s ease;
-  animation: fadeInUp 0.4s ease-out;
-}
-
-.preview-info {
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  padding: 12px;
-  box-shadow: 0px 1px 5px 0px #00000040;
-  border-top: 1px solid #00b27d33;
-  border-radius: 16px;
-  background: #00000033;
-  margin-bottom: 20px;
-  transition: all 0.3s ease;
-  animation: fadeInUp 0.4s ease-out;
-}
-
-.preview-description {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  flex: 1;
-  font-size: 13px;
-  color: rgba(255, 255, 255, 0.8);
-  line-height: 1.4;
-  text-align: center;
-}
-
-.preview-title {
-  font-size: 14px;
-  font-weight: 600;
-  color: #ffffff;
-  margin-bottom: 4px;
-}
-
-.preview-desc {
-  font-size: 12px;
-  color: #ffffff;
-  line-height: 1.5;
-}
-
 .preview-info img {
   width: 32px;
   height: 32px;
@@ -308,12 +296,6 @@ const previewDescription = () => 'Предпросмотр инвестиции'
     opacity: 1;
     transform: translateY(0);
   }
-}
-
-.preview-description {
-  font-size: 13px;
-  color: rgba(255, 255, 255, 0.8);
-  line-height: 1.4;
 }
 
 .preview-description strong {
@@ -384,18 +366,6 @@ const previewDescription = () => 'Предпросмотр инвестиции'
 .preview-value.profit {
   color: #4ade80;
   font-weight: 600;
-}
-
-.risk-level.risk-low {
-  color: #4ade80;
-}
-
-.risk-level.risk-medium {
-  color: #fbbf24;
-}
-
-.risk-level.risk-high {
-  color: #ef4444;
 }
 
 .preview-icon {

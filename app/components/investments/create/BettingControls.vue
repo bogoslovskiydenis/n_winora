@@ -104,6 +104,7 @@ const getBettingDescription = () => {
   padding: 0;
   display: flex;
   overflow: hidden;
+  z-index: 0;
 }
 
 /* Анимированный фон */
