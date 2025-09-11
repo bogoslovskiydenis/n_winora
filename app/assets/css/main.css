@@ -9,7 +9,7 @@ html {
 }
 
 body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue',
+    font-family: 'Tomorrow', 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue',
     Arial, sans-serif;
     background: linear-gradient(135deg, #01614b, #032019 70%);
     background-attachment: fixed;
@@ -35,6 +35,24 @@ body::after {
     opacity: 0.15;
     pointer-events: none;
     z-index: -1;
+}
+
+.font-roboto {
+    font-family: 'Roboto', sans-serif;
+}
+
+.font-tomorrow {
+    font-family: 'Tomorrow', sans-serif;
+}
+
+/* Заголовки с Tomorrow */
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Tomorrow', sans-serif;
+}
+
+/* Основной текст с Roboto */
+.text-roboto {
+    font-family: 'Roboto', sans-serif;
 }
 
 /* Кастомный скроллбар */
@@ -250,6 +268,8 @@ select {
         --text-primary: #ffffff;
         --text-secondary: #e5e5e5;
         --border-color: rgba(255, 255, 255, 0.3);
+        --font-primary: 'Tomorrow', sans-serif;
+        --font-secondary: 'Roboto', sans-serif;
     }
 }
 
