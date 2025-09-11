@@ -180,18 +180,21 @@ const submitLogin = async () => {
 .tab {
   flex: 1;
   text-align: center;
-  color: rgba(255, 255, 255, 0.6);
   cursor: pointer;
   border: none;
   background: transparent;
   transition: all 0.3s ease;
   font-size: 16px;
-  font-weight: 500;
-  font-family: inherit;
   border-bottom: 2px solid transparent;
   border-radius: 0;
   text-decoration: none;
   box-sizing: border-box;
+  font-family: Roboto, serif;
+  font-weight: 400;
+  line-height: 13px;
+  letter-spacing: 0%;
+  vertical-align: middle;
+  color: #ffffff;
 }
 
 .tab.active {

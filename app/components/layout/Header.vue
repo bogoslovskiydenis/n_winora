@@ -3,28 +3,30 @@
     <div class="header-content">
       <div class="header-center">
         <button class="action-btn create-investment">
-          <span class="btn-icon">📈</span>
+          <img src="./../../assets/images/add_circle.svg" alt="" />
           СОЗДАТЬ ИНВЕСТИЦИЮ
         </button>
         <div class="balance-display">
-          <span class="balance-icon">💰</span>
+          <img src="./../../assets/images/balance-icon.svg" alt="" />
           <span class="balance-amount">{{
             user?.balance?.toLocaleString() || '150,000'
           }}</span>
-          <span class="balance-text">USDT</span>
-          <span class="balance-count">{{
-            Math.floor((user?.balance || 150000) / 100)
+        </div>
+        <div class="balance-display-usdt">
+          <span class="balance-usdt-label">USDT</span>
+          <span class="balance-usdt-amount">{{
+            user?.balance?.toLocaleString() || '100'
           }}</span>
         </div>
         <button class="action-btn top-up-balance">
-          <span class="btn-icon">💳</span>
+          <img src="./../../assets/images/add_circle.svg" alt="" />
           ПОПОЛНИТЬ БАЛАНС
         </button>
       </div>
 
       <div class="header-right">
         <button class="notification-btn" @click="toggleNotifications">
-          <span class="notification-icon">🔔</span>
+          <img src="./../../assets/images/notif.svg" alt="" />
           <span v-if="notificationCount > 0" class="notification-badge">{{
             notificationCount
           }}</span>
@@ -77,15 +79,18 @@ const toggleNotifications = () => {
 <style scoped>
 /* Header */
 .header {
-  background: linear-gradient(135deg, #0a3d2e 0%, #1a5940 100%);
-  border-bottom: 1px solid rgba(74, 222, 128, 0.2);
+  box-shadow: 0px 4px 4px 0px #00000040;
+  background: linear-gradient(180deg, #1b1b1b 0%, #323232 100%);
+
+  border-bottom: 1px solid #00110d45;
   position: sticky;
   top: 0;
   z-index: 100;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
 .header-content {
+  max-width: 1400px;
+  height: 45px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -96,6 +101,7 @@ const toggleNotifications = () => {
 
 /* Header Center */
 .header-center {
+  height: 26px;
   display: flex;
   align-items: center;
   gap: 16px;
@@ -106,9 +112,7 @@ const toggleNotifications = () => {
 .action-btn {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 10px 16px;
-  border-radius: 20px;
+  border-radius: 32px;
   font-size: 11px;
   font-weight: 700;
   cursor: pointer;
@@ -116,11 +120,14 @@ const toggleNotifications = () => {
   border: none;
   font-family: inherit;
   letter-spacing: 0.5px;
+  height: 26px;
+  gap: 12px;
+  padding: 8px 12px 8px 6px;
 }
 
 .create-investment {
-  background: var(--primary-color);
-  color: #0a3d2e;
+  background: #07cb38;
+  color: #070202;
 }
 
 .create-investment:hover {
@@ -130,9 +137,7 @@ const toggleNotifications = () => {
 }
 
 .top-up-balance {
-  background: transparent;
-  color: var(--primary-color);
-  border: 1px solid var(--primary-color);
+  background: #07cb38;
 }
 
 .top-up-balance:hover {
@@ -147,26 +152,64 @@ const toggleNotifications = () => {
 .balance-display {
   display: flex;
   align-items: center;
-  gap: 8px;
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 20px;
-  padding: 10px 16px;
+  border: 1px solid #00000040;
+  color: #00000040;
+  gap: 4px;
+  padding-right: 8px;
+  padding-left: 1px;
+  border-radius: 16px;
 }
 
-.balance-icon {
+.balance-display-usdt {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  border: 1px solid #00000040;
+  color: #00000040;
+  padding: 4px 8px;
+  border-radius: 16px;
+  border-width: 1px;
+}
+
+.balance-usdt-label {
+  font-family: Roboto, serif;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 118%;
+  text-align: center;
+  vertical-align: middle;
+  text-transform: uppercase;
+  color: #ffffff;
+  padding: 2px 6px;
+  border-radius: 8px;
+}
+
+.balance-usdt-amount {
+  font-family: Roboto, sans-serif;
+  font-weight: 700;
   font-size: 16px;
+  line-height: 100%;
+  text-align: right;
+  color: #07cb38;
 }
 
 .balance-amount {
-  font-size: 16px;
+  font-family: Roboto, serif;
   font-weight: 700;
-  color: #fbbf24;
+  font-size: 16px;
+  line-height: 100%;
+  text-align: right;
+  color: #c8c503;
 }
 
 .balance-text {
+  font-family: Roboto, serif;
+  font-weight: 400;
   font-size: 12px;
+  line-height: 118%;
+  text-align: center;
+  vertical-align: middle;
+  text-transform: uppercase;
   color: var(--text-secondary);
   margin-right: 8px;
 }
@@ -328,7 +371,6 @@ const toggleNotifications = () => {
   }
 
   .header-center {
-    flex-direction: column;
     gap: 12px;
   }
 
@@ -338,7 +380,6 @@ const toggleNotifications = () => {
   }
 
   .balance-display {
-    padding: 8px 12px;
   }
 }
 </style>

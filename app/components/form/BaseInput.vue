@@ -122,13 +122,16 @@ const togglePasswordVisibility = () => {
   border: 1px solid #035116;
   border-radius: 47px;
   background: rgba(4, 33, 26, 0.8);
-  color: rgba(255, 255, 255, 0.8);
+  color: #82ba94;
+  font-family: Roboto, sans-serif;
+  font-weight: 400;
+  font-style: normal;
   font-size: 16px;
-  font-family: inherit;
+  line-height: 100%;
+  vertical-align: middle;
   transition: all 0.3s ease;
   outline: none;
   box-sizing: border-box;
-  backdrop-filter: blur(10px);
 }
 
 .base-input__field--with-icon {
@@ -136,8 +139,14 @@ const togglePasswordVisibility = () => {
 }
 
 .base-input__field::placeholder {
-  color: rgba(255, 255, 255, 0.5);
+  color: #82ba94;
+  font-family: Roboto, sans-serif;
+  font-weight: 400;
+  font-style: normal;
   font-size: 16px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  vertical-align: middle;
 }
 
 .base-input__field:focus {
@@ -221,7 +230,7 @@ const togglePasswordVisibility = () => {
 .base-input__field:-webkit-autofill:hover,
 .base-input__field:-webkit-autofill:focus {
   -webkit-box-shadow: 0 0 0 30px rgba(4, 33, 26, 0.8) inset !important;
-  -webkit-text-fill-color: rgba(255, 255, 255, 0.8) !important;
+  -webkit-text-fill-color: #82ba94 !important;
   border-color: #03516b !important;
 }
 

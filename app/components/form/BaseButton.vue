@@ -109,9 +109,15 @@ const buttonClasses = computed(() => [
 /* Варианты */
 .base-button--primary {
   background: #07cb38;
-  color: #0a3d2e;
-  box-shadow: 0 4px 15px rgba(0, 255, 135, 0.3);
+  color: #070202;
   border: 2px solid transparent;
+  font-family: Roboto, serif;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 100%;
+  text-align: center;
+  vertical-align: middle;
+  text-transform: uppercase;
 }
 
 .base-button--primary:hover:not(:disabled):not(.base-button--loading) {
