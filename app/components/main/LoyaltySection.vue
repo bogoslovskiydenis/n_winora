@@ -4,7 +4,7 @@
     <div class="loyalty-section">
       <div class="loyalty-card">
         <div class="loyalty-header">
-          <div class="loyalty-icon">⚠️</div>
+          <img src="./../../assets/images/info.svg" class="loyalty-icon" />
           <div class="loyalty-title">ЛОЯЛЬНОСТЬ</div>
         </div>
 
@@ -244,10 +244,13 @@ const updateBonuses = (level) => {
 }
 
 .loyalty-title {
-  font-size: 16px;
+  font-family: Tomorrow, serif;
   font-weight: 700;
-  color: #4ade80;
-  letter-spacing: 1px;
+  font-size: 15px;
+  line-height: 100%;
+  text-align: center;
+  text-transform: uppercase;
+  color: #07cb38;
 }
 
 /* ===========================================
@@ -257,19 +260,21 @@ const updateBonuses = (level) => {
 .loyalty-content {
   display: flex;
   height: 109px;
-  gap: 16px;
-  padding: 10px;
+  padding: 8px;
+  gap: 8px;
   align-items: flex-start;
 }
 
 .loyalty-level {
-  border-radius: 8px;
   background-color: #00000042;
   display: flex;
   align-items: flex-start;
   flex: 1;
-  padding: 10px;
-  gap: 12px;
+
+  padding: 8px 16px;
+  gap: 16px;
+  border-radius: 8px 8px 8px 16px;
+  border-bottom-width: 1px;
 }
 
 .level-badge-wrapper {
@@ -278,9 +283,8 @@ const updateBonuses = (level) => {
 }
 
 .level-badge-wrapper img {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
+  width: 44px;
+  height: 44px;
 }
 
 .level-info {
@@ -289,10 +293,12 @@ const updateBonuses = (level) => {
 }
 
 .level-title {
-  font-size: 18px;
-  font-weight: 600;
-  color: #ffffff;
-  margin-bottom: 8px;
+  font-family: Roboto, serif;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 100%;
+  vertical-align: middle;
+  color: #f97c39;
 }
 
 .level-details {
@@ -301,30 +307,48 @@ const updateBonuses = (level) => {
 
 .level-deposit,
 .level-next {
-  font-size: 14px;
-  color: rgba(255, 255, 255, 0.7);
-  line-height: 1.4;
+  font-family: Roboto, serif;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 100%;
+  vertical-align: middle;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   margin-bottom: 4px;
 }
 
 .amount {
-  color: #f59e0b;
-  font-weight: 600;
+  font-family: Roboto, serif;
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 100%;
+  text-align: right;
+  color: #f97c39;
 }
 
 .remaining {
-  color: #22c55e;
-  font-weight: 600;
+  font-family: Roboto, serif;
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 100%;
+  text-align: right;
+  color: #07cb38;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .level-link {
-  font-size: 14px;
-  color: #4ade80;
-  text-decoration: none;
+  font-family: Roboto, serif;
   font-weight: 500;
-  padding: 2px 0;
-  border-bottom: 1px solid transparent;
-  transition: all 0.3s ease;
+  font-size: 12px;
+  line-height: 100%;
+  vertical-align: middle;
+  text-decoration: underline;
+  text-decoration-style: solid;
+  text-decoration-skip-ink: auto;
+  color: #07cb38;
 }
 
 .level-link:hover {
@@ -337,12 +361,12 @@ const updateBonuses = (level) => {
    =========================================== */
 
 .loyalty-rewards {
-  border-radius: 8px;
   background-color: #ffffff1a;
   display: flex;
   gap: 16px;
   flex: 1;
-  padding: 10px;
+  border-radius: 8px 8px 16px 8px;
+  padding: 8px 16px;
 }
 
 /* Скрываем аккордеон на десктопе */
@@ -367,12 +391,12 @@ const updateBonuses = (level) => {
 }
 
 .reward-title {
+  font-family: Roboto, serif;
+  font-weight: 700;
   font-size: 12px;
-  font-weight: 600;
-  color: #f59e0b;
-  text-align: left;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+  line-height: 100%;
+  vertical-align: middle;
+  color: #f97c39;
 }
 
 .reward-list {
@@ -383,12 +407,7 @@ const updateBonuses = (level) => {
 
 .reward-item {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  transition: all 0.3s ease;
-  position: relative;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-  padding: 4px 0;
 }
 
 .reward-item:last-child {
@@ -401,17 +420,21 @@ const updateBonuses = (level) => {
 }
 
 .reward-name {
-  font-size: 13px;
   color: #ffffff;
+  font-family: Roboto, serif;
   font-weight: 500;
+  font-size: 12px;
+  line-height: 100%;
+  vertical-align: middle;
 }
 
 .reward-value {
-  font-size: 14px;
-  font-weight: 600;
+  font-family: Roboto, serif;
+  font-weight: 700;
+  font-size: 12px;
+  leading-trim: CAP_HEIGHT;
+  line-height: 118%;
   color: #07cb38;
-  min-width: 40px;
-  text-align: right;
 }
 
 .reward-value.green {
@@ -632,8 +655,8 @@ const updateBonuses = (level) => {
   }
 
   .level-badge-wrapper img {
-    width: 50px;
-    height: 50px;
+    width: 44px;
+    height: 44px;
   }
 
   .level-info {
@@ -751,11 +774,8 @@ const updateBonuses = (level) => {
   }
 
   .reward-item {
-    padding: 8px 0;
-    flex-direction: column;
-    text-align: center;
-    gap: 4px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    display: flex;
+    justify-content: space-between;
   }
 
   .reward-item:last-child {
