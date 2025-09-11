@@ -89,7 +89,6 @@ const toggleNotifications = () => {
 }
 
 .header-content {
-  max-width: 1400px;
   height: 45px;
   display: flex;
   align-items: center;
