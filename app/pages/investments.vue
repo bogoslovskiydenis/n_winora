@@ -1,4 +1,3 @@
-<!-- pages/investments.vue -->
 <template>
   <div class="investments-page">
     <div class="investments-container">
@@ -15,7 +14,7 @@
       />
 
       <!-- Контент вкладок с InfoBanner внутри -->
-      <InvestmentsTabContent :show-hints="showHints">
+      <InvestmentsTabContent :show-hints="showHints" :active-tab="activeTab">
         <!-- Создать инвестицию -->
         <CreateInvestmentTab
           v-if="activeTab === 'create'"
@@ -102,7 +101,7 @@ const currentSettings = computed(() => {
   return bettingMode.value === 'gambling' ? gamblingSettings : bettingSettings;
 });
 
-// Методы
+// Методы для обновления данных
 const updateBettingMode = (mode) => {
   bettingMode.value = mode;
 };
@@ -115,9 +114,20 @@ const updateSettings = (newSettings) => {
   }
 };
 
-const updatePlatforms = (newPlatforms) => {
-  Object.assign(selectedPlatforms, newPlatforms);
+const updatePlatforms = (platformUpdates) => {
+  Object.assign(selectedPlatforms, platformUpdates);
 };
+
+// SEO
+useHead({
+  title: 'Инвестиции - Winora',
+  meta: [
+    {
+      name: 'description',
+      content: 'Создавайте и управляйте своими инвестициями в Winora',
+    },
+  ],
+});
 </script>
 
 <style scoped>
@@ -136,18 +146,5 @@ const updatePlatforms = (newPlatforms) => {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-}
-
-/* Адаптивность */
-@media (max-width: 768px) {
-  .investments-container {
-    max-width: 100%;
-  }
-}
-
-@media (max-width: 480px) {
-  .investments-page {
-    padding: 0;
-  }
 }
 </style>

@@ -98,10 +98,11 @@ const handlePresetChange = (value) => {
 
 <style scoped>
 .card-header {
+  margin-top: 16px;
   display: flex;
   align-items: center;
   gap: 12px;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 }
 
 .card-header h3 {
@@ -114,8 +115,7 @@ const handlePresetChange = (value) => {
 
 .preset-selector {
   display: flex;
-  flex-direction: column;
-  gap: 16px;
+  gap: 24px;
 }
 
 /* Секция подсказок */
@@ -194,6 +194,14 @@ const handlePresetChange = (value) => {
   box-shadow: 0 0 8px rgba(249, 115, 22, 0.4);
 }
 
+/* Мобильная версия */
+@media (max-width: 768px) {
+  .preset-selector {
+    flex-direction: column;
+    gap: 16px;
+  }
+}
+
 @media (max-width: 480px) {
   .preset-info {
     padding: 16px;
@@ -206,6 +214,10 @@ const handlePresetChange = (value) => {
 
   .preset-description strong {
     font-size: 15px;
+  }
+
+  .preset-selector {
+    gap: 12px;
   }
 }
 </style>

@@ -323,7 +323,8 @@ const previewDescription = () => 'Предпросмотр инвестиции'
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 8px;
   padding: 16px;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
+  margin-top: 16px;
 }
 
 .preview-row {

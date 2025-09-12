@@ -102,7 +102,14 @@ onUnmounted(() => {
 <style scoped>
 .custom-select {
   position: relative;
-  width: 100%;
+  width: 294px;
+  height: 42px;
+  opacity: 1;
+  border-radius: 47px;
+  border-top-width: 1px;
+  border-right-width: 2px;
+  border-bottom-width: 2px;
+  border-left-width: 2px;
 }
 
 .select-trigger {
@@ -126,12 +133,19 @@ onUnmounted(() => {
   padding: 12px 16px;
   background: rgba(0, 0, 0, 0.2);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
   font-size: 14px;
+  position: relative;
+  z-index: 100;
+  border-radius: 47px;
 }
 
 .select-trigger:hover {
-  border-color: rgba(255, 255, 255, 0.3);
+  border-radius: 47px;
+  border-width: 1px, 2px, 2px, 2px;
+
+  border-style: solid;
+
+  border-color: #035116;
 }
 
 .select-trigger.active {
@@ -158,13 +172,12 @@ onUnmounted(() => {
 
 .dropdown-list {
   position: absolute;
-  top: 100%;
+  top: calc(100% + 2px);
   left: 0;
   right: 0;
   background: rgba(0, 0, 0, 0.9);
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 6px;
-  margin-top: 2px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   backdrop-filter: blur(10px);
   overflow: hidden;
@@ -173,12 +186,14 @@ onUnmounted(() => {
   overflow-y: auto;
 }
 
-/* Большой вариант dropdown */
+/* Большой вариант dropdown - позиционируется под select-trigger.large */
 .dropdown-list.large {
+  top: auto;
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 8px;
-  margin-top: 4px;
-  z-index: 101;
+  z-index: 1001;
+  background: rgba(0, 0, 0, 0.95);
+  backdrop-filter: blur(15px);
 }
 
 .dropdown-item {

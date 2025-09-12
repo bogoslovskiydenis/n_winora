@@ -1,5 +1,5 @@
 <template>
-  <div class="tab-content">
+  <div class="tab-content" :class="{ 'tab-content--full-width': isCreateTab }">
     <!-- Info Banner внутри tab-content -->
     <InfoBanner
       v-if="showHints"
@@ -20,17 +20,23 @@
 <script setup>
 import InfoBanner from './InfoBanner.vue';
 
-defineProps({
+const props = defineProps({
   showHints: {
     type: Boolean,
     default: true,
   },
+  activeTab: {
+    type: String,
+    default: 'create',
+  },
 });
+
+// Проверяем, активна ли вкладка "Создать инвестицию"
+const isCreateTab = computed(() => props.activeTab === 'create');
 </script>
 
 <style scoped>
 .tab-content {
-  max-width: 644px;
   border-bottom-right-radius: 24px;
   border-bottom-left-radius: 24px;
   padding: 16px;
@@ -46,6 +52,11 @@ defineProps({
   background: rgba(0, 170, 105, 0.15);
 }
 
+/* Убираем max-width для вкладки "Создать инвестицию" */
+.tab-content--full-width {
+  max-width: 644px;
+}
+
 .tab-inner-content {
   flex: 1;
   display: flex;
@@ -54,6 +65,7 @@ defineProps({
 
 /* Стили для InfoBanner внутри tab-content */
 .tab-content .info-banner {
+  margin-top: 16px;
   margin-bottom: 16px;
   background: #00000033;
   border-top: 1px solid #00b27d33;
@@ -76,10 +88,6 @@ defineProps({
     padding: 8px;
     border-bottom-right-radius: 16px;
     border-bottom-left-radius: 16px;
-  }
-
-  .tab-content .info-banner {
-    margin-bottom: 12px;
   }
 }
 </style>

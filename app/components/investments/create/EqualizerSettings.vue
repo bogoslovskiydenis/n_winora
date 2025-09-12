@@ -644,17 +644,8 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   gap: 16px;
-}
-
-.setting-item {
-  padding: 16px;
-}
-
-.setting-item:hover {
-  box-shadow: 0px 1px 5px 0px #00000040;
-  border-top: 1px solid #00b27d33;
-  border-radius: 16px;
-  background: #00000033;
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
 
 .setting-checkbox {
