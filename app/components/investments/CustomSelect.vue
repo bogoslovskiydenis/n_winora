@@ -141,9 +141,7 @@ onUnmounted(() => {
 .select-trigger:hover {
   border-radius: 47px;
   border-width: 1px, 2px, 2px, 2px;
-
   border-style: solid;
-
   border-color: #035116;
 }
 

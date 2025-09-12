@@ -257,10 +257,6 @@ const getBettingDescription = () => {
 }
 
 @media (max-width: 480px) {
-  .betting-selector-card {
-    padding: 12px;
-  }
-
   .betting-toggle {
     width: 260px;
     height: 28px;

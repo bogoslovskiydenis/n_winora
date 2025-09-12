@@ -797,10 +797,6 @@ onMounted(() => {
 }
 
 @media (max-width: 480px) {
-  .investment-card {
-    padding: 16px;
-  }
-
   .settings-grid {
     gap: 12px;
   }
