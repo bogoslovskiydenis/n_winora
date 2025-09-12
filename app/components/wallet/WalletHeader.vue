@@ -136,6 +136,7 @@ defineEmits(['toggle-hints']);
   }
 
   .toggle-text {
+    display: none;
     font-size: 11px;
   }
 }
