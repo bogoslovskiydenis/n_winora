@@ -124,7 +124,6 @@ const getBettingDescription = () => {
   border-top-left-radius: 16px;
   border-bottom-left-radius: 16px;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  border-bottom: 2px solid rgba(7, 203, 56, 0.6);
   z-index: 1;
 }
 

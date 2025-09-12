@@ -132,16 +132,6 @@ const sizeClass = computed(() => `info-banner--${props.size}`);
   color: rgba(255, 255, 255, 0.7);
 }
 
-/* Варианты стилизации */
-.info-banner--default {
-  /* Стили по умолчанию уже применены */
-}
-
-.info-banner--info {
-  background: rgba(59, 130, 246, 0.1);
-  border-top-color: rgba(59, 130, 246, 0.3);
-}
-
 .info-banner--warning {
   background: rgba(245, 158, 11, 0.1);
   border-top-color: rgba(245, 158, 11, 0.3);
