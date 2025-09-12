@@ -127,11 +127,12 @@ const updatePlatforms = (newPlatforms) => {
   color: #ffffff;
   padding: 0;
   margin: 0;
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
 }
 
 .investments-container {
   margin: 0 auto;
-  background: #00aa6926;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
