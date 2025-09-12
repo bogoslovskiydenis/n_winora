@@ -79,6 +79,10 @@ const getBettingDescription = () => {
 
 <style scoped>
 .betting-selector-card {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
 }
 .info-text {
   display: flex;
@@ -98,9 +102,11 @@ const getBettingDescription = () => {
 
 .betting-toggle {
   position: relative;
-  background: rgba(0, 0, 0, 0.4);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 50px;
+  width: 309px;
+  height: 32px;
+  background: #00000040;
+  border-radius: 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
   padding: 0;
   display: flex;
   overflow: hidden;
@@ -114,27 +120,29 @@ const getBettingDescription = () => {
   left: 0;
   width: 50%;
   height: 100%;
-  background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
-  border-radius: 50px 0 0 50px;
+  background: #07cb3880;
+  border-top-left-radius: 16px;
+  border-bottom-left-radius: 16px;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow:
-    0 4px 12px rgba(34, 197, 94, 0.3),
-    0 2px 6px rgba(34, 197, 94, 0.2);
+  border-bottom: 2px solid rgba(7, 203, 56, 0.6);
   z-index: 1;
 }
 
 .toggle-background.toggle-right {
   transform: translateX(100%);
-  border-radius: 0 50px 50px 0;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  border-top-right-radius: 16px;
+  border-bottom-right-radius: 16px;
 }
 
 /* Кнопки переключателя */
 .toggle-button {
   flex: 1;
+  width: 154.5px;
+  height: 32px;
   background: transparent;
   border: none;
-  border-radius: 42px;
-  padding: 12px 20px;
   cursor: pointer;
   transition: all 0.3s ease;
   font-family: inherit;
@@ -144,7 +152,18 @@ const getBettingDescription = () => {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  min-height: 44px;
+  padding: 7px 16px;
+}
+
+.toggle-button.gambling {
+  border-top-left-radius: 16px;
+  border-bottom-left-radius: 16px;
+}
+
+.toggle-button.betting {
+  border-top-right-radius: 16px;
+  border-bottom-right-radius: 16px;
+  background: #00000040;
 }
 
 .button-icon {
@@ -219,9 +238,14 @@ const getBettingDescription = () => {
 
 /* Адаптивность */
 @media (max-width: 768px) {
+  .betting-toggle {
+    width: 280px;
+  }
+
   .toggle-button {
-    padding: 10px 16px;
-    min-height: 40px;
+    width: 140px;
+    padding: 7px 14px;
+    min-height: 32px;
   }
 
   .button-text {
@@ -239,12 +263,14 @@ const getBettingDescription = () => {
   }
 
   .betting-toggle {
-    padding: 3px;
+    width: 260px;
+    height: 28px;
   }
 
   .toggle-button {
-    padding: 8px 12px;
-    min-height: 36px;
+    width: 130px;
+    height: 28px;
+    padding: 6px 12px;
     gap: 6px;
   }
 
@@ -272,8 +298,8 @@ const getBettingDescription = () => {
 }
 
 .betting-selector-card.compact .toggle-button {
-  padding: 8px 16px;
-  min-height: 36px;
+  padding: 6px 14px;
+  min-height: 28px;
 }
 
 .betting-selector-card.compact .button-text {
@@ -284,9 +310,15 @@ const getBettingDescription = () => {
   padding: 24px;
 }
 
+.betting-selector-card.large .betting-toggle {
+  width: 340px;
+  height: 36px;
+}
+
 .betting-selector-card.large .toggle-button {
-  padding: 16px 24px;
-  min-height: 52px;
+  width: 170px;
+  height: 36px;
+  padding: 8px 18px;
 }
 
 .betting-selector-card.large .button-text {

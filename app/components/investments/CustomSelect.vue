@@ -135,7 +135,6 @@ onUnmounted(() => {
   border: 1px solid rgba(255, 255, 255, 0.1);
   font-size: 14px;
   position: relative;
-  z-index: 100;
   border-radius: 47px;
 }
 
