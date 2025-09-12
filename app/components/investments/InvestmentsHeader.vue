@@ -5,9 +5,8 @@
       <h1 class="page-title">ИНВЕСТИЦИИ</h1>
       <div class="header-toggle">
         <div class="toggle-wrapper" @click="toggleHints">
-          <div class="toggle-icon">
-            <img src="../../assets/images/info.svg" alt="info" />
-          </div>
+          <img src="../../assets/images/info.svg" alt="info" />
+          <span class="toggle-text">Режим подсказок</span>
           <div class="toggle-switch" :class="{ active: showHints }">
             <div class="toggle-slider"></div>
           </div>
@@ -34,15 +33,17 @@ const toggleHints = () => {
 
 <style scoped>
 .investments-header {
-  margin-bottom: 24px;
+  background: linear-gradient(0deg, #002920 0%, #00382b 100%);
+  padding-top: 24px;
+  margin-bottom: 0;
 }
 
 .header-content {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 0;
   position: relative;
+  margin-bottom: 24px;
 }
 
 .page-title {
@@ -57,17 +58,11 @@ const toggleHints = () => {
   position: absolute;
   right: 0;
   top: 50%;
-
   transform: translateY(-50%);
   border-radius: 16px;
-  padding: 1px 6px 1px 5px;
-  border: 1px solid #00000040;
-  background: #00000040;
-}
-
-.header-toggle {
-  display: flex;
-  align-items: center;
+  padding: 4px 8px;
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  background: rgba(0, 0, 0, 0.25);
 }
 
 .toggle-wrapper {
@@ -77,12 +72,16 @@ const toggleHints = () => {
   cursor: pointer;
 }
 
-.toggle-icon {
+.header-toggle img {
   width: 16px;
   height: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+}
+
+.toggle-text {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: 500;
+  white-space: nowrap;
 }
 
 .toggle-switch {
@@ -92,7 +91,7 @@ const toggleHints = () => {
   border-radius: 12px;
   position: relative;
   transition: all 0.3s ease;
-  border: 2px solid #07cb3899;
+  border: 2px solid rgba(7, 203, 56, 0.6);
 }
 
 .toggle-switch.active {
@@ -105,8 +104,8 @@ const toggleHints = () => {
   background: white;
   border-radius: 50%;
   position: absolute;
-  top: 1px;
-  left: 2px;
+  top: 2px;
+  left: 3px;
   transition: all 0.3s ease;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
@@ -115,14 +114,14 @@ const toggleHints = () => {
   transform: translateX(24px);
 }
 
+/* Адаптивность */
 @media (max-width: 768px) {
   .page-title {
     font-size: 20px;
   }
 
-  .toggle-icon {
-    width: 28px;
-    height: 28px;
+  .header-toggle {
+    padding: 3px 6px;
   }
 
   .toggle-switch {
@@ -131,12 +130,29 @@ const toggleHints = () => {
   }
 
   .toggle-slider {
-    width: 18px;
-    height: 18px;
+    width: 14px;
+    height: 14px;
+    top: 2px;
+    left: 2px;
   }
 
   .toggle-switch.active .toggle-slider {
     transform: translateX(22px);
+  }
+
+  .toggle-text {
+    display: none;
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 480px) {
+  .header-content {
+    margin-bottom: 0;
+  }
+
+  .page-title {
+    font-size: 18px;
   }
 }
 </style>
