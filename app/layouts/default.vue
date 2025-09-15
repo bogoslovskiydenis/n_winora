@@ -68,8 +68,17 @@
       v-if="showSidebar && isMobile"
       :user="user"
       :active-route="currentRoute"
+      @toggle-menu="handleToggleMobileMenu"
+    />
+
+    <!-- Mobile Menu -->
+    <MobileMenu
+      v-if="showSidebar && isMobile"
+      :show-menu="mobileMenuOpen"
+      :user="user"
+      @close="closeMobileMenu"
       @logout="handleLogout"
-      @navigate="handleNavigate"
+      @navigate-home="navigateToMain"
     />
   </div>
 </template>
@@ -79,55 +88,45 @@ import MobileHeader from './../components/layout/MobileHeader.vue';
 import Header from './../components/layout/Header.vue';
 import Sidebar from './../components/layout/Sidebar.vue';
 import MobileBottomNav from './../components/layout/MobileBottomNav.vue';
+import MobileMenu from './../components/layout/MobileMenu.vue';
 
 const route = useRoute();
-const { user, logoutUser } = useAuth();
+const router = useRouter();
 
+// Реактивные данные
 const sidebarOpen = ref(false);
-const windowWidth = ref(1200);
-
-// Вычисляемые свойства для разных размеров экрана
-const isMobile = computed(() => windowWidth.value < 768);
-const isTablet = computed(
-  () => windowWidth.value >= 768 && windowWidth.value < 1024
-);
-const isDesktop = computed(() => windowWidth.value >= 1024);
-
-const showSidebar = computed(
-  () => route.name !== 'login' && route.name !== 'registration'
-);
-
-// Определяем текущий активный роут для мобильной навигации
-const currentRoute = computed(() => {
-  const name = route.name;
-  const path = route.path;
-
-  // Маппинг роутов для мобильной навигации
-  if (path.startsWith('/shop')) return 'shop';
-  if (path.startsWith('/investments/create')) return 'investments-create';
-  if (path.startsWith('/investments')) return 'investments';
-  if (name === 'main') return 'main';
-
-  return '';
+const mobileMenuOpen = ref(false);
+const user = ref({
+  nickname: 'ArcticPulse',
+  email: 'email@host.com',
+  balance: 150000,
+  level: 2,
+  isVerified: false,
 });
 
-// Определяем заголовок страницы для мобильного хедера
+// Вычисляемые свойства
+const isMobile = ref(false);
+const isTablet = ref(false);
+const showSidebar = ref(true);
+const currentRoute = computed(() => route.name);
 const pageTitle = computed(() => {
-  const routeTitles = {
-    main: 'Главная',
-    shop: 'Магазин',
+  const titles = {
+    index: 'Главная',
     investments: 'Инвестиции',
     'investments-create': 'Создать инвестицию',
-    chests: 'Сундуки',
-    roulette: 'Рулетка',
-    rating: 'Рейтинг',
+    chest: 'Сундуки',
+    spin: 'Рулетка',
     profile: 'Профиль',
+    wallet: 'Кошелек',
+    basket: 'Корзина',
+    rating: 'Рейтинг',
     support: 'Поддержка',
+    shop: 'Магазин',
   };
-
-  return routeTitles[currentRoute.value] || 'Winora';
+  return titles[route.name] || 'Winora';
 });
 
+// Методы
 const toggleSidebar = () => {
   sidebarOpen.value = !sidebarOpen.value;
 };
@@ -136,76 +135,66 @@ const closeSidebar = () => {
   sidebarOpen.value = false;
 };
 
+const handleToggleMobileMenu = (isOpen) => {
+  mobileMenuOpen.value = isOpen;
+};
+
+const closeMobileMenu = () => {
+  mobileMenuOpen.value = false;
+};
+
 const handleLogout = () => {
-  logoutUser();
+  // Логика выхода
+  console.log('Выход из системы');
   closeSidebar();
+  closeMobileMenu();
+  // Редирект на страницу входа
+  router.push('/login');
 };
 
 const navigateToMain = () => {
-  navigateTo('/');
-  if (!isDesktop.value) {
-    sidebarOpen.value = false;
-  }
-};
-
-const handleNavigate = (route) => {
-  navigateTo(route);
+  router.push('/');
+  closeSidebar();
+  closeMobileMenu();
 };
 
 const handleTopUpBalance = () => {
   // Логика пополнения баланса
-  console.log('Открываем страницу пополнения баланса');
-  // Можно открыть модал или перейти на страницу пополнения
+  console.log('Пополнение баланса');
+  router.push('/wallet?action=topup');
 };
 
-const handleResize = () => {
-  windowWidth.value = window.innerWidth;
+// Определение размера экрана
+const updateScreenSize = () => {
+  const width = window.innerWidth;
+  isMobile.value = width < 768;
+  isTablet.value = width >= 768 && width < 1024;
 
-  // Автоматически закрываем сайдбар при смене размера экрана
+  // Автоматически закрываем сайдбар на мобильных после навигации
   if (isMobile.value) {
     sidebarOpen.value = false;
   }
 };
 
-// Закрываем сайдбар при смене роута на мобильных и планшетах
-watch(route, () => {
-  if (!isDesktop.value) {
-    sidebarOpen.value = false;
-  }
-});
-
-// Блокируем скролл при открытом сайдбаре на планшетах
-watch(sidebarOpen, (isOpen) => {
-  if (isTablet.value) {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
+// Обработка изменения роута
+watch(
+  () => route.path,
+  () => {
+    if (isMobile.value) {
+      closeSidebar();
+      closeMobileMenu();
     }
   }
-});
+);
 
+// Lifecycle hooks
 onMounted(() => {
-  windowWidth.value = window.innerWidth;
-  window.addEventListener('resize', handleResize);
+  updateScreenSize();
+  window.addEventListener('resize', updateScreenSize);
 });
 
 onUnmounted(() => {
-  window.removeEventListener('resize', handleResize);
-  document.body.style.overflow = '';
-});
-
-// SEO и метаданные
-useHead({
-  htmlAttrs: {
-    lang: 'ru',
-  },
-  meta: [
-    { charset: 'utf-8' },
-    { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-    { name: 'theme-color', content: '#4ade80' },
-    { name: 'format-detection', content: 'telephone=no' },
-  ],
+  window.removeEventListener('resize', updateScreenSize);
 });
 </script>
 
