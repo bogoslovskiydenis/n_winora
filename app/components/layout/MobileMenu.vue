@@ -350,7 +350,7 @@ watch(
   height: 84px;
   border-top-width: 1px;
   margin-bottom: 16px;
-  justify-content: center;
+  justify-content: space-evenly;
 }
 
 .user-avatar {
