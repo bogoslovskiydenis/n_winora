@@ -4,9 +4,7 @@
       <!-- Карточка Рейтинг -->
       <div class="game-card rating-card">
         <div class="card-header">
-          <div class="card-icon warning">⚠️</div>
           <div class="card-title">РЕЙТИНГ</div>
-          <div class="card-icon warning">⚠️</div>
         </div>
         <div class="card-content">
           <div class="rating-stats">
@@ -15,7 +13,7 @@
                 <div class="stat-label">ВАША ПОЗИ...</div>
                 <div class="stat-value red">
                   <span class="value">126</span>
-                  <span class="trend down">📉</span>
+                  <img src="~/assets/images/arrow_drop_up.svg" />
                 </div>
               </div>
             </div>
@@ -24,7 +22,7 @@
                 <div class="stat-label">ВАШ РЕЙТИНГ</div>
                 <div class="stat-value red">
                   <span class="value">100</span>
-                  <span class="trend down">📉</span>
+                  <img src="~/assets/images/arrow_drop_up.svg" />
                 </div>
               </div>
             </div>
@@ -33,7 +31,7 @@
                 <div class="stat-label">ВАШ ПРИРЫ...</div>
                 <div class="stat-value green">
                   <span class="value">+12%</span>
-                  <span class="trend up">📈</span>
+                  <img src="~/assets/images/arrow_drop.svg" />
                 </div>
               </div>
             </div>
@@ -49,20 +47,20 @@
         <div class="card-content">
           <div class="money-stats">
             <div class="money-item">
-              <div class="stat-box">
+              <div class="money-stat-box">
                 <div class="stat-label">ДОХОДНОСТЬ</div>
                 <div class="stat-value red">
                   <span class="value">13 USD / Week</span>
-                  <span class="trend down">📉</span>
+                  <img src="~/assets/images/arrow_drop_up.svg" />
                 </div>
               </div>
             </div>
             <div class="money-item">
-              <div class="stat-box">
+              <div class="money-stat-box">
                 <div class="stat-label">СУММА ДЕПОЗИТОВ</div>
                 <div class="stat-value green">
                   <span class="value">+1.2%</span>
-                  <span class="trend up">📈</span>
+                  <img src="~/assets/images/arrow_drop.svg" />
                 </div>
               </div>
             </div>
@@ -78,19 +76,19 @@
         <div class="card-content">
           <div class="safe-stats">
             <div class="safe-item">
-              <div class="stat-box">
+              <div class="safe-stat-box">
                 <div class="stat-label">СПИНЫ ФОРТУНЫ</div>
                 <div class="safe-value">
-                  <span class="safe-icon warning">⚠️</span>
+                  <img src="~/assets/images/Spin.svg" />
                   <span class="value">5</span>
                 </div>
               </div>
             </div>
             <div class="safe-item">
-              <div class="stat-box">
+              <div class="safe-stat-box">
                 <div class="stat-label">СУНДУКИ</div>
                 <div class="safe-value">
-                  <span class="safe-icon chest">🎁</span>
+                  <img src="~/assets/images/cheast.svg" />
                   <span class="value">5</span>
                 </div>
               </div>
@@ -102,7 +100,7 @@
   </section>
 </template>
 
-<script setup lang="ts">
+<script setup>
 // Можно добавить реактивные данные для статистик
 </script>
 
@@ -112,24 +110,28 @@
 }
 
 .game-cards {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  display: flex;
+  flex-wrap: wrap;
   gap: 20px;
 }
 
 .game-card {
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(15px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  width: 310px;
+  height: 100px;
+  opacity: 1;
+  padding: 16px 8px 8px;
+  gap: 16px;
   border-radius: 16px;
-  padding: 20px;
+  background: #00aa6926;
+  border-top: 1px solid #ffffff0d;
+  box-shadow: 0px 1px 5px 0px #00000040;
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
 }
 
 .game-card:hover {
-  background: rgba(255, 255, 255, 0.06);
+  background: rgba(0, 170, 105, 0.2);
   transform: translateY(-2px);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
 }
@@ -158,7 +160,7 @@
 /* Специальная рамка для карточки рейтинга */
 .rating-card {
   border: 1px solid rgba(74, 222, 128, 0.2);
-  background: rgba(74, 222, 128, 0.02);
+  background: #00aa6926;
 }
 
 .rating-card:hover {
@@ -167,56 +169,103 @@
 }
 
 .card-header {
+  width: 294px;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 12px;
-  margin-bottom: 20px;
   position: relative;
 }
 
-.card-icon {
-  font-size: 16px;
-  opacity: 0.7;
-}
-
-.card-icon.warning {
-  color: #f59e0b;
-  filter: drop-shadow(0 0 4px rgba(245, 158, 11, 0.3));
-}
-
 .card-title {
-  font-size: 14px;
+  font-family: Tomorrow, sans-serif;
   font-weight: 700;
-  color: var(--primary-color);
-  letter-spacing: 1px;
+  font-style: Bold;
+  font-size: 15px;
+  line-height: 100%;
   text-align: center;
+  text-transform: uppercase;
+  color: #07cb38;
+  text-shadow: 0px 2px 0px #00000040;
   flex: 1;
+  margin-bottom: 10px;
 }
 
 .card-content {
   position: relative;
 }
 
-.rating-stats,
-.money-stats,
-.safe-stats {
+.rating-stats {
   display: flex;
-  gap: 16px;
+  gap: 8px;
+  width: 294px;
+  height: 49px;
 }
 
-.rating-item,
-.money-item,
-.safe-item {
+.money-stats {
+  display: flex;
+  gap: 8px;
+  width: 294px;
+  height: 49px;
+}
+
+.safe-stats {
+  display: flex;
+  gap: 8px;
+  width: 294px;
+  height: 49px;
+}
+
+.rating-item {
   width: 100%;
 }
 
+.money-item {
+  width: 143px;
+  height: 49px;
+  opacity: 1;
+  gap: 8px;
+  border-radius: 8px;
+}
+
+.safe-item {
+  width: 143px;
+  height: 49px;
+  opacity: 1;
+  gap: 8px;
+  border-radius: 8px;
+}
+
 .stat-box {
-  background: rgba(0, 0, 0, 0.2);
+  background: #00000040;
   border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 12px;
-  padding: 12px 16px;
-  transition: all 0.3s ease;
+  width: 92.66666412353516px;
+  height: 49px;
+  gap: 8px;
+  border-radius: 8px;
+  padding: 8px;
+}
+
+.money-stat-box {
+  width: 143px;
+  height: 49px;
+  opacity: 1;
+  gap: 8px;
+  border-radius: 8px;
+  padding: 8px;
+  background: #00000040;
+  border-bottom: 1px solid #ffffff2e;
+}
+
+.safe-stat-box {
+  width: 143px;
+  height: 49px;
+  opacity: 1;
+  gap: 8px;
+  border-radius: 8px;
+  padding: 8px;
+  background: #00000040;
+  border-bottom: 1px solid #ffffff2e;
 }
 
 .stat-box:hover {
@@ -224,14 +273,33 @@
   border-color: rgba(255, 255, 255, 0.15);
 }
 
+.money-stat-box:hover {
+  background: rgba(0, 0, 0, 0.3);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.safe-stat-box:hover {
+  background: rgba(0, 0, 0, 0.3);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
 .stat-label {
-  font-size: 10px;
   color: #ffffff;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
   margin-bottom: 6px;
   display: flex;
   justify-content: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 100%;
+  font-family: Roboto, sans-serif;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  text-align: center;
+  vertical-align: middle;
 }
 
 .stat-value,
@@ -240,7 +308,33 @@
   align-items: center;
   justify-content: space-between;
   font-size: 14px;
-  font-weight: 600;
+  font-family: Roboto, sans-serif;
+  font-weight: 900;
+  line-height: 100%;
+  text-align: center;
+  vertical-align: middle;
+}
+.safe-value {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 14px;
+  font-family: Roboto, sans-serif;
+  font-weight: 900;
+  line-height: 100%;
+  text-align: center;
+}
+
+.safe-value img {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+.safe-value .value {
+  color: #ffffff;
+  flex: none; /* Убираем flex: 1 чтобы текст не растягивался */
 }
 
 .value {
@@ -305,7 +399,6 @@
   }
 
   .card-header {
-    margin-bottom: 16px;
   }
 
   .card-title {

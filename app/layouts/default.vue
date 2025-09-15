@@ -252,7 +252,7 @@ onUnmounted(() => {
 }
 
 .main-wrapper--sidebar-open {
-  margin-left: 320px;
+  margin-left: 369px;
 }
 
 .main-wrapper--no-sidebar {
