@@ -52,6 +52,7 @@
               <img src="../../assets/images/navbar/lvl_nav.svg" />
             </div>
             <div class="avatar-info">
+              <img src="../../assets/images/info.svg" />
               <span class="level-label">УРОВЕНЬ</span>
             </div>
           </div>
@@ -87,19 +88,22 @@
         <!-- Баланс (только при открытом сайдбаре) -->
         <div class="sidebar-balance" v-if="isOpen">
           <div class="balance-item">
-            <span class="balance-icon">💰</span>
+            <img src="./../../assets/images/balance-icon.svg" />
             <span class="balance-value">{{
               user?.balance?.toLocaleString() || '10000'
             }}</span>
           </div>
 
-          <div class="balance-item">
+          <div class="balance-item-usdt">
             <span class="balance-label">USDT</span>
             <span class="balance-count">{{
               Math.floor((user?.balance || 150000) / 100) || '100'
             }}</span>
           </div>
-          <span class="balance-wallets">КОШЕЛЕК</span>
+
+          <div class="balance-item-btn">
+            <span class="balance-wallets">КОШЕЛЕК</span>
+          </div>
         </div>
 
         <!-- Пункты меню -->
@@ -244,10 +248,10 @@
         <div class="verification-warning" v-if="isOpen">
           <span class="warning-icon">⚠</span>
           <div class="warning-text">
-            <span>Верификация аккаунта</span>
-            Подтвердите свою личность, чтобы получить доступ ко всем
-            возможностям
-            <a href="#" class="warning-link">Подтвердить</a>
+            <span>Вы не верифицированы.</span>
+            Перейдите в
+            <a href="#" class="warning-link">профиль пользователя</a> для
+            загрузки документов.
           </div>
         </div>
       </div>
@@ -286,17 +290,14 @@ const onLogoError = () => {
 }
 
 .sidebar--open {
-  width: 320px;
-  background:
-    linear-gradient(180deg, #01614b 0%, #032019 100%),
-    linear-gradient(0deg, rgba(0, 0, 0, 0.56), rgba(0, 0, 0, 0.56)),
-    radial-gradient(
-      91.87% 42.67% at 50.13% -9.91%,
-      rgba(255, 255, 255, 0.1) 3.42%,
-      rgba(255, 255, 255, 0) 100%
-    );
-}
+  opacity: 1;
+  gap: 16px;
+  padding: 16px 24px;
+  width: 374px;
+  background: linear-gradient(180deg, #01614b 0%, #032019 100%);
 
+  box-shadow: 9px 0 19.7px 0 #00000040;
+}
 .sidebar-content {
   display: flex;
   flex-direction: column;
@@ -366,7 +367,11 @@ const onLogoError = () => {
   border-radius: 16px;
   background: url('~/assets/images/navbar/card_bg.png');
   backdrop-filter: blur(10px);
-  margin: 0 8px 16px 8px;
+  width: 326px;
+  height: 84px;
+  border-top-width: 1px;
+  margin-bottom: 16px;
+  justify-content: center;
 }
 
 .sidebar--open .user-card {
@@ -378,17 +383,19 @@ const onLogoError = () => {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
+  width: 70px;
+  height: 68px;
+  opacity: 1;
+  gap: 8px;
+  padding: 8px 8px 4px 4px;
+  border-radius: 8px;
+  border-bottom-width: 1px;
+  background: #00000080;
 }
 
 .avatar-level {
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
+  width: 32px;
+  height: 32px;
 }
 
 .level-number {
@@ -400,19 +407,27 @@ const onLogoError = () => {
 .avatar-info {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 2px;
+}
+.avatar-info img {
+  width: 16px;
+  height: 16px;
 }
 
 .level-label {
-  font-size: 8px;
-  font-weight: 600;
-  color: rgba(255, 255, 255, 0.6);
+  font-family: Roboto, sans-serif;
+  font-weight: 500;
+  font-size: 10px;
+  line-height: 118%;
+  text-align: right;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  color: #ffffff;
 }
 
 .user-info {
-  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .user-action {
@@ -428,15 +443,21 @@ const onLogoError = () => {
 }
 
 .user-name {
+  font-family: Roboto, sans-serif;
+  font-weight: 500;
   font-size: 16px;
-  font-weight: 600;
-  color: var(--text-primary);
+  line-height: 100%;
+  vertical-align: middle;
+  color: #00eaff;
 }
 
 .user-email {
-  font-size: 12px;
-  color: var(--text-secondary);
-  margin: 4px 0;
+  font-family: Roboto, sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 100%;
+  vertical-align: middle;
+  color: #ffffff;
 }
 
 .user-exit {
@@ -463,6 +484,8 @@ const onLogoError = () => {
   padding: 0 8px 0 8px;
   background: #00aa6926;
   height: 42px;
+  width: 326px;
+
   gap: 8px;
   border-radius: 14px;
   border-top: 1px solid #ffffff0d;
@@ -480,6 +503,7 @@ const onLogoError = () => {
 }
 
 .balance-item {
+  padding-right: 8px;
   width: 110px;
   background: #00000040;
   height: 26px;
@@ -488,49 +512,78 @@ const onLogoError = () => {
   display: flex;
   align-items: center;
   opacity: 1;
+  padding-left: 1px;
+}
+.balance-item-usdt {
+  justify-content: space-between;
+  padding-right: 8px;
+  width: 110px;
+  background: #00000040;
+  height: 26px;
+  gap: 4px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  opacity: 1;
+  padding-left: 8px;
 }
 
 .balance-value {
-  color: #fbbf24;
+  font-family: Roboto, sans-serif;
   font-weight: 700;
   font-size: 16px;
+  line-height: 100%;
+  text-align: left;
+  color: #c8c503;
 }
 
 .balance-label {
   color: var(--text-secondary);
+  font-family: Roboto, sans-serif;
+  font-weight: 400;
   font-size: 12px;
+  text-align: center;
+  text-transform: uppercase;
 }
 
 .balance-count {
-  color: var(--text-primary);
-  font-weight: 600;
+  font-family: Roboto, sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  text-align: right;
+  color: #07cb38;
 }
 
-.balance-wallets {
+.balance-item-btn {
   display: flex;
-  height: 26px;
-  width: 100%;
   background: #07cb38;
   color: #070202;
-  font-size: 9px;
-  font-weight: 700;
-  padding: 2px 6px;
-  align-items: center;
+  width: 74px;
+  height: 26px;
+  opacity: 1;
+  gap: 10px;
   border-radius: 32px;
   justify-content: center;
+  align-items: center;
 }
 
-/* Меню */
-.sidebar-menu {
-  flex: 1;
-  padding: 0 20px;
+.balance-item-btn span {
+  font-family: Roboto, sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 100%;
+  text-align: center;
+  vertical-align: middle;
+  text-transform: uppercase;
+  color: #070202;
+  padding: 8px;
 }
 
 .menu-item {
   display: flex;
   align-items: center;
   gap: 16px;
-  margin-bottom: 16px;
+  padding: 20px;
   text-decoration: none;
   font-size: 13px;
   font-weight: 600;
@@ -540,8 +593,17 @@ const onLogoError = () => {
   border: none;
   background: none;
   width: 100%;
-  justify-content: space-between;
   color: var(--text-primary);
+}
+
+/* Когда меню закрыто - иконка по центру */
+.sidebar:not(.sidebar--open) .menu-item {
+  justify-content: center;
+}
+
+/* Когда меню открыто - текст слева, иконка справа */
+.sidebar--open .menu-item {
+  justify-content: space-between;
 }
 
 .menu-item:hover .menu-icon-wrapper {
@@ -556,27 +618,31 @@ const onLogoError = () => {
   justify-content: center;
 }
 
+/* Стили для обертки иконок меню */
 .menu-icon-wrapper {
-  width: 40px;
-  height: 40px;
-  border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: all 0.3s ease;
-  flex-shrink: 0;
+}
+
+/* Когда меню открыто */
+.sidebar--open .menu-icon-wrapper {
+  justify-content: flex-end;
+}
+
+.menu-icon-wrapper img {
+  width: 24px;
+  height: 24px;
 }
 
 .menu-text {
-  color: inherit;
-  font-size: 12px;
+  font-family: Tomorrow, sans-serif;
   font-weight: 600;
+  font-size: 16px;
+  line-height: 100%;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
-  white-space: nowrap;
-  opacity: 0;
-  transform: translateX(-10px);
-  transition: all 0.3s ease;
+  color: #ffffff;
 }
 
 .sidebar--open .menu-text {
@@ -620,9 +686,17 @@ const onLogoError = () => {
 
 /* Нижняя часть */
 .sidebar-bottom {
-  padding: 0 20px 20px;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  padding-top: 20px;
+  border: 1px solid #07cb38;
+  min-height: 42px;
+  angle: 0 deg;
+  opacity: 1;
+  gap: 10px;
+  border-width: 1px;
+  padding-top: 12px;
+  padding-right: 16px;
+  padding-bottom: 12px;
+  padding-left: 16px;
+  border-radius: 32px;
 }
 
 .referral-btn {
@@ -645,15 +719,13 @@ const onLogoError = () => {
 
 .verification-warning {
   display: flex;
-  align-items: flex-start;
-  gap: 8px;
-  padding: 12px;
-  background: rgba(249, 115, 22, 0.1);
-  border: 1px solid rgba(249, 115, 22, 0.2);
-  border-radius: 12px;
-  opacity: 0;
-  transform: translateX(-10px);
-  transition: all 0.3s ease;
+  gap: 16px;
+  border-radius: 14px;
+  border-top-width: 1px;
+  padding: 16px;
+  background: #00aa6926;
+  border-top: 1px solid #ffffff0d;
+  box-shadow: 0px 1px 5px 0px #00000040;
 }
 
 .sidebar--open .verification-warning {
@@ -662,14 +734,15 @@ const onLogoError = () => {
 }
 
 .warning-icon {
-  font-size: 16px;
+  font-size: 50px;
   color: #f97316;
 }
 
 .warning-text {
-  font-size: 11px;
-  color: var(--text-secondary);
-  line-height: 1.4;
+  font-family: Roboto, sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 100%;
 }
 
 .warning-text span {
@@ -678,7 +751,7 @@ const onLogoError = () => {
 }
 
 .warning-link {
-  color: var(--primary-color);
+  color: #f97c39;
   text-decoration: none;
 }
 
