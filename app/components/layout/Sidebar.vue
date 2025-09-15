@@ -213,15 +213,15 @@
         </NuxtLink>
 
         <NuxtLink
-          to="/profile"
+          to="/support"
           class="menu-item"
-          :data-tooltip="!isOpen ? 'Профиль пользователя' : ''"
+          :data-tooltip="!isOpen ? 'Служба поддержки' : ''"
         >
           <span class="menu-text" v-if="isOpen">Служба Поддержки</span>
           <div class="menu-icon-wrapper">
             <img
               src="../../assets/images/navbar/question_nav.svg"
-              alt="Profile"
+              alt="Support"
               class="logo-img-small"
             />
           </div>
@@ -241,7 +241,9 @@
               class="logo-img-small"
             />
           </div>
-          <span class="menu-text" v-if="isOpen">ВАША РЕФЕРАЛЬНАЯ ССЫЛКА</span>
+          <span class="menu-text-ref" v-if="isOpen"
+            >ВАША РЕФЕРАЛЬНАЯ ССЫЛКА</span
+          >
           <span class="referral-arrow" v-if="isOpen">→</span>
         </button>
 
@@ -290,14 +292,13 @@ const onLogoError = () => {
 }
 
 .sidebar--open {
-  opacity: 1;
-  gap: 16px;
-  padding: 16px 24px;
   width: 374px;
   background: linear-gradient(180deg, #01614b 0%, #032019 100%);
-
   box-shadow: 9px 0 19.7px 0 #00000040;
+  padding: 16px 24px;
+  gap: 16px;
 }
+
 .sidebar-content {
   display: flex;
   flex-direction: column;
@@ -352,7 +353,7 @@ const onLogoError = () => {
 .logo-w {
   font-size: 24px;
   font-weight: 700;
-  color: var(--primary-color);
+  color: #4ade80;
 }
 
 /* Карточка пользователя */
@@ -361,9 +362,6 @@ const onLogoError = () => {
   display: flex;
   align-items: center;
   gap: 16px;
-  opacity: 0;
-  transform: translateX(-10px);
-  transition: all 0.3s ease;
   border-radius: 16px;
   background: url('~/assets/images/navbar/card_bg.png');
   backdrop-filter: blur(10px);
@@ -374,18 +372,12 @@ const onLogoError = () => {
   justify-content: center;
 }
 
-.sidebar--open .user-card {
-  opacity: 1;
-  transform: translateX(0);
-}
-
 .user-avatar {
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 70px;
   height: 68px;
-  opacity: 1;
   gap: 8px;
   padding: 8px 8px 4px 4px;
   border-radius: 8px;
@@ -398,17 +390,12 @@ const onLogoError = () => {
   height: 32px;
 }
 
-.level-number {
-  font-size: 20px;
-  font-weight: 700;
-  color: white;
-}
-
 .avatar-info {
   display: flex;
   align-items: center;
   gap: 2px;
 }
+
 .avatar-info img {
   width: 16px;
   height: 16px;
@@ -447,7 +434,6 @@ const onLogoError = () => {
   font-weight: 500;
   font-size: 16px;
   line-height: 100%;
-  vertical-align: middle;
   color: #00eaff;
 }
 
@@ -456,7 +442,6 @@ const onLogoError = () => {
   font-weight: 500;
   font-size: 16px;
   line-height: 100%;
-  vertical-align: middle;
   color: #ffffff;
 }
 
@@ -485,21 +470,12 @@ const onLogoError = () => {
   background: #00aa6926;
   height: 42px;
   width: 326px;
-
   gap: 8px;
   border-radius: 14px;
   border-top: 1px solid #ffffff0d;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  opacity: 0;
-  transform: translateX(-10px);
-  transition: all 0.3s ease;
-}
-
-.sidebar--open .sidebar-balance {
-  opacity: 1;
-  transform: translateX(0);
 }
 
 .balance-item {
@@ -511,9 +487,9 @@ const onLogoError = () => {
   border-radius: 16px;
   display: flex;
   align-items: center;
-  opacity: 1;
   padding-left: 1px;
 }
+
 .balance-item-usdt {
   justify-content: space-between;
   padding-right: 8px;
@@ -524,7 +500,6 @@ const onLogoError = () => {
   border-radius: 16px;
   display: flex;
   align-items: center;
-  opacity: 1;
   padding-left: 8px;
 }
 
@@ -538,12 +513,12 @@ const onLogoError = () => {
 }
 
 .balance-label {
-  color: var(--text-secondary);
   font-family: Roboto, sans-serif;
   font-weight: 400;
   font-size: 12px;
   text-align: center;
   text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.6);
 }
 
 .balance-count {
@@ -560,20 +535,18 @@ const onLogoError = () => {
   color: #070202;
   width: 74px;
   height: 26px;
-  opacity: 1;
   gap: 10px;
   border-radius: 32px;
   justify-content: center;
   align-items: center;
 }
 
-.balance-item-btn span {
+.balance-wallets {
   font-family: Roboto, sans-serif;
   font-weight: 500;
   font-size: 14px;
   line-height: 100%;
   text-align: center;
-  vertical-align: middle;
   text-transform: uppercase;
   color: #070202;
   padding: 8px;
@@ -593,7 +566,7 @@ const onLogoError = () => {
   border: none;
   background: none;
   width: 100%;
-  color: var(--text-primary);
+  color: #ffffff;
 }
 
 /* Когда меню закрыто - иконка по центру */
@@ -611,7 +584,7 @@ const onLogoError = () => {
 }
 
 .menu-item.nuxt-link-active {
-  color: var(--primary-color);
+  color: #4ade80;
 }
 
 .level-item {
@@ -643,11 +616,6 @@ const onLogoError = () => {
   line-height: 100%;
   text-transform: uppercase;
   color: #ffffff;
-}
-
-.sidebar--open .menu-text {
-  opacity: 1;
-  transform: translateX(0);
 }
 
 /* Тултипы */
@@ -686,16 +654,8 @@ const onLogoError = () => {
 
 /* Нижняя часть */
 .sidebar-bottom {
-  border: 1px solid #07cb38;
   min-height: 42px;
-  angle: 0 deg;
-  opacity: 1;
   gap: 10px;
-  border-width: 1px;
-  padding-top: 12px;
-  padding-right: 16px;
-  padding-bottom: 12px;
-  padding-left: 16px;
   border-radius: 32px;
 }
 
@@ -704,17 +664,27 @@ const onLogoError = () => {
   justify-content: flex-start;
 }
 
+.sidebar--open .referral-btn {
+  width: 326px;
+  gap: 10px;
+  padding: 12px 16px;
+  border-radius: 32px;
+  border: 1px solid #07cb38;
+}
+
+.menu-text-ref {
+  font-family: Roboto, sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 100%;
+  text-align: center;
+  text-transform: uppercase;
+  color: #ffffff;
+}
+
 .referral-arrow {
   margin-left: auto;
   font-size: 12px;
-  opacity: 0;
-  transform: translateX(-10px);
-  transition: all 0.3s ease;
-}
-
-.sidebar--open .referral-arrow {
-  opacity: 1;
-  transform: translateX(0);
 }
 
 .verification-warning {
@@ -726,11 +696,7 @@ const onLogoError = () => {
   background: #00aa6926;
   border-top: 1px solid #ffffff0d;
   box-shadow: 0px 1px 5px 0px #00000040;
-}
-
-.sidebar--open .verification-warning {
-  opacity: 1;
-  transform: translateX(0);
+  width: 326px;
 }
 
 .warning-icon {
