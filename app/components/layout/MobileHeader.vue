@@ -295,7 +295,6 @@ onUnmounted(() => {
 }
 
 .balance-container {
-  width: 80px;
   height: 26px;
   display: flex;
   align-items: center;
@@ -308,7 +307,8 @@ onUnmounted(() => {
 }
 
 .balance-usdt {
-  width: 93px;
+  padding-left: 8px;
+  padding-right: 8px;
   height: 26px;
   display: flex;
   align-items: center;
@@ -335,35 +335,26 @@ onUnmounted(() => {
 .balance-item--primary .balance-value {
   font-family: Roboto, serif;
   font-weight: 700;
-  font-style: Condensed Bold;
   font-size: 16px;
   line-height: 100%;
-  letter-spacing: 0%;
   text-align: right;
   color: #c8c503;
 }
 
 .balance-item--secondary .balance-label {
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-weight: 400;
-  font-style: Condensed Regular;
   font-size: 12px;
-  leading-trim: CAP_HEIGHT;
-  line-height: 118%;
-  letter-spacing: 0%;
   text-align: center;
   vertical-align: middle;
   text-transform: uppercase;
 }
 
 .balance-item--secondary .balance-value {
-  font-family: Roboto, serif;
+  font-family: Roboto, sans-serif;
   font-weight: 700;
-  font-style: Condensed Bold;
   font-size: 16px;
-  leading-trim: CAP_HEIGHT;
   line-height: 100%;
-  letter-spacing: 0%;
   text-align: right;
   color: #07cb38;
 }
@@ -389,10 +380,6 @@ onUnmounted(() => {
 .action-btn img {
   width: 26px;
   height: 26px;
-}
-
-.btn-icon {
-  font-size: 18px;
 }
 
 /* Dropdown уведомлений */
@@ -573,18 +560,6 @@ onUnmounted(() => {
   border-color: rgba(74, 222, 128, 0.3);
 }
 
-/* Анимации */
-.notifications-slide-enter-active,
-.notifications-slide-leave-active {
-  transition: all 0.3s ease;
-}
-
-.notifications-slide-enter-from,
-.notifications-slide-leave-to {
-  opacity: 0;
-  transform: translateY(-10px) scale(0.95);
-}
-
 /* Адаптивность */
 @media (max-width: 480px) {
   .mobile-header {
@@ -598,10 +573,6 @@ onUnmounted(() => {
   .balance-container {
     gap: 8px;
     padding: 6px 12px;
-  }
-
-  .btn-icon {
-    font-size: 16px;
   }
 
   .balance-item--primary .balance-value,
