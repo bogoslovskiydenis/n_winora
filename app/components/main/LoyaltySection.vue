@@ -743,10 +743,6 @@ const updateBonuses = (level) => {
     height: 100%;
   }
 
-  .banner-title {
-    font-size: 14px;
-  }
-
   .banner-main-title {
     font-size: 22px;
   }
@@ -851,10 +847,6 @@ const updateBonuses = (level) => {
 
   .investment-banner {
     padding: 12px;
-  }
-
-  .banner-title {
-    font-size: 12px;
   }
 
   .banner-main-title {
