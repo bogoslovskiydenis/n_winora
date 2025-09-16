@@ -104,12 +104,6 @@
         <button class="investment-buy-btn" @click="handleInvestmentClick">
           КУПИТЬ
         </button>
-
-        <!-- Декоративные элементы -->
-        <div class="banner-decoration">
-          <div class="tech-grid"></div>
-          <div class="circuit-pattern"></div>
-        </div>
       </div>
     </div>
 
@@ -130,12 +124,6 @@
         <button class="investment-buy-btn" @click="handleInvestmentClick">
           КУПИТЬ
         </button>
-
-        <!-- Декоративные элементы -->
-        <div class="banner-decoration">
-          <div class="tech-grid"></div>
-          <div class="circuit-pattern"></div>
-        </div>
       </div>
     </div>
   </section>
@@ -469,40 +457,6 @@ const updateBonuses = (level) => {
   padding: 16px;
 }
 
-/* Декоративный фон с сеткой */
-.banner-decoration {
-  position: absolute;
-  inset: 0;
-  opacity: 0.3;
-  pointer-events: none;
-}
-
-.tech-grid {
-  position: absolute;
-  inset: 0;
-  background-image:
-    linear-gradient(rgba(74, 222, 128, 0.1) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(74, 222, 128, 0.1) 1px, transparent 1px);
-  background-size: 20px 20px;
-  animation: techGridMove 20s linear infinite;
-}
-
-.circuit-pattern {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  width: 80px;
-  height: 80px;
-  background: radial-gradient(
-    circle,
-    rgba(74, 222, 128, 0.1) 2px,
-    transparent 2px
-  );
-  background-size: 15px 15px;
-  border-radius: 50%;
-  animation: circuitPulse 3s ease-in-out infinite;
-}
-
 /* ===========================================
    КОНТЕНТ БАННЕРА
    =========================================== */
@@ -513,22 +467,23 @@ const updateBonuses = (level) => {
 }
 
 .banner-title {
+  font-family: Roboto, sans-serif;
+  font-weight: 900;
   font-size: 16px;
-  font-weight: 500;
-  color: rgba(255, 255, 255, 0.9);
-  margin: 0 0 6px 0;
-  letter-spacing: 0.5px;
+  line-height: 12px;
+  text-align: center;
+  vertical-align: middle;
+  color: #ffffff;
 }
 
 .banner-main-title {
-  font-size: 28px;
+  font-family: Tomorrow, sans-serif;
   font-weight: 900;
-  color: #4ade80;
-  margin: 0;
-  letter-spacing: 1.5px;
+  font-size: 32px;
+  line-height: 100%;
+  text-align: center;
   text-transform: uppercase;
-  text-shadow: 0 0 20px rgba(74, 222, 128, 0.5);
-  animation: titleGlow 2s ease-in-out infinite alternate;
+  color: #07cb38;
 }
 
 /* ===========================================
@@ -544,8 +499,8 @@ const updateBonuses = (level) => {
 }
 
 .investment-cases img {
-  max-width: 60px;
-  height: auto;
+  width: 284px;
+  height: 93px;
 }
 
 /* ===========================================
@@ -553,37 +508,38 @@ const updateBonuses = (level) => {
    =========================================== */
 
 .investment-buy-btn {
-  background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+  background: #f97c39;
   border: none;
-  border-radius: 50px;
-  padding: 12px 36px;
   font-size: 14px;
   font-weight: 700;
-  color: white;
   text-transform: uppercase;
   letter-spacing: 1px;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 20px rgba(249, 115, 22, 0.4);
-  position: relative;
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  transform: translateX(-50%);
   overflow: hidden;
   z-index: 2;
+  width: 108px;
+  height: 42px;
+  min-height: 42px;
+  opacity: 1;
+  gap: 10px;
+  border-radius: 32px;
+  padding: 12px 16px;
 }
 
-.investment-buy-btn::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.3),
-    transparent
-  );
-  transition: left 0.6s ease;
+.investment-buy-btn span {
+  font-family: Roboto, sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 100%;
+  text-align: center;
+  vertical-align: middle;
+  text-transform: uppercase;
+  color: #070202;
 }
 
 .investment-buy-btn:hover {
@@ -622,6 +578,7 @@ const updateBonuses = (level) => {
   .loyalty-investment-wrapper {
     flex-direction: column;
     gap: 12px;
+    padding: 0 16px;
   }
 
   .loyalty-section {
@@ -648,6 +605,8 @@ const updateBonuses = (level) => {
   .loyalty-level {
     padding: 16px;
     width: 100%;
+    background-color: transparent;
+    border-radius: 0;
     gap: 12px;
   }
 
@@ -825,6 +784,7 @@ const updateBonuses = (level) => {
 
 @media (max-width: 480px) {
   .loyalty-investment-wrapper {
+    padding: 0 12px;
     gap: 12px;
   }
 
@@ -838,7 +798,9 @@ const updateBonuses = (level) => {
 
   .loyalty-level {
     padding: 12px 16px;
+    flex-direction: column;
     align-items: center;
+    text-align: center;
   }
 
   .level-badge-wrapper {
@@ -858,6 +820,7 @@ const updateBonuses = (level) => {
   .level-deposit,
   .level-next {
     font-size: 12px;
+    text-align: center;
   }
 
   .bonus-toggle {
@@ -917,11 +880,6 @@ const updateBonuses = (level) => {
     font-size: 18px;
   }
 
-  .investment-cases img {
-    width: 40px;
-    height: auto;
-  }
-
   .investment-buy-btn {
     padding: 8px 20px;
     font-size: 11px;
@@ -979,9 +937,7 @@ const updateBonuses = (level) => {
 @media (prefers-reduced-motion: reduce) {
   .loyalty-card,
   .reward-item,
-  .banner-main-title,
-  .tech-grid,
-  .circuit-pattern {
+  .banner-main-title {
     animation: none;
   }
 
