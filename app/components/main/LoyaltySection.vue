@@ -437,14 +437,9 @@ const updateBonuses = (level) => {
   border-radius: 16px;
   width: 329px;
   height: 160px;
-  margin-bottom: 32px;
   background-image: url('./../../assets/images/cadrs_investitions_bg.png');
   background-size: cover;
   background-position: center;
-}
-
-.investment-banner-section:last-child {
-  margin-bottom: 0;
 }
 
 .investment-banner {
@@ -557,26 +552,18 @@ const updateBonuses = (level) => {
    =========================================== */
 
 @media (max-width: 1200px) {
-  .loyalty-investment-wrapper {
-    flex-direction: column;
-    align-items: center;
-  }
-
   .loyalty-section {
     width: 100%;
     max-width: 644px;
-    height: auto;
   }
 
   .investment-banner-section {
-    width: 100%;
     max-width: 644px;
   }
 }
 
 @media (max-width: 768px) {
   .loyalty-investment-wrapper {
-    flex-direction: column;
     gap: 12px;
     padding: 0 16px;
   }
@@ -605,8 +592,6 @@ const updateBonuses = (level) => {
   .loyalty-level {
     padding: 16px;
     width: 100%;
-    background-color: transparent;
-    border-radius: 0;
     gap: 12px;
   }
 
@@ -751,7 +736,6 @@ const updateBonuses = (level) => {
     width: 100%;
     max-width: none;
     height: 160px;
-    margin-bottom: 16px;
   }
 
   .investment-banner {
@@ -798,9 +782,7 @@ const updateBonuses = (level) => {
 
   .loyalty-level {
     padding: 12px 16px;
-    flex-direction: column;
     align-items: center;
-    text-align: center;
   }
 
   .level-badge-wrapper {
@@ -820,7 +802,6 @@ const updateBonuses = (level) => {
   .level-deposit,
   .level-next {
     font-size: 12px;
-    text-align: center;
   }
 
   .bonus-toggle {
