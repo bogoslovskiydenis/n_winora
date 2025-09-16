@@ -4,7 +4,9 @@
       <!-- Карточка Рейтинг -->
       <div class="game-card rating-card">
         <div class="card-header">
+          <img src="~/assets/images/info.svg" />
           <div class="card-title">РЕЙТИНГ</div>
+          <img src="~/assets/images/brush.svg" />
         </div>
         <div class="card-content">
           <div class="rating-stats">
@@ -175,12 +177,15 @@
   justify-content: center;
   gap: 12px;
   position: relative;
+  margin-bottom: 10px;
 }
-
+.card-header img {
+  width: 16px;
+  height: 16px;
+}
 .card-title {
   font-family: Tomorrow, sans-serif;
   font-weight: 700;
-  font-style: Bold;
   font-size: 15px;
   line-height: 100%;
   text-align: center;
@@ -188,7 +193,6 @@
   color: #07cb38;
   text-shadow: 0px 2px 0px #00000040;
   flex: 1;
-  margin-bottom: 10px;
 }
 
 .card-content {
@@ -382,18 +386,9 @@
     grid-template-columns: 1fr;
     gap: 16px;
   }
-
-  .game-card {
-    padding: 16px;
-  }
 }
 
 @media (max-width: 768px) {
-  .rating-stats,
-  .money-stats {
-    gap: 12px;
-  }
-
   .stat-box {
     padding: 10px 12px;
   }

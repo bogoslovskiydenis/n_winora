@@ -622,7 +622,6 @@ const updateBonuses = (level) => {
   .loyalty-investment-wrapper {
     flex-direction: column;
     gap: 12px;
-    padding: 0 16px;
   }
 
   .loyalty-section {
@@ -649,8 +648,6 @@ const updateBonuses = (level) => {
   .loyalty-level {
     padding: 16px;
     width: 100%;
-    background-color: transparent;
-    border-radius: 0;
     gap: 12px;
   }
 
@@ -828,7 +825,6 @@ const updateBonuses = (level) => {
 
 @media (max-width: 480px) {
   .loyalty-investment-wrapper {
-    padding: 0 12px;
     gap: 12px;
   }
 
@@ -842,9 +838,7 @@ const updateBonuses = (level) => {
 
   .loyalty-level {
     padding: 12px 16px;
-    flex-direction: column;
     align-items: center;
-    text-align: center;
   }
 
   .level-badge-wrapper {
@@ -864,7 +858,6 @@ const updateBonuses = (level) => {
   .level-deposit,
   .level-next {
     font-size: 12px;
-    text-align: center;
   }
 
   .bonus-toggle {
