@@ -1,4 +1,3 @@
-<!-- components/MobileHeader.vue -->
 <template>
   <header class="mobile-header" :class="{ 'mobile-header--inline': inline }">
     <div class="mobile-header__content">
@@ -42,80 +41,43 @@
 
       <!-- Правая часть - Действия -->
       <div class="mobile-header__right">
-        <!-- Кнопка пополнения -->
-
         <!-- Уведомления -->
-        <button
-          class="action-btn action-btn--notifications"
-          @click="toggleNotifications"
-          :class="{ 'action-btn--active': showNotifications }"
-        >
-          <img src="~/assets/images/notif.svg" />
+        <button class="notification-btn" @click="toggleNotifications">
+          <img src="~/assets/images/notif.svg" alt="" />
+          <span v-if="notificationCount > 0" class="notification-badge">{{
+            notificationCount
+          }}</span>
         </button>
+
+        <!-- Dropdown уведомлений -->
+        <div v-if="showNotifications" class="notifications-dropdown">
+          <div class="notification-header">
+            <span>Пополнение баланса на 100 USDT</span>
+            <button class="notification-close" @click="toggleNotifications">
+              ×
+            </button>
+          </div>
+
+          <div class="notification-item">
+            <div class="notification-icon-item">💰</div>
+            <div class="notification-content">
+              <div class="notification-title">Заголовок</div>
+              <div class="notification-text">
+                Вспомогательная информация, которая появляется на экране и
+                помогает пользователю при работе
+              </div>
+              <a href="#" class="notification-link">Детальнее</a>
+            </div>
+            <button class="notification-close">×</button>
+          </div>
+        </div>
       </div>
     </div>
-
-    <!-- Dropdown уведомлений -->
-    <Transition name="notifications-slide">
-      <div v-if="showNotifications" class="notifications-dropdown">
-        <div class="notifications-header">
-          <h3 class="notifications-title">Уведомления</h3>
-          <button class="notifications-close" @click="closeNotifications">
-            ×
-          </button>
-        </div>
-
-        <div class="notifications-content">
-          <div v-if="notifications.length === 0" class="notifications-empty">
-            <span class="empty-icon">🔕</span>
-            <p>Нет новых уведомлений</p>
-          </div>
-
-          <div v-else class="notifications-list">
-            <div
-              v-for="notification in notifications"
-              :key="notification.id"
-              class="notification-item"
-              :class="{ 'notification-item--unread': !notification.read }"
-            >
-              <div class="notification-icon">{{ notification.icon }}</div>
-              <div class="notification-content">
-                <p class="notification-title">{{ notification.title }}</p>
-                <p class="notification-message">{{ notification.message }}</p>
-                <span class="notification-time">{{
-                  formatTime(notification.time)
-                }}</span>
-              </div>
-              <button
-                v-if="!notification.read"
-                class="notification-close"
-                @click="markAsRead(notification.id)"
-              >
-                ×
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <div class="notifications-footer">
-          <button class="notifications-action" @click="markAllAsRead">
-            Отметить все как прочитанное
-          </button>
-        </div>
-      </div>
-    </Transition>
-
-    <!-- Overlay для закрытия уведомлений -->
-    <div
-      v-if="showNotifications"
-      class="notifications-overlay"
-      @click="closeNotifications"
-    ></div>
   </header>
 </template>
 
 <script setup>
-import { ref, computed, watch } from 'vue';
+import { ref, computed } from 'vue';
 
 const props = defineProps({
   user: {
@@ -141,38 +103,11 @@ const emit = defineEmits([
 // Состояние компонента
 const showNotifications = ref(false);
 const logoError = ref(false);
-
-// Данные уведомлений (в реальном проекте из store или API)
-const notifications = ref([
-  {
-    id: 1,
-    icon: '💰',
-    title: 'Инвестиция завершена',
-    message: 'Ваша инвестиция в проект "Tech Startup" принесла прибыль +1,250₽',
-    time: new Date(Date.now() - 5 * 60000), // 5 минут назад
-    read: false,
-  },
-  {
-    id: 2,
-    icon: '🎁',
-    title: 'Новый сундук доступен',
-    message: 'Получите ежедневный бонус - откройте сундук прямо сейчас',
-    time: new Date(Date.now() - 30 * 60000), // 30 минут назад
-    read: false,
-  },
-  {
-    id: 3,
-    icon: '📈',
-    title: 'Рост портфеля',
-    message: 'Ваш инвестиционный портфель вырос на 5.2% за последнюю неделю',
-    time: new Date(Date.now() - 2 * 60 * 60000), // 2 часа назад
-    read: true,
-  },
-]);
+const notificationCount = ref(3);
 
 // Форматируем балансы как в дизайне
 const formattedWinBalance = computed(() => {
-  const balance = props.user?.winBalance || 10000;
+  const balance = props.user?.winBalance || props.user?.balance || 150000;
   return new Intl.NumberFormat('ru-RU').format(balance);
 });
 
@@ -186,51 +121,9 @@ const toggleNotifications = () => {
   showNotifications.value = !showNotifications.value;
 };
 
-const closeNotifications = () => {
-  showNotifications.value = false;
-};
-
-const markAsRead = (id) => {
-  const notification = notifications.value.find((n) => n.id === id);
-  if (notification) {
-    notification.read = true;
-  }
-};
-
-const markAllAsRead = () => {
-  notifications.value.forEach((n) => (n.read = true));
-  closeNotifications();
-};
-
 const onLogoError = () => {
   logoError.value = true;
 };
-
-const formatTime = (time) => {
-  const now = new Date();
-  const diff = now - time;
-  const minutes = Math.floor(diff / 60000);
-  const hours = Math.floor(minutes / 60);
-  const days = Math.floor(hours / 24);
-
-  if (days > 0) return `${days}д назад`;
-  if (hours > 0) return `${hours}ч назад`;
-  if (minutes > 0) return `${minutes}м назад`;
-  return 'Только что';
-};
-
-// Закрываем уведомления при клике вне области
-watch(showNotifications, (isOpen) => {
-  if (isOpen) {
-    document.body.style.overflow = 'hidden';
-  } else {
-    document.body.style.overflow = '';
-  }
-});
-
-onUnmounted(() => {
-  document.body.style.overflow = '';
-});
 </script>
 
 <style scoped>
@@ -244,6 +137,11 @@ onUnmounted(() => {
   display: flex;
   align-items: center;
   justify-content: center;
+  box-shadow: 0px 4px 4px 0px #00000040;
+  border-bottom: 1px solid #00110d45;
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
 
 .mobile-header__content {
@@ -328,7 +226,6 @@ onUnmounted(() => {
 .balance-item--primary .balance-icon {
   width: 24px;
   height: 24px;
-
   display: flex;
 }
 
@@ -348,6 +245,9 @@ onUnmounted(() => {
   text-align: center;
   vertical-align: middle;
   text-transform: uppercase;
+  color: #ffffff;
+  padding: 2px 6px;
+  border-radius: 8px;
 }
 
 .balance-item--secondary .balance-value {
@@ -359,27 +259,63 @@ onUnmounted(() => {
   color: #07cb38;
 }
 
-.balance-divider {
-  color: rgba(255, 255, 255, 0.4);
-  font-size: 14px;
-  margin: 0 4px;
-}
-
 /* Правая часть - Действия */
 .mobile-header__right {
   display: flex;
   align-items: center;
   gap: 12px;
   flex-shrink: 0;
+  position: relative;
 }
 
 .action-btn {
   display: flex;
   background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
 }
+
 .action-btn img {
   width: 26px;
   height: 26px;
+}
+
+/* Кнопка уведомлений */
+.notification-btn {
+  position: relative;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.notification-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.notification-btn img {
+  width: 26px;
+  height: 26px;
+}
+
+.notification-badge {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: #ef4444;
+  color: white;
+  font-size: 10px;
+  font-weight: 700;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: pulse 2s infinite;
 }
 
 /* Dropdown уведомлений */
@@ -387,180 +323,102 @@ onUnmounted(() => {
   position: absolute;
   top: calc(100% + 8px);
   right: 0;
-  left: 0;
-  background: rgba(0, 0, 0, 0.98);
-  backdrop-filter: blur(20px);
+  width: 320px;
+  background: rgba(0, 0, 0, 0.9);
+  backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 16px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-  max-height: 400px;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
   z-index: 1000;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
 }
 
-.notifications-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 999;
-  background: rgba(0, 0, 0, 0.3);
-}
-
-.notifications-header {
+.notification-header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 16px 20px;
+  justify-content: space-between;
+  padding: 12px 16px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.notifications-title {
-  font-size: 16px;
+  background: #07cb38;
+  color: #0a3d2e;
+  border-radius: 16px 16px 0 0;
+  font-size: 12px;
   font-weight: 600;
-  color: white;
-  margin: 0;
 }
 
-.notifications-close {
+.notification-close {
   background: none;
   border: none;
-  color: rgba(255, 255, 255, 0.6);
-  font-size: 20px;
+  color: currentColor;
+  font-size: 16px;
   cursor: pointer;
-  padding: 4px;
-  transition: color 0.2s ease;
-}
-
-.notifications-close:hover {
-  color: white;
-}
-
-.notifications-content {
-  flex: 1;
-  overflow-y: auto;
-}
-
-.notifications-empty {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 40px 20px;
-  color: rgba(255, 255, 255, 0.6);
-  text-align: center;
-}
-
-.empty-icon {
-  font-size: 32px;
-  margin-bottom: 8px;
-}
-
-.notifications-list {
-  padding: 8px 0;
+  padding: 2px;
 }
 
 .notification-item {
   display: flex;
   align-items: flex-start;
   gap: 12px;
-  padding: 12px 20px;
+  padding: 12px 16px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-  transition: background 0.2s ease;
   position: relative;
 }
 
-.notification-item:hover {
-  background: rgba(255, 255, 255, 0.02);
+.notification-item:last-child {
+  border-bottom: none;
+  border-radius: 0 0 16px 16px;
 }
 
-.notification-item--unread {
-  background: rgba(74, 222, 128, 0.03);
-}
-
-.notification-item--unread::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 3px;
-  background: #4ade80;
-}
-
-.notification-icon {
-  font-size: 20px;
-  flex-shrink: 0;
-  margin-top: 2px;
+.notification-icon-item {
+  font-size: 24px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
 }
 
 .notification-content {
   flex: 1;
-  min-width: 0;
 }
 
 .notification-title {
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 600;
-  color: white;
-  margin: 0 0 4px 0;
+  color: #ffffff;
+  margin-bottom: 4px;
 }
 
-.notification-message {
-  font-size: 13px;
-  color: rgba(255, 255, 255, 0.8);
-  margin: 0 0 4px 0;
-  line-height: 1.4;
-}
-
-.notification-time {
+.notification-text {
   font-size: 11px;
-  color: rgba(255, 255, 255, 0.5);
-}
-
-.notification-close {
-  background: none;
-  border: none;
-  color: rgba(255, 255, 255, 0.4);
-  font-size: 16px;
-  cursor: pointer;
-  padding: 4px;
-  transition: color 0.2s ease;
-  flex-shrink: 0;
-}
-
-.notification-close:hover {
   color: rgba(255, 255, 255, 0.8);
+  line-height: 1.4;
+  margin-bottom: 6px;
 }
 
-.notifications-footer {
-  padding: 16px 20px;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.notifications-action {
-  width: 100%;
-  background: rgba(74, 222, 128, 0.1);
-  border: 1px solid rgba(74, 222, 128, 0.2);
-  color: #4ade80;
-  padding: 10px 16px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-family: inherit;
-  font-size: 14px;
+.notification-link {
+  font-size: 11px;
+  color: #07cb38;
+  text-decoration: none;
   font-weight: 500;
-  transition: all 0.2s ease;
 }
 
-.notifications-action:hover {
-  background: rgba(74, 222, 128, 0.15);
-  border-color: rgba(74, 222, 128, 0.3);
+.notification-link:hover {
+  text-decoration: underline;
 }
 
-/* Адаптивность */
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* Адаптивность для мобильного хедера */
 @media (max-width: 480px) {
   .mobile-header {
     padding: 10px 16px;
@@ -578,6 +436,11 @@ onUnmounted(() => {
   .balance-item--primary .balance-value,
   .balance-item--secondary .balance-value {
     font-size: 14px;
+  }
+
+  .notifications-dropdown {
+    width: calc(100vw - 32px);
+    right: -16px;
   }
 }
 
