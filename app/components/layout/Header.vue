@@ -2,10 +2,10 @@
   <header class="header">
     <div class="header-content">
       <div class="header-center">
-        <button class="action-btn create-investment">
+        <NuxtLink to="/investments" class="action-btn create-investment">
           <img src="./../../assets/images/add_circle.svg" alt="" />
-          СОЗДАТЬ ИНВЕСТИЦИЮ
-        </button>
+          <span>СОЗДАТЬ ИНВЕСТИЦИЮ</span>
+        </NuxtLink>
         <div class="balance-display">
           <img src="./../../assets/images/balance-icon.svg" alt="" />
           <span class="balance-amount">{{
@@ -18,10 +18,10 @@
             user?.balance?.toLocaleString() || '100'
           }}</span>
         </div>
-        <button class="action-btn top-up-balance">
+        <NuxtLink to="/wallet" class="action-btn top-up-balance">
           <img src="./../../assets/images/add_circle.svg" alt="" />
-          ПОПОЛНИТЬ БАЛАНС
-        </button>
+          <span>ПОПОЛНИТЬ БАЛАНС</span>
+        </NuxtLink>
       </div>
 
       <div class="header-right">
@@ -112,16 +112,21 @@ const toggleNotifications = () => {
   display: flex;
   align-items: center;
   border-radius: 32px;
-  font-size: 11px;
-  font-weight: 700;
   cursor: pointer;
   transition: all 0.3s ease;
   border: none;
-  font-family: inherit;
-  letter-spacing: 0.5px;
   height: 26px;
   gap: 12px;
   padding: 8px 12px 8px 6px;
+}
+.action-btn span {
+  font-family: Roboto, sans-serif;
+  font-weight: 500;
+  text-align: center;
+  vertical-align: middle;
+  text-transform: uppercase;
+  color: #070202;
+  font-size: 11px;
 }
 
 .create-investment {
@@ -137,11 +142,6 @@ const toggleNotifications = () => {
 
 .top-up-balance {
   background: #07cb38;
-}
-
-.top-up-balance:hover {
-  background: rgba(74, 222, 128, 0.1);
-  transform: translateY(-1px);
 }
 
 .btn-icon {
@@ -174,7 +174,6 @@ const toggleNotifications = () => {
   font-family: Roboto, serif;
   font-weight: 400;
   font-size: 12px;
-  line-height: 118%;
   text-align: center;
   vertical-align: middle;
   text-transform: uppercase;
@@ -193,7 +192,7 @@ const toggleNotifications = () => {
 }
 
 .balance-amount {
-  font-family: Roboto, serif;
+  font-family: Roboto, sans-serif;
   font-weight: 700;
   font-size: 16px;
   line-height: 100%;
@@ -202,7 +201,7 @@ const toggleNotifications = () => {
 }
 
 .balance-text {
-  font-family: Roboto, serif;
+  font-family: Roboto, sans-serif;
   font-weight: 400;
   font-size: 12px;
   line-height: 118%;

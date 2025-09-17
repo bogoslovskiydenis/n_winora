@@ -345,12 +345,6 @@
   flex: 1;
 }
 
-.trend,
-.safe-icon {
-  font-size: 14px;
-  margin-left: 8px;
-}
-
 .stat-value.green .value {
   color: #22c55e;
 }
@@ -361,24 +355,6 @@
 
 .safe-value .value {
   color: var(--text-primary);
-}
-
-/* Иконки трендов */
-.trend.up {
-  color: #22c55e;
-}
-
-.trend.down {
-  color: #ef4444;
-}
-
-/* Иконки сейфа */
-.safe-icon.warning {
-  color: #f59e0b;
-}
-
-.safe-icon.chest {
-  color: #8b5cf6;
 }
 
 @media (max-width: 1024px) {

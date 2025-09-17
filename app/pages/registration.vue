@@ -466,7 +466,7 @@ const openEmailClient = () => {
   border-radius: 0;
   text-decoration: none;
   box-sizing: border-box;
-  font-family: Roboto, serif;
+  font-family: Roboto, sans-serif;
   font-weight: 400;
   line-height: 13px;
   letter-spacing: 0%;

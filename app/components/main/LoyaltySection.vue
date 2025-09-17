@@ -281,7 +281,7 @@ const updateBonuses = (level) => {
 }
 
 .level-title {
-  font-family: Roboto, serif;
+  font-family: Roboto, sans-serif;
   font-weight: 700;
   font-size: 14px;
   line-height: 100%;
@@ -295,7 +295,7 @@ const updateBonuses = (level) => {
 
 .level-deposit,
 .level-next {
-  font-family: Roboto, serif;
+  font-family: Roboto, sans-serif;
   font-weight: 500;
   font-size: 12px;
   line-height: 100%;
@@ -308,7 +308,7 @@ const updateBonuses = (level) => {
 }
 
 .amount {
-  font-family: Roboto, serif;
+  font-family: Roboto, sans-serif;
   font-weight: 700;
   font-size: 12px;
   line-height: 100%;
@@ -317,7 +317,7 @@ const updateBonuses = (level) => {
 }
 
 .remaining {
-  font-family: Roboto, serif;
+  font-family: Roboto, sans-serif;
   font-weight: 700;
   font-size: 12px;
   line-height: 100%;
@@ -328,7 +328,7 @@ const updateBonuses = (level) => {
 }
 
 .level-link {
-  font-family: Roboto, serif;
+  font-family: Roboto, sans-serif;
   font-weight: 500;
   font-size: 12px;
   line-height: 100%;
@@ -379,7 +379,7 @@ const updateBonuses = (level) => {
 }
 
 .reward-title {
-  font-family: Roboto, serif;
+  font-family: Roboto, sans-serif;
   font-weight: 700;
   font-size: 12px;
   line-height: 100%;
@@ -409,7 +409,7 @@ const updateBonuses = (level) => {
 
 .reward-name {
   color: #ffffff;
-  font-family: Roboto, serif;
+  font-family: Roboto, sans-serif;
   font-weight: 500;
   font-size: 12px;
   line-height: 100%;
@@ -417,10 +417,9 @@ const updateBonuses = (level) => {
 }
 
 .reward-value {
-  font-family: Roboto, serif;
+  font-family: Roboto, sans-serif;
   font-weight: 700;
   font-size: 12px;
-  leading-trim: CAP_HEIGHT;
   line-height: 118%;
   color: #07cb38;
 }

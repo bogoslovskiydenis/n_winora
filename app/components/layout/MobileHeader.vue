@@ -3,7 +3,7 @@
     <div class="mobile-header__content">
       <!-- Левая часть - Логотип -->
       <div class="mobile-header__left">
-        <NuxtLink to="/main" class="logo-link" @click="$emit('navigate-home')">
+        <NuxtLink to="/" class="logo-link" @click="$emit('navigate-home')">
           <div class="logo-container">
             <img
               src="~/assets/images/logo_mob_header.svg"
