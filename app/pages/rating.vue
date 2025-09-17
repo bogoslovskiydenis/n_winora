@@ -25,16 +25,40 @@
 
     <!-- Навигационные вкладки -->
     <div class="nav-tabs">
-      <div class="tab">ПОЗИЦИЯ</div>
-      <div class="tab active">РЕЙТИНГ</div>
-      <div class="tab">НИЖНИМ</div>
-      <div class="tab">ДОХОДНОСТЬ</div>
+      <div
+        class="tab"
+        :class="{ active: activeTab === 'position' }"
+        @click="setActiveTab('position')"
+      >
+        <span>ПОЗИЦИЯ</span>
+      </div>
+      <div
+        class="tab"
+        :class="{ active: activeTab === 'rating' }"
+        @click="setActiveTab('rating')"
+      >
+        РЕЙТИНГ
+      </div>
+      <div
+        class="tab"
+        :class="{ active: activeTab === 'nickname' }"
+        @click="setActiveTab('nickname')"
+      >
+        Никнейм
+      </div>
+      <div
+        class="tab"
+        :class="{ active: activeTab === 'income' }"
+        @click="setActiveTab('income')"
+      >
+        ДОХОДНОСТЬ
+      </div>
     </div>
 
     <!-- Список рейтинга -->
     <div class="rating-grid">
       <div
-        v-for="user in currentPageUsers"
+        v-for="user in sortedUsers"
         :key="user.id"
         class="user-card"
         :class="{ highlighted: user.isCurrentUser }"
@@ -124,6 +148,7 @@ export default {
     return {
       currentPage: 1,
       isLoading: false,
+      activeTab: 'rating',
     };
   },
   computed: {
@@ -135,8 +160,35 @@ export default {
       // Генерируем пользователей для каждой страницы
       return this.generateUsersForPage(this.currentPage, usersPerPage);
     },
+
+    sortedUsers() {
+      let users = [...this.currentPageUsers];
+
+      switch (this.activeTab) {
+        case 'position':
+          return users.sort((a, b) => a.rank - b.rank);
+        case 'rating':
+          return users.sort((a, b) => {
+            // Сортировка по изменению рейтинга (положительные изменения выше)
+            const changeA = parseInt(a.change.replace('+', ''));
+            const changeB = parseInt(b.change.replace('+', ''));
+            return changeB - changeA;
+          });
+        case 'nickname':
+          return users.sort((a, b) => a.name.localeCompare(b.name, 'ru'));
+        case 'income':
+          return users.sort((a, b) => b.percentage - a.percentage);
+        default:
+          return users;
+      }
+    },
   },
   methods: {
+    setActiveTab(tab) {
+      if (this.isLoading) return;
+      this.activeTab = tab;
+    },
+
     changePage(page) {
       if (this.isLoading) return;
 
@@ -249,18 +301,71 @@ export default {
   cursor: pointer;
   text-transform: uppercase;
   letter-spacing: 1px;
+  transition: all 0.3s ease;
+  font-family: Roboto, sans-serif;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 100%;
+  text-align: center;
+  color: #f97c39;
+}
+
+.tab span {
+  font-family: Roboto, sans-serif;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 100%;
+  text-transform: uppercase;
+  color: #f97c39;
 }
 
 .tab.active {
-  opacity: 1;
-  color: #4ade80;
-  background: rgba(74, 222, 128, 0.1);
-  font-weight: bold;
+  color: #07cb38;
 }
 
-.tab:hover {
+.tab.active span {
+  color: #07cb38;
+}
+
+/* Специальные цвета для разных вкладок */
+.tab:nth-child(1) {
+  /* ПОЗИЦИЯ */
+  color: #f97c39;
+}
+
+.tab:nth-child(1).active {
+  color: #f97c39;
+}
+
+.tab:nth-child(2) {
+  /* РЕЙТИНГ */
+  color: #f97c39;
+}
+
+.tab:nth-child(2).active {
+  color: #07cb38;
+}
+
+.tab:nth-child(3) {
+  /* Никнейм */
+  color: #f97c39;
+}
+
+.tab:nth-child(3).active {
+  color: #07cb38;
+}
+
+.tab:nth-child(4) {
+  /* ДОХОДНОСТЬ */
+  color: #f97c39;
+}
+
+.tab:nth-child(4).active {
+  color: #07cb38;
+}
+
+.tab:hover:not(.active) {
   opacity: 0.8;
-  background: rgba(255, 255, 255, 0.05);
 }
 
 /* Секция фильтров */
