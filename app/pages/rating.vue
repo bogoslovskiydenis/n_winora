@@ -22,6 +22,7 @@
         </div>
       </div>
     </div>
+
     <!-- Навигационные вкладки -->
     <div class="nav-tabs">
       <div class="tab">ПОЗИЦИЯ</div>
@@ -108,6 +109,11 @@
         401-499
       </button>
     </div>
+
+    <!-- Индикатор загрузки -->
+    <div v-if="isLoading" class="loading-overlay">
+      <div class="loading-spinner"></div>
+    </div>
   </div>
 </template>
 
@@ -118,87 +124,16 @@ export default {
     return {
       currentPage: 1,
       isLoading: false,
-      users: [
-        {
-          id: 1,
-          rank: 123,
-          change: '+123',
-          changeClass: 'positive',
-          name: 'ArcticPulse',
-          percentage: 8.1,
-          backgroundImage: '/images/rating_bg_1.png',
-        },
-        {
-          id: 2,
-          rank: 124,
-          change: '+123',
-          changeClass: 'positive',
-          name: 'ArcticPulse',
-          percentage: 8.14,
-          isCurrentUser: true,
-          backgroundImage: '/images/rating_bg_2.png',
-        },
-        {
-          id: 3,
-          rank: 126,
-          change: '+123',
-          changeClass: 'positive',
-          name: 'ArcticPulse',
-          percentage: 8.13,
-          backgroundImage: '/images/rating_bg_3.png',
-        },
-        {
-          id: 4,
-          rank: 127,
-          change: '+123',
-          changeClass: 'positive',
-          name: 'QuantumBurn',
-          percentage: 8.13,
-          backgroundImage: '/images/rating_bg_4.png',
-        },
-        {
-          id: 5,
-          rank: 128,
-          change: '+123',
-          changeClass: 'positive',
-          name: 'QuantumBurn',
-          percentage: 8.14,
-          backgroundImage: '/images/rating_bg_5.png',
-        },
-        {
-          id: 6,
-          rank: 129,
-          change: '+123',
-          changeClass: 'positive',
-          name: 'ArcticPulse',
-          percentage: 8.15,
-          backgroundImage: '/images/rating_bg_6.png',
-        },
-        {
-          id: 7,
-          rank: 130,
-          change: '+121',
-          changeClass: 'positive',
-          name: 'QuantumBurn',
-          percentage: 8.17,
-          backgroundImage: '/images/rating_bg_7.png',
-        },
-        {
-          id: 8,
-          rank: 131,
-          change: '+121',
-          changeClass: 'positive',
-          name: 'QuantumBurn',
-          percentage: 8.17,
-          backgroundImage: '/images/rating_bg_8.png',
-        },
-      ],
     };
   },
   computed: {
     currentPageUsers() {
-      // Здесь можно добавить логику фильтрации по страницам
-      return this.users;
+      const usersPerPage = 8;
+      const startIndex = (this.currentPage - 1) * usersPerPage;
+      const endIndex = startIndex + usersPerPage;
+
+      // Генерируем пользователей для каждой страницы
+      return this.generateUsersForPage(this.currentPage, usersPerPage);
     },
   },
   methods: {
@@ -211,8 +146,57 @@ export default {
       // Имитация загрузки данных
       setTimeout(() => {
         this.isLoading = false;
-        // Здесь можно загрузить данные для конкретной страницы
-      }, 500);
+      }, 300);
+    },
+
+    generateUsersForPage(page, usersPerPage) {
+      const baseRank = (page - 1) * 100 + 1;
+      const userNames = [
+        'ArcticPulse',
+        'QuantumBurn',
+        'NeonStorm',
+        'CyberWave',
+        'DigitalFox',
+        'TechnoRider',
+        'VortexMaster',
+        'SilverBolt',
+        'ElectraGlow',
+        'FlashBurn',
+        'NightHawk',
+        'StarStrike',
+        'ThunderBeast',
+        'CosmicRage',
+        'PlasmaFury',
+        'ShadowBlade',
+        'IronPhoenix',
+        'VoidWalker',
+        'CrimsonStorm',
+        'GalacticHero',
+      ];
+
+      const users = [];
+
+      for (let i = 0; i < usersPerPage; i++) {
+        const rank = baseRank + i;
+        const randomChange = Math.floor(Math.random() * 200) - 50;
+        const changeClass = randomChange >= 0 ? 'positive' : 'negative';
+        const changeText =
+          randomChange >= 0 ? `+${randomChange}` : `${randomChange}`;
+        const percentage = (7.5 + Math.random() * 1.5).toFixed(2);
+
+        users.push({
+          id: rank,
+          rank: rank,
+          change: changeText,
+          changeClass: changeClass,
+          name: userNames[Math.floor(Math.random() * userNames.length)],
+          percentage: parseFloat(percentage),
+          backgroundImage: `/images/rating_bg_${(i % 8) + 1}.png`,
+          isCurrentUser: page === 1 && i === 1, // Текущий пользователь только на первой странице
+        });
+      }
+
+      return users;
     },
   },
 };
@@ -222,16 +206,18 @@ export default {
 .rating-container {
   background: linear-gradient(0deg, #002920 0%, #00382b 100%);
   min-height: 100vh;
+  padding-bottom: 120px; /* Добавляем отступ снизу для пагинации */
 }
+
 .rating-header {
   height: 66px;
   padding-top: 24px;
   padding-bottom: 16px;
   gap: 16px;
-
   text-align: center;
   background: linear-gradient(0deg, #002920 0%, #00382b 100%);
 }
+
 /* Заголовок */
 .rating-header span {
   font-family: Tomorrow, sans-serif;
@@ -314,7 +300,7 @@ export default {
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 20px;
   max-width: 1200px;
-  margin: 0 auto 50px;
+  margin: 0 auto;
   padding: 0 20px;
 }
 
@@ -447,11 +433,17 @@ export default {
 
 /* Пагинация */
 .pagination {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
   display: flex;
   justify-content: center;
   gap: 12px;
-  margin: 40px 0;
-  flex-wrap: wrap;
+  padding: 20px;
+
+  backdrop-filter: blur(10px);
+  z-index: 100;
 }
 
 .page-btn {
@@ -485,6 +477,39 @@ export default {
   opacity: 0.4;
   cursor: not-allowed;
   transform: none;
+}
+
+/* Индикатор загрузки */
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 41, 32, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(5px);
+}
+
+.loading-spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid rgba(74, 222, 128, 0.3);
+  border-top: 4px solid #4ade80;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 /* Адаптивность */
@@ -521,12 +546,17 @@ export default {
 
   .pagination {
     gap: 8px;
+    padding: 15px;
   }
 
   .page-btn {
     padding: 10px 16px;
     font-size: 11px;
     min-width: 80px;
+  }
+
+  .rating-container {
+    padding-bottom: 100px;
   }
 }
 
@@ -574,6 +604,21 @@ export default {
     right: 16px;
     padding: 3px 8px;
     font-size: 10px;
+  }
+
+  .pagination {
+    padding: 12px;
+    gap: 6px;
+  }
+
+  .page-btn {
+    padding: 8px 12px;
+    font-size: 10px;
+    min-width: 70px;
+  }
+
+  .rating-container {
+    padding-bottom: 90px;
   }
 }
 
