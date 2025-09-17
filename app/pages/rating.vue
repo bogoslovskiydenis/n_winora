@@ -8,7 +8,11 @@
     <!-- Иконки фильтров -->
     <div class="filter-section">
       <div class="filter-icons">
-        <div class="filter-icon">
+        <div
+          class="filter-icon"
+          @click="toggleSearch"
+          :class="{ active: showSearch }"
+        >
           <img src="~/assets/images/search.svg" alt="Search" />
         </div>
         <div class="filter-icon">
@@ -20,6 +24,23 @@
         <div class="filter-icon active">
           <img src="~/assets/images/gps_fixed.svg" alt="Diamond" />
         </div>
+      </div>
+    </div>
+
+    <!-- Поисковое поле -->
+    <div class="search-section" v-if="showSearch">
+      <div class="search-input-container">
+        <input
+          ref="searchInput"
+          v-model="searchQuery"
+          type="text"
+          placeholder="Поиск по никнейму..."
+          class="search-input"
+          @input="handleSearch"
+        />
+        <button v-if="searchQuery" class="search-clear" @click="clearSearch">
+          ×
+        </button>
       </div>
     </div>
 
@@ -90,8 +111,19 @@
       </div>
     </div>
 
+    <!-- Сообщение об отсутствии результатов -->
+    <div v-if="searchQuery && sortedUsers.length === 0" class="no-results">
+      <div class="no-results-icon">🔍</div>
+      <div class="no-results-text">
+        Пользователи с никнеймом "{{ searchQuery }}" не найдены
+      </div>
+      <button class="no-results-clear" @click="clearSearch">
+        Очистить поиск
+      </button>
+    </div>
+
     <!-- Пагинация -->
-    <div class="pagination">
+    <div class="pagination" v-if="!searchQuery">
       <button
         class="page-btn"
         :class="{ active: currentPage === 1 }"
@@ -149,10 +181,18 @@ export default {
       currentPage: 1,
       isLoading: false,
       activeTab: 'rating',
+      showSearch: false,
+      searchQuery: '',
+      allUsers: [], // Хранилище всех пользователей для поиска
     };
   },
   computed: {
     currentPageUsers() {
+      // Если есть поисковый запрос, используем все страницы для поиска
+      if (this.searchQuery) {
+        return this.getAllUsersForSearch();
+      }
+
       const usersPerPage = 8;
       const startIndex = (this.currentPage - 1) * usersPerPage;
       const endIndex = startIndex + usersPerPage;
@@ -161,8 +201,20 @@ export default {
       return this.generateUsersForPage(this.currentPage, usersPerPage);
     },
 
-    sortedUsers() {
+    filteredUsers() {
       let users = [...this.currentPageUsers];
+
+      // Фильтрация по поисковому запросу
+      if (this.searchQuery) {
+        const query = this.searchQuery.toLowerCase().trim();
+        users = users.filter((user) => user.name.toLowerCase().includes(query));
+      }
+
+      return users;
+    },
+
+    sortedUsers() {
+      let users = [...this.filteredUsers];
 
       switch (this.activeTab) {
         case 'position':
@@ -184,6 +236,29 @@ export default {
     },
   },
   methods: {
+    toggleSearch() {
+      this.showSearch = !this.showSearch;
+
+      if (this.showSearch) {
+        // Фокусируемся на поле ввода после открытия
+        this.$nextTick(() => {
+          this.$refs.searchInput?.focus();
+        });
+      } else {
+        // Очищаем поиск при закрытии
+        this.clearSearch();
+      }
+    },
+
+    handleSearch() {
+      // Дебаунсинг не нужен для простого фильтра, но можно добавить если понадобится
+      // this.debouncedSearch();
+    },
+
+    clearSearch() {
+      this.searchQuery = '';
+    },
+
     setActiveTab(tab) {
       if (this.isLoading) return;
       this.activeTab = tab;
@@ -195,10 +270,23 @@ export default {
       this.isLoading = true;
       this.currentPage = page;
 
+      // Очищаем поиск при смене страницы
+      this.clearSearch();
+
       // Имитация загрузки данных
       setTimeout(() => {
         this.isLoading = false;
       }, 300);
+    },
+
+    getAllUsersForSearch() {
+      // Генерируем пользователей со всех страниц для поиска
+      const allUsers = [];
+      for (let page = 1; page <= 5; page++) {
+        const pageUsers = this.generateUsersForPage(page, 100);
+        allUsers.push(...pageUsers);
+      }
+      return allUsers;
     },
 
     generateUsersForPage(page, usersPerPage) {
@@ -224,6 +312,26 @@ export default {
         'VoidWalker',
         'CrimsonStorm',
         'GalacticHero',
+        'MysticWave',
+        'TurboBlast',
+        'NovaStrike',
+        'CyberNinja',
+        'FlameRider',
+        'StormBreaker',
+        'DiamondClaw',
+        'ThunderWolf',
+        'ShadowFire',
+        'IcePhoenix',
+        'DragonBlade',
+        'LightningBolt',
+        'DarkMatter',
+        'StarWarden',
+        'VoidHunter',
+        'CrimsonBlade',
+        'SilverStorm',
+        'GoldRush',
+        'IronStrike',
+        'PlasmaWave',
       ];
 
       const users = [];
@@ -243,7 +351,7 @@ export default {
           changeClass: changeClass,
           name: userNames[Math.floor(Math.random() * userNames.length)],
           percentage: parseFloat(percentage),
-          backgroundImage: `/images/rating_bg_${(i % 8) + 1}.png`, ///card_bg.png
+          backgroundImage: `/images/rating_bg_${(i % 8) + 1}.png`,
           isCurrentUser: page === 1 && i === 1, // Текущий пользователь только на первой странице
         });
       }
@@ -281,6 +389,113 @@ export default {
   color: #07cb38;
 }
 
+/* Секция фильтров */
+.filter-section {
+  padding: 16px;
+  display: flex;
+  justify-content: center;
+}
+
+.filter-icons {
+  height: 40px;
+  background: #06251e;
+  border: 2px solid #0000001a;
+  display: flex;
+  gap: 24px;
+  border-radius: 32px;
+  padding: 4px;
+}
+
+.filter-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s;
+  border: 2px solid transparent;
+  border-radius: 50%;
+  padding: 8px;
+}
+
+.filter-icon img {
+  width: 24px;
+  height: 24px;
+}
+
+/* Поисковая секция */
+.search-section {
+  padding: 0 16px 16px;
+  display: flex;
+  justify-content: center;
+  animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.search-input-container {
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+}
+
+.search-input {
+  width: 100%;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  padding: 0 50px 0 20px;
+  font-size: 14px;
+  color: white;
+  font-family: inherit;
+  transition: all 0.3s ease;
+}
+
+.search-input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #07cb38;
+  background: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 0 0 3px rgba(7, 203, 56, 0.2);
+}
+
+.search-clear {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.search-clear:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-50%) scale(1.1);
+}
+
 /* Навигационные вкладки */
 .nav-tabs {
   margin: 0 auto;
@@ -288,7 +503,7 @@ export default {
   max-width: 462px;
   height: 25px;
   display: flex;
-  justify-content: center;
+  justify-content: space-evenly;
   padding: 8px 16px 16px;
   gap: 16px;
   border-top-left-radius: 8px;
@@ -366,37 +581,6 @@ export default {
 
 .tab:hover:not(.active) {
   opacity: 0.8;
-}
-
-/* Секция фильтров */
-.filter-section {
-  padding: 16px;
-  display: flex;
-  justify-content: center;
-}
-
-.filter-icons {
-  height: 40px;
-  background: #06251e;
-  border: 2px solid #0000001a;
-  display: flex;
-  gap: 24px;
-  border-radius: 32px;
-  padding: 4px;
-}
-
-.filter-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.3s;
-  border: 2px solid transparent;
-}
-
-.filter-icon img {
-  width: 24px;
-  height: 24px;
 }
 
 /* Сетка рейтинга */
@@ -536,6 +720,44 @@ export default {
   text-transform: uppercase;
 }
 
+/* Нет результатов поиска */
+.no-results {
+  text-align: center;
+  padding: 60px 20px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.no-results-icon {
+  font-size: 64px;
+  margin-bottom: 20px;
+  opacity: 0.5;
+}
+
+.no-results-text {
+  font-size: 18px;
+  margin-bottom: 24px;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.no-results-clear {
+  background: #07cb38;
+  color: #0a2f23;
+  border: none;
+  border-radius: 25px;
+  padding: 12px 24px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: inherit;
+}
+
+.no-results-clear:hover {
+  background: #06b832;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(7, 203, 56, 0.3);
+}
+
 /* Пагинация */
 .pagination {
   position: fixed;
@@ -546,7 +768,6 @@ export default {
   justify-content: center;
   gap: 12px;
   padding: 20px;
-
   backdrop-filter: blur(10px);
   z-index: 100;
 }
@@ -663,6 +884,14 @@ export default {
   .rating-container {
     padding-bottom: 100px;
   }
+
+  .search-input-container {
+    max-width: none;
+  }
+
+  .search-input {
+    font-size: 16px; /* Предотвращает zoom на iOS */
+  }
 }
 
 @media (max-width: 480px) {
@@ -724,6 +953,10 @@ export default {
 
   .rating-container {
     padding-bottom: 90px;
+  }
+
+  .filter-icons {
+    gap: 12px;
   }
 }
 
