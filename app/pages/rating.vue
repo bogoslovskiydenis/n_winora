@@ -243,7 +243,7 @@ export default {
           changeClass: changeClass,
           name: userNames[Math.floor(Math.random() * userNames.length)],
           percentage: parseFloat(percentage),
-          backgroundImage: `/images/rating_bg_${(i % 8) + 1}.png`,
+          backgroundImage: `/images/rating_bg_${(i % 8) + 1}.png`, ///card_bg.png
           isCurrentUser: page === 1 && i === 1, // Текущий пользователь только на первой странице
         });
       }
