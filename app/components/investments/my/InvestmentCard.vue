@@ -4,7 +4,7 @@
     <div class="investment-header">
       <div class="investment-number">
         <span class="investment-label">ИНВЕСТИЦИЯ</span>
-        <span class="investment-id">{{ '№3456' }}</span>
+        <span class="investment-id">№{{ investment.id }}</span>
       </div>
     </div>
 
@@ -153,6 +153,7 @@ const getRiskClass = () => {
 
 <style scoped>
 .investment-card {
+  max-width: 343px;
   box-shadow: 0px 1px 5px 0px #00000040;
   position: relative;
   overflow: hidden;

@@ -45,7 +45,7 @@
     <!-- Пустое состояние -->
     <div
       class="empty-state"
-      v-if="filteredInvestments.length === 0 && !investments.length"
+      v-if="filteredInvestments.length === 0 && !getAllInvestments.length"
     >
       <EmptyInvestments @create-investment="$emit('create-first')" />
     </div>
@@ -117,10 +117,15 @@
 </template>
 
 <script setup>
+import { ref, computed, watch } from 'vue';
+import { navigateTo } from '#app';
 import InvestmentCard from './InvestmentCard.vue';
 import EmptyInvestments from './EmptyInvestments.vue';
 
 defineEmits(['create-first']);
+
+// Подключаем composable для управления инвестициями
+const { getAllInvestments } = useInvestments();
 
 // Реактивные данные
 const viewMode = ref('grid');
@@ -129,175 +134,9 @@ const filterStatus = ref('all');
 const currentPage = ref(1);
 const itemsPerPage = 6; // Количество карточек на странице
 
-// Моковые данные инвестиций
-const investments = ref([
-  {
-    id: '3456',
-    name: 'ИНВЕСТИЦИЯ №3456',
-    type: 'betting',
-    preset: 'balanced',
-    status: 'active',
-    amount: 100,
-    currentProfit: 25,
-    totalProfit: 45,
-    availableProfit: 20,
-    profitability: '13 USD / Week',
-    riskLevel: 8,
-    progress: 65,
-    createdAt: '2024-01-15',
-    description: 'При покрытии депозита данной стратегией в потере...',
-    strategy: 'Сбалансированная',
-    profitTimeframe: 'через 3 дня',
-    isProfitable: true,
-    settings: {
-      highRtp: true,
-      casinoParticipation: false,
-      autoSlotChange: true,
-      slotSelection: false,
-      platformDistribution: true,
-      minimalStakes: false,
-    },
-  },
-  {
-    id: '3457',
-    name: 'ИНВЕСТИЦИЯ №3457',
-    type: 'gambling',
-    preset: 'aggressive',
-    status: 'active',
-    amount: 200,
-    currentProfit: -15,
-    totalProfit: 35,
-    availableProfit: 45,
-    profitability: '25 USD / Week',
-    riskLevel: 15,
-    progress: 40,
-    createdAt: '2024-01-12',
-    description: 'При покрытии депозита данной стратегией в потере...',
-    strategy: 'Агрессивная',
-    profitTimeframe: 'через 5 дней',
-    isProfitable: false,
-    settings: {
-      highRtp: true,
-      casinoParticipation: true,
-      autoSlotChange: false,
-      slotSelection: true,
-      platformDistribution: false,
-      minimalStakes: true,
-    },
-  },
-  {
-    id: '3458',
-    name: 'ИНВЕСТИЦИЯ №3458',
-    type: 'betting',
-    preset: 'conservative',
-    status: 'completed',
-    amount: 150,
-    currentProfit: 75,
-    totalProfit: 95,
-    availableProfit: 0,
-    profitability: '8 USD / Week',
-    riskLevel: 3,
-    progress: 100,
-    createdAt: '2024-01-08',
-    description: 'При покрытии депозита данной стратегией в потере...',
-    strategy: 'Консервативная',
-    profitTimeframe: 'завершена',
-    isProfitable: true,
-    settings: {
-      highRtp: false,
-      casinoParticipation: false,
-      autoSlotChange: false,
-      slotSelection: false,
-      platformDistribution: false,
-      minimalStakes: true,
-    },
-  },
-  {
-    id: '3459',
-    name: 'ИНВЕСТИЦИЯ №3459',
-    type: 'betting',
-    preset: 'balanced',
-    status: 'paused',
-    amount: 75,
-    currentProfit: 5,
-    totalProfit: 15,
-    availableProfit: 10,
-    profitability: '10 USD / Week',
-    riskLevel: 6,
-    progress: 20,
-    createdAt: '2024-01-10',
-    description: 'При покрытии депозита данной стратегией в потере...',
-    strategy: 'Сбалансированная',
-    profitTimeframe: 'приостановлена',
-    isProfitable: true,
-    settings: {
-      highRtp: false,
-      casinoParticipation: true,
-      autoSlotChange: true,
-      slotSelection: false,
-      platformDistribution: true,
-      minimalStakes: false,
-    },
-  },
-  {
-    id: '3460',
-    name: 'ИНВЕСТИЦИЯ №3460',
-    type: 'gambling',
-    preset: 'balanced',
-    status: 'active',
-    amount: 300,
-    currentProfit: 85,
-    totalProfit: 120,
-    availableProfit: 65,
-    profitability: '20 USD / Week',
-    riskLevel: 10,
-    progress: 75,
-    createdAt: '2024-01-05',
-    description: 'При покрытии депозита данной стратегией в потере...',
-    strategy: 'Сбалансированная',
-    profitTimeframe: 'через 2 дня',
-    isProfitable: true,
-    settings: {
-      highRtp: true,
-      casinoParticipation: false,
-      autoSlotChange: true,
-      slotSelection: true,
-      platformDistribution: false,
-      minimalStakes: false,
-    },
-  },
-  {
-    id: '3461',
-    name: 'ИНВЕСТИЦИЯ №3461',
-    type: 'betting',
-    preset: 'aggressive',
-    status: 'active',
-    amount: 50,
-    currentProfit: 12,
-    totalProfit: 18,
-    availableProfit: 8,
-    profitability: '7 USD / Week',
-    riskLevel: 12,
-    progress: 30,
-    createdAt: '2024-01-18',
-    description: 'При покрытии депозита данной стратегией в потере...',
-    strategy: 'Агрессивная',
-    profitTimeframe: 'через 7 дней',
-    isProfitable: true,
-    settings: {
-      highRtp: false,
-      casinoParticipation: true,
-      autoSlotChange: false,
-      slotSelection: true,
-      platformDistribution: true,
-      minimalStakes: true,
-    },
-  },
-]);
-
 // Вычисляемые свойства
 const filteredInvestments = computed(() => {
-  let filtered = [...investments.value];
+  let filtered = [...getAllInvestments.value];
 
   // Фильтр по статусу
   if (filterStatus.value !== 'all') {
@@ -488,7 +327,8 @@ watch([filterStatus, sortBy], () => {
 }
 
 .investments-grid.grid-view {
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(343px, 343px));
+  justify-content: start;
 }
 
 .investments-grid.list-view {

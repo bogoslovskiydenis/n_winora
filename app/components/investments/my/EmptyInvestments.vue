@@ -1,14 +1,5 @@
 <template>
   <div class="empty-investments">
-    <div class="empty-illustration">
-      <div class="empty-icon">📈</div>
-      <div class="empty-decorations">
-        <div class="decoration decoration-1">💰</div>
-        <div class="decoration decoration-2">📊</div>
-        <div class="decoration decoration-3">🎯</div>
-      </div>
-    </div>
-
     <div class="empty-content">
       <h3 class="empty-title">У вас пока нет активных инвестиций</h3>
       <p class="empty-description">
@@ -53,53 +44,6 @@ defineEmits(['create-investment']);
   padding: 60px 20px;
   text-align: center;
   min-height: 400px;
-}
-
-.empty-illustration {
-  position: relative;
-  margin-bottom: 32px;
-}
-
-.empty-icon {
-  font-size: 80px;
-  opacity: 0.6;
-  animation: float 3s ease-in-out infinite;
-  margin-bottom: 20px;
-}
-
-.empty-decorations {
-  position: relative;
-  width: 120px;
-  height: 120px;
-  margin: 0 auto;
-}
-
-.decoration {
-  position: absolute;
-  font-size: 24px;
-  opacity: 0.4;
-  animation: orbit 8s linear infinite;
-}
-
-.decoration-1 {
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  animation-delay: 0s;
-}
-
-.decoration-2 {
-  top: 50%;
-  right: 0;
-  transform: translateY(-50%);
-  animation-delay: -2.67s;
-}
-
-.decoration-3 {
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  animation-delay: -5.33s;
 }
 
 .empty-content {
@@ -237,28 +181,6 @@ defineEmits(['create-investment']);
     padding: 40px 16px;
   }
 
-  .empty-icon {
-    font-size: 60px;
-  }
-
-  .empty-decorations {
-    width: 100px;
-    height: 100px;
-  }
-
-  .decoration {
-    font-size: 20px;
-  }
-
-  .decoration-1,
-  .decoration-2,
-  .decoration-3 {
-    animation: none;
-    position: static;
-    display: inline-block;
-    margin: 0 8px;
-  }
-
   .empty-title {
     font-size: 20px;
   }
@@ -311,8 +233,6 @@ defineEmits(['create-investment']);
 
 /* Accessibility */
 @media (prefers-reduced-motion: reduce) {
-  .empty-icon,
-  .decoration,
   .empty-investments {
     animation: none;
   }

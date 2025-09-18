@@ -75,10 +75,7 @@
       <div class="bonus-section">
         <div class="bonus-header">
           <span class="bonus-icon">🎁</span>
-          <span class="bonus-title"
-            >ЧТО ЭТО ЗА РАЗДЕЛ ?? это пуш или что ? если пуш почему он в
-            инвестициях ?</span
-          >
+          <span class="bonus-title">БОНУСЫ ЗА СОЗДАНИЕ ИНВЕСТИЦИИ</span>
         </div>
         <div class="bonus-items">
           <div class="bonus-item">
@@ -92,8 +89,13 @@
         </div>
       </div>
 
-      <button class="create-investment-btn" @click="handleCreateInvestment">
-        <span> ПЕРЕЙТИ К ОПЛАТЕ </span>
+      <button
+        class="create-investment-btn"
+        @click="handleCreateInvestment"
+        :disabled="isCreating"
+      >
+        <span v-if="!isCreating">ПЕРЕЙТИ К ОПЛАТЕ</span>
+        <span v-else>СОЗДАНИЕ...</span>
       </button>
     </div>
 
@@ -108,8 +110,11 @@
 </template>
 
 <script setup>
+import { ref, computed } from 'vue';
 import InfoBanner from '../InfoBanner.vue';
 import PaymentModal from '../../modal/PaymentModal.vue';
+import gambling from './../../../assets/images/invest/gembling.svg';
+import betting from './../../../assets/images/invest/betting.svg';
 
 const props = defineProps({
   selectedPreset: {
@@ -131,11 +136,20 @@ const props = defineProps({
   },
 });
 
+// События для родительского компонента
+const emit = defineEmits(['investment-created', 'switch-to-my-investments']);
+
+// Подключаем composable для управления инвестициями
+const { createInvestment } = useInvestments();
+
 // Состояние для сворачивания/разворачивания превью
 const showPreview = ref(true);
 
 // Состояние модального окна
 const showPaymentModal = ref(false);
+
+// Состояние создания инвестиции
+const isCreating = ref(false);
 
 // Функция переключения видимости превью
 const togglePreview = () => {
@@ -149,9 +163,6 @@ const presetTitles = {
   balanced: 'Сбалансированный',
   aggressive: 'Агрессивный',
 };
-
-import gambling from './../../../assets/images/invest/gembling.svg';
-import betting from './../../../assets/images/invest/betting.svg';
 
 // Получение картинки в зависимости от типа ставок
 const getBettingIcon = () => {
@@ -228,20 +239,49 @@ const closePaymentModal = () => {
 };
 
 // Обработчик успешной оплаты
-const handlePaymentSuccess = (paymentData) => {
-  console.log('Инвестиция успешно оплачена:', paymentData);
+const handlePaymentSuccess = async (paymentData) => {
+  try {
+    isCreating.value = true;
 
-  // Здесь можно добавить логику:
-  // - Отправить данные на сервер
-  // - Показать уведомление об успехе
-  // - Перенаправить пользователя
-  // - Обновить состояние приложения
+    console.log('Инвестиция успешно оплачена:', paymentData);
 
-  // Пример уведомления
-  alert('Инвестиция успешно создана и оплачена!');
+    // Подготавливаем данные для создания инвестиции
+    const investmentData = {
+      preset: props.selectedPreset,
+      bettingMode: props.bettingMode,
+      settings: props.settings,
+      amount: investmentModalData.value.amount,
+      profitability: investmentModalData.value.profitability,
+      paymentMethod: paymentData.method,
+      paymentId: paymentData.id,
+    };
 
-  // Можно также эмитировать событие родительскому компоненту
-  // emit('investment-created', paymentData);
+    // Создаем инвестицию через composable
+    const newInvestment = createInvestment(investmentData);
+
+    console.log('Новая инвестиция создана:', newInvestment);
+
+    // Закрываем модальное окно
+    showPaymentModal.value = false;
+
+    // Уведомляем родительский компонент о создании инвестиции
+    emit('investment-created', newInvestment);
+
+    // Переключаем на вкладку "Мои инвестиции"
+    emit('switch-to-my-investments');
+
+    // Показываем уведомление пользователю (временно через alert)
+    alert(`✅ Инвестиция ${newInvestment.name} успешно создана!
+Тип: ${getBettingTitle()}
+Стратегия: ${getPresetTitle()}
+Сумма: ${newInvestment.amount} USD
+Ожидаемая доходность: ${newInvestment.profitability}`);
+  } catch (error) {
+    console.error('Ошибка при создании инвестиции:', error);
+    alert('Произошла ошибка при создании инвестиции. Попробуйте еще раз.');
+  } finally {
+    isCreating.value = false;
+  }
 };
 
 const previewTitle = () => 'Подсказка';
@@ -485,6 +525,14 @@ const previewDescription = () => 'Предпросмотр инвестиции'
   background: #00000033;
   border: 1px solid #07cb38;
   border-radius: 32px;
+  transition: all 0.3s ease;
+}
+
+.create-investment-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
 }
 
 .create-investment-btn span {
@@ -498,13 +546,13 @@ const previewDescription = () => 'Предпросмотр инвестиции'
   color: #ffffff;
 }
 
-.create-investment-btn:hover {
+.create-investment-btn:hover:not(:disabled) {
   background: linear-gradient(135deg, #86efac 0%, #4ade80 100%);
   transform: translateY(-1px);
   box-shadow: 0 6px 20px rgba(74, 222, 128, 0.4);
 }
 
-.create-investment-btn:active {
+.create-investment-btn:active:not(:disabled) {
   transform: translateY(0);
 }
 
