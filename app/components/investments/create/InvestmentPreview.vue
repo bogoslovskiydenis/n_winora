@@ -32,31 +32,34 @@
           <span class="preview-label">Тип</span>
           <span class="preview-value">
             {{ getBettingTitle() }}
-            <span class="preview-icon">🔒</span>
+            <img :src="getBettingIcon()" :alt="bettingMode" />
           </span>
         </div>
         <div class="preview-row">
           <span class="preview-label">Стратегия</span>
           <span class="preview-value">
             {{ getPresetTitle() }}
-            <span class="preview-icon">📊</span>
+            <img
+              src="./../../../assets/images/invest/Preset.svg"
+              alt="Preset"
+            />
           </span>
         </div>
         <div class="preview-row">
           <span class="preview-label">Статус</span>
           <span class="preview-value status-frozen">
             Заморожена
-            <span class="preview-icon">❄️</span>
+            <img
+              src="~/assets/images/invest/State_invest.svg"
+              alt="State_invest"
+            />
           </span>
         </div>
         <div class="preview-row">
           <span class="preview-label">Прогнозируемая доходность</span>
-          <span class="preview-value">{{ getProfitability() }}</span>
+          <span class="preview-value profit">{{ getProfitability() }}</span>
         </div>
-        <div class="preview-row">
-          <span class="preview-label">Период</span>
-          <span class="preview-value">∞</span>
-        </div>
+
         <div class="preview-row">
           <span class="preview-label">Риски</span>
           <span class="preview-value risk-level" :class="getRiskClass()">
@@ -66,10 +69,6 @@
         <div class="preview-row">
           <span class="preview-label">Сумма инвестиции</span>
           <span class="preview-value amount">100 USD</span>
-        </div>
-        <div class="preview-row">
-          <span class="preview-label">Доступен к переводу прибыль</span>
-          <span class="preview-value profit">20 USD</span>
         </div>
       </div>
 
@@ -94,7 +93,7 @@
       </div>
 
       <button class="create-investment-btn" @click="handleCreateInvestment">
-        ПЕРЕЙТИ К ОПЛАТЕ
+        <span> ПЕРЕЙТИ К ОПЛАТЕ </span>
       </button>
     </div>
 
@@ -149,6 +148,14 @@ const presetTitles = {
   conservative: 'Консервативный',
   balanced: 'Сбалансированный',
   aggressive: 'Агрессивный',
+};
+
+import gambling from './../../../assets/images/invest/gembling.svg';
+import betting from './../../../assets/images/invest/betting.svg';
+
+// Получение картинки в зависимости от типа ставок
+const getBettingIcon = () => {
+  return props.bettingMode === 'gambling' ? gambling : betting;
 };
 
 // Вычисляемые значения
@@ -319,20 +326,25 @@ const previewDescription = () => 'Предпросмотр инвестиции'
 }
 
 .investment-preview {
-  background: rgba(0, 0, 0, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
-  padding: 16px;
-  margin-bottom: 16px;
-  margin-top: 16px;
+  gap: 16px;
+  border-radius: 16px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding: 10px;
+  background: #00000040;
+  border-bottom: 1px solid #ffffff2e;
 }
 
 .preview-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 8px 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 4px;
+}
+
+.preview-row img {
+  width: 16px;
+  height: 16px;
 }
 
 .preview-row:last-child {
@@ -340,33 +352,57 @@ const previewDescription = () => 'Предпросмотр инвестиции'
 }
 
 .preview-label {
-  font-size: 12px;
-  color: rgba(255, 255, 255, 0.6);
-  flex: 1;
+  font-family: Roboto, sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 100%;
+  color: #ffffff;
 }
 
 .preview-value {
-  font-size: 12px;
-  color: white;
+  gap: 10px;
   display: flex;
   align-items: center;
-  gap: 6px;
-  font-weight: 500;
+  font-family: Roboto, sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 100%;
+  color: #ffffff;
   text-align: right;
 }
 
-.preview-value.status-frozen {
-  color: #60a5fa;
-}
-
+/* Обновленные стили для значений с цветом #07CB38 */
 .preview-value.amount {
-  color: #fbbf24;
-  font-weight: 600;
+  color: #07cb38;
+  font-family: Roboto;
+  font-weight: 700;
+  font-style: normal;
+  font-size: 14px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  text-align: right;
 }
 
 .preview-value.profit {
-  color: #4ade80;
-  font-weight: 600;
+  color: #07cb38;
+  font-family: Roboto;
+  font-weight: 700;
+  font-style: normal;
+  font-size: 14px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  text-align: right;
+}
+
+.preview-value.risk-level {
+  color: #07cb38;
+  font-family: Roboto;
+  font-weight: 700;
+  font-style: normal;
+  font-size: 14px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  text-align: right;
 }
 
 .preview-icon {
@@ -429,19 +465,37 @@ const previewDescription = () => 'Предпросмотр инвестиции'
 }
 
 .create-investment-btn {
-  width: 100%;
-  padding: 14px 16px;
-  background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
-  border: none;
-  border-radius: 8px;
-  color: #0a2f23;
   font-size: 14px;
   font-weight: 700;
   cursor: pointer;
-  transition: all 0.3s ease;
   text-transform: uppercase;
   letter-spacing: 0.5px;
   font-family: inherit;
+
+  /* Центрирование кнопки */
+  display: block;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 360px;
+
+  height: 42px;
+  min-height: 42px;
+  padding: 12px 16px;
+  gap: 10px;
+  background: #00000033;
+  border: 1px solid #07cb38;
+  border-radius: 32px;
+}
+
+.create-investment-btn span {
+  font-family: Roboto, sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 100%;
+  text-align: center;
+  vertical-align: middle;
+  text-transform: uppercase;
+  color: #ffffff;
 }
 
 .create-investment-btn:hover {
@@ -470,7 +524,6 @@ const previewDescription = () => 'Предпросмотр инвестиции'
   }
 
   .preview-row {
-    flex-direction: column;
     align-items: flex-start;
     gap: 4px;
     padding: 6px 0;
