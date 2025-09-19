@@ -13,10 +13,13 @@
       <div class="forecast-item">
         <div class="forecast-label">ПРОГНОЗИРУЕМАЯ ДОХОДН...</div>
         <div class="forecast-value profit">
-          <span class="profit-icon">📈</span>
-          {{ investment.weeklyProfit || '13' }} USD / Week
+          <img src="./../../../assets/images/invest/attach_money.svg" />
+          {{ investment.weeklyProfit || '13' }}<span> USD / Week</span>
           <div class="forecast-period">
-            {{ investment.profitPeriod || '🔒' }}
+            {{ investment.profitPeriod }}
+            <img
+              src="./../../../assets/images/invest/account_balance_wallet.svg"
+            />
           </div>
         </div>
       </div>
@@ -24,7 +27,9 @@
       <div class="forecast-item">
         <div class="forecast-label">ДОСТУПНАЯ К ПЕРЕВОДУ П...</div>
         <div class="forecast-value available">
-          <span class="available-icon">💰</span>
+          <img
+            src="./../../../assets/images/invest/account_balance_wallet.svg"
+          />
           <span class="available-text"
             >{{ investment.availableProfit || '20' }} USD</span
           >
@@ -39,7 +44,7 @@
         <div class="detail-row">
           <span class="detail-label">Тип</span>
           <span class="detail-value">{{ getInvestmentType() }}</span>
-          <span class="detail-icon">🔒</span>
+          <img src="./../../../assets/images/invest/betting.svg" />
         </div>
 
         <div class="detail-row">
@@ -47,7 +52,7 @@
           <span class="detail-value">{{
             investment.strategy || 'Консервативный'
           }}</span>
-          <span class="detail-icon">📊</span>
+          <img src="./../../../assets/images/invest/Preset.svg" />
         </div>
 
         <div class="detail-row">
@@ -55,21 +60,41 @@
           <span class="detail-value" :class="getStatusClass()">{{
             getStatusText()
           }}</span>
-          <span class="detail-icon">{{ getStatusIcon() }}</span>
+          <img
+            :src="getStatusIcon()"
+            :alt="getStatusText()"
+            class="status-icon"
+          />
+        </div>
+
+        <!-- Новое поле: Риски -->
+        <div class="detail-row">
+          <span class="detail-label">Риски</span>
+          <span class="detail-value" :class="getRiskClass()">{{
+            getRiskPercentage()
+          }}</span>
+        </div>
+
+        <!-- Новое поле: Сумма инвестиции -->
+        <div class="detail-row">
+          <span class="detail-label">Сумма инвестиции</span>
+          <span class="detail-value amount"
+            >{{ investment.amount || '100 ' }} USD
+          </span>
         </div>
       </div>
       <div class="reinvestment-section">
         <div class="reinvestment-info">
           <img src="./../../../assets/images/schedule.svg" />
-          <span class="reinvest-text"
-            >Реинвестирование прибыли через
-            {{ investment.reinvestDays || '5' }} дней</span
-          >
+          <span class="reinvest-text">
+            Реинвестирование прибыли через
+            <span class="reinvest-days"
+              >{{ investment.reinvestDays || '5' }} дней
+            </span>
+          </span>
         </div>
       </div>
     </div>
-
-    <!-- Секция реинвестирования -->
 
     <!-- Кнопки управления -->
     <div class="investment-actions">
@@ -123,14 +148,16 @@ const getStatusClass = () => {
   return classes[props.investment.status] || 'status-frozen';
 };
 
+import img from '~/assets/images/invest/status-frozen.svg';
+
 const getStatusIcon = () => {
   const icons = {
-    active: '🟢',
-    paused: '⏸️',
-    completed: '✅',
-    frozen: '❄️',
+    active: img,
+    paused: img,
+    completed: img,
+    frozen: img,
   };
-  return icons[props.investment.status] || '❄️';
+  return icons[props.investment.status] || img;
 };
 
 const getStatusText = () => {
@@ -148,6 +175,11 @@ const getRiskClass = () => {
   if (risk <= 5) return 'risk-low';
   if (risk <= 12) return 'risk-medium';
   return 'risk-high';
+};
+
+// Новая функция для отображения процента риска
+const getRiskPercentage = () => {
+  return `${props.investment.riskLevel || '7'}%`;
 };
 </script>
 
@@ -190,10 +222,21 @@ const getRiskClass = () => {
 }
 
 .investment-label {
-  color: #ffffff;
+  font-family: Tomorrow, sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+  text-align: center;
+  vertical-align: middle;
+  text-transform: uppercase;
 }
 
 .investment-id {
+  font-family: Tomorrow, sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+  text-align: center;
+  vertical-align: middle;
+  text-transform: uppercase;
   color: #f97c39;
 }
 
@@ -211,20 +254,18 @@ const getRiskClass = () => {
   border-radius: 8px;
   padding: 8px;
   background: rgba(0, 0, 0, 0.3);
-  min-width: 0; /* Важно для корректного сжатия */
+  min-width: 0;
 }
 
 .forecast-label {
   font-family: Roboto, sans-serif;
   font-weight: 500;
-  font-size: 9px;
-  line-height: 1.1;
-  letter-spacing: 0.3px;
-  text-align: left;
+  font-size: 12px;
+  line-height: 100%;
+  vertical-align: middle;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.7);
+  color: #ffffff;
   margin-bottom: 8px;
-  /* Обрезка текста с тремя точками */
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -242,15 +283,21 @@ const getRiskClass = () => {
 }
 
 .forecast-value.profit {
-  color: #00ff88;
+  font-family: Roboto, sans-serif;
+  font-weight: 900;
+  font-size: 14px;
+  text-align: center;
+  vertical-align: middle;
+  color: #07cb38;
 }
 
 .forecast-value.available {
-  display: flex;
-  color: #ffd700;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
+  font-family: Roboto, sans-serif;
+  font-weight: 900;
+  font-size: 14px;
+  text-align: center;
+  vertical-align: middle;
+  color: #07cb38;
 }
 
 .available-text {
@@ -298,8 +345,10 @@ const getRiskClass = () => {
 }
 
 .detail-label {
-  font-size: 10px;
-  color: rgba(255, 255, 255, 0.7);
+  font-family: Roboto, sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  color: #ffffff;
   flex: 1;
   text-align: left;
 }
@@ -312,38 +361,57 @@ const getRiskClass = () => {
 }
 
 .detail-value.amount {
-  color: #ffd700;
+  color: #07cb38;
 }
 
 .detail-value.risk-low {
-  color: #00ff88;
+  color: #07cb38;
 }
 
 .detail-value.risk-medium {
-  color: #ffa500;
+  color: #07cb38;
 }
 
 .detail-value.risk-high {
-  color: #ff4444;
+  color: #07cb38;
 }
 
 .detail-value.status-frozen {
   color: #87ceeb;
 }
 
-.detail-icon {
-  font-size: 12px;
-  opacity: 0.8;
+.detail-value.status-active {
+  color: #07cb38;
+}
+
+.detail-value.status-paused {
+  color: #ffa500;
+}
+
+.detail-value.status-completed {
+  color: #07cb38;
+}
+
+/* Иконка статуса */
+.status-icon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  filter: brightness(1.2);
+  transition: all 0.3s ease;
 }
 
 /* Секция реинвестирования */
 .reinvestment-section {
-  background: rgba(0, 178, 125, 0.1);
-  border: 1px solid #ffffff40;
-  border-radius: 8px;
-  margin-top: 20px;
-  padding: 16px;
+  margin-top: 10px;
   gap: 16px;
+  opacity: 1;
+  border-radius: 8px;
+  padding: 16px;
+  border-width: 1px;
+  border-style: dashed;
+  dashes: 2, 2;
+  color: #ffffff40;
 }
 
 .reinvestment-info {
@@ -358,9 +426,17 @@ const getRiskClass = () => {
 }
 
 .reinvest-text {
-  font-size: 11px;
-  color: rgba(255, 255, 255, 0.9);
-  font-weight: 500;
+  font-family: Roboto, sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  color: #ffffff;
+}
+
+.reinvest-days {
+  font-family: Roboto, sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  color: #07cb38;
 }
 
 /* Кнопки управления */

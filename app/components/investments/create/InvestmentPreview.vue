@@ -50,7 +50,7 @@
           <span class="preview-value status-frozen">
             Заморожена
             <img
-              src="~/assets/images/invest/State_invest.svg"
+              src="~/assets/images/invest/status-frozen.svg"
               alt="State_invest"
             />
           </span>
@@ -414,34 +414,31 @@ const previewDescription = () => 'Предпросмотр инвестиции'
 /* Обновленные стили для значений с цветом #07CB38 */
 .preview-value.amount {
   color: #07cb38;
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-weight: 700;
   font-style: normal;
   font-size: 14px;
   line-height: 100%;
-  letter-spacing: 0%;
   text-align: right;
 }
 
 .preview-value.profit {
   color: #07cb38;
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-weight: 700;
   font-style: normal;
   font-size: 14px;
   line-height: 100%;
-  letter-spacing: 0%;
   text-align: right;
 }
 
 .preview-value.risk-level {
   color: #07cb38;
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-weight: 700;
   font-style: normal;
   font-size: 14px;
   line-height: 100%;
-  letter-spacing: 0%;
   text-align: right;
 }
 

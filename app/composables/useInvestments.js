@@ -2,33 +2,33 @@ import { ref, computed } from 'vue';
 
 // Глобальное реактивное состояние
 const investments = ref([
-  // {
-  //   id: '3457',
-  //   name: 'ИНВЕСТИЦИЯ №3457',
-  //   type: 'gambling',
-  //   preset: 'aggressive',
-  //   status: 'active',
-  //   amount: 200,
-  //   currentProfit: 45,
-  //   totalProfit: 60,
-  //   availableProfit: 25,
-  //   profitability: '25 USD / Week',
-  //   riskLevel: 15,
-  //   progress: 65,
-  //   createdAt: new Date().toISOString().split('T')[0],
-  //   description: 'При покрытии депозита данной стратегией в прибыли...',
-  //   strategy: 'Агрессивная',
-  //   profitTimeframe: 'через 3 дня',
-  //   isProfitable: true,
-  //   settings: {
-  //     highRtp: true,
-  //     casinoParticipation: true,
-  //     autoSlotChange: false,
-  //     slotSelection: true,
-  //     platformDistribution: false,
-  //     minimalStakes: true,
-  //   },
-  // }
+  {
+    id: '3457',
+    name: 'ИНВЕСТИЦИЯ №3457',
+    type: 'gambling',
+    preset: 'aggressive',
+    status: 'active',
+    amount: 200,
+    currentProfit: 45,
+    totalProfit: 60,
+    availableProfit: 25,
+    profitability: '25 USD / Week',
+    riskLevel: 15,
+    progress: 65,
+    createdAt: new Date().toISOString().split('T')[0],
+    description: 'При покрытии депозита данной стратегией в прибыли...',
+    strategy: 'Агрессивная',
+    profitTimeframe: 'через 3 дня',
+    isProfitable: true,
+    settings: {
+      highRtp: true,
+      casinoParticipation: true,
+      autoSlotChange: false,
+      slotSelection: true,
+      platformDistribution: false,
+      minimalStakes: true,
+    },
+  },
 ]);
 
 export const useInvestments = () => {

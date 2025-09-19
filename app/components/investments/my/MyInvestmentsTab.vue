@@ -1,47 +1,5 @@
 <template>
   <div class="my-investments">
-    <!-- Фильтры и сортировка -->
-    <div class="investments-controls">
-      <div class="filters">
-        <div class="filter-group">
-          <label class="filter-label">Сортировка:</label>
-          <select v-model="sortBy" class="filter-select">
-            <option value="date">По дате создания</option>
-            <option value="profit">По прибыли</option>
-            <option value="amount">По сумме</option>
-            <option value="status">По статусу</option>
-          </select>
-        </div>
-
-        <div class="filter-group">
-          <label class="filter-label">Статус:</label>
-          <select v-model="filterStatus" class="filter-select">
-            <option value="all">Все</option>
-            <option value="active">Активные</option>
-            <option value="completed">Завершенные</option>
-            <option value="paused">Приостановленные</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="view-toggle">
-        <button
-          class="view-btn"
-          :class="{ active: viewMode === 'grid' }"
-          @click="viewMode = 'grid'"
-        >
-          <span class="view-icon">⊞</span>
-        </button>
-        <button
-          class="view-btn"
-          :class="{ active: viewMode === 'list' }"
-          @click="viewMode = 'list'"
-        >
-          <span class="view-icon">☰</span>
-        </button>
-      </div>
-    </div>
-
     <!-- Пустое состояние -->
     <div
       class="empty-state"
@@ -230,90 +188,9 @@ watch([filterStatus, sortBy], () => {
   width: 100%;
 }
 
-.investments-controls {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 24px;
-  gap: 16px;
-}
-
-.filters {
-  display: flex;
-  gap: 16px;
-  align-items: center;
-}
-
-.filter-group {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.filter-label {
-  font-size: 13px;
-  color: var(--text-secondary);
-  font-weight: 500;
-}
-
-.filter-select {
-  padding: 8px 12px;
-  background: rgba(0, 0, 0, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 6px;
-  color: var(--text-primary);
-  font-size: 13px;
-  font-family: inherit;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.filter-select:hover {
-  border-color: rgba(255, 255, 255, 0.2);
-}
-
-.filter-select:focus {
-  outline: none;
-  border-color: var(--primary-color);
-  box-shadow: 0 0 0 2px rgba(74, 222, 128, 0.2);
-}
-
 .filter-select option {
   background: #1a1a1a;
   color: white;
-}
-
-.view-toggle {
-  display: flex;
-  gap: 2px;
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 6px;
-  padding: 2px;
-}
-
-.view-btn {
-  padding: 8px 12px;
-  background: transparent;
-  border: none;
-  color: rgba(255, 255, 255, 0.6);
-  cursor: pointer;
-  border-radius: 4px;
-  transition: all 0.3s ease;
-  font-family: inherit;
-}
-
-.view-btn:hover {
-  color: rgba(255, 255, 255, 0.8);
-}
-
-.view-btn.active {
-  background: var(--primary-color);
-  color: #0a2f23;
-  font-weight: 600;
-}
-
-.view-icon {
-  font-size: 14px;
 }
 
 .investments-container {
@@ -408,20 +285,6 @@ watch([filterStatus, sortBy], () => {
 }
 
 @media (max-width: 768px) {
-  .investments-controls {
-    flex-direction: column;
-    gap: 16px;
-    align-items: stretch;
-  }
-
-  .filters {
-    flex-wrap: wrap;
-  }
-
-  .view-toggle {
-    align-self: center;
-  }
-
   .investments-grid.grid-view {
     grid-template-columns: 1fr;
   }
@@ -439,22 +302,5 @@ watch([filterStatus, sortBy], () => {
 }
 
 @media (max-width: 480px) {
-  .investments-controls {
-    gap: 12px;
-  }
-
-  .filters {
-    gap: 12px;
-  }
-
-  .filter-group {
-    flex-direction: column;
-    gap: 4px;
-    align-items: flex-start;
-  }
-
-  .filter-select {
-    width: 100%;
-  }
 }
 </style>
