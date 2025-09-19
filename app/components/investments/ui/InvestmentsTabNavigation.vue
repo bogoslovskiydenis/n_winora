@@ -7,7 +7,7 @@
     >
       <div class="tab-icon">
         <img
-          src="./../../assets/images/create_invest.svg"
+          src="../../../assets/images/create_invest.svg"
           alt="create_invest"
         />
       </div>
@@ -19,7 +19,7 @@
       @click="$emit('tab-change', 'my')"
     >
       <div class="tab-icon">
-        <img src="./../../assets/images/invest.svg" alt="invest" />
+        <img src="../../../assets/images/invest.svg" alt="invest" />
       </div>
       <span>Мои инвестиции</span>
     </button>

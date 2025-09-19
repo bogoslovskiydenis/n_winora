@@ -44,7 +44,7 @@
 </template>
 
 <script setup>
-import InfoBanner from '../InfoBanner.vue';
+import InfoBanner from './../widgets/InfoBanner.vue';
 
 const props = defineProps({
   bettingMode: {

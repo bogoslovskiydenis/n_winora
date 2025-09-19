@@ -111,7 +111,7 @@
 
 <script setup>
 import { ref, computed } from 'vue';
-import InfoBanner from '../InfoBanner.vue';
+import InfoBanner from '../widgets/InfoBanner.vue';
 import PaymentModal from '../../modal/PaymentModal.vue';
 import gambling from './../../../assets/images/invest/gembling.svg';
 import betting from './../../../assets/images/invest/betting.svg';

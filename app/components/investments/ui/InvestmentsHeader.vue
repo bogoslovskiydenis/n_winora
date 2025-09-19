@@ -1,11 +1,10 @@
-<!-- components/investments/InvestmentsHeader.vue -->
 <template>
   <div class="investments-header">
     <div class="header-content">
       <h1 class="page-title">ИНВЕСТИЦИИ</h1>
       <div class="header-toggle">
         <div class="toggle-wrapper" @click="toggleHints">
-          <img src="../../assets/images/info.svg" alt="info" />
+          <img src="../../../assets/images/info.svg" alt="info" />
           <span class="toggle-text">Режим подсказок</span>
           <div class="toggle-switch" :class="{ active: showHints }">
             <div class="toggle-slider"></div>

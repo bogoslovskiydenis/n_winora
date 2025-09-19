@@ -43,11 +43,11 @@
 import { ref, reactive, computed } from 'vue';
 
 // Импорты компонентов
-import InvestmentsTabContent from './../components/investments/InvestmentsTabContent.vue';
-import InvestmentsTabNavigation from './../components/investments/InvestmentsTabNavigation.vue';
+import InvestmentsTabContent from '../components/investments/ui/InvestmentsTabContent.vue';
+import InvestmentsTabNavigation from '../components/investments/ui/InvestmentsTabNavigation.vue';
 import MyInvestmentsTab from './../components/investments/my/MyInvestmentsTab.vue';
 import CreateInvestmentTab from './../components/investments/create/CreateInvestmentTab.vue';
-import InvestmentsHeader from './../components/investments/InvestmentsHeader.vue';
+import InvestmentsHeader from '../components/investments/ui/InvestmentsHeader.vue';
 
 definePageMeta({
   middleware: 'auth',

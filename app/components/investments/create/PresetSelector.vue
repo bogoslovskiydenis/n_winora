@@ -40,8 +40,8 @@
 </template>
 
 <script setup>
-import CustomSelect from '../CustomSelect.vue';
-import InfoBanner from '../InfoBanner.vue';
+import CustomSelect from '../widgets/CustomSelect.vue';
+import InfoBanner from '../widgets/InfoBanner.vue';
 
 const props = defineProps({
   selectedPreset: {

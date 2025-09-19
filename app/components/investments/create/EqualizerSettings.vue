@@ -315,8 +315,8 @@
 
 <script setup>
 import { ref, reactive, watch, onMounted } from 'vue';
-import CustomSelect from '~/components/investments/CustomSelect.vue';
-import InfoBanner from '../InfoBanner.vue';
+import CustomSelect from './../widgets/CustomSelect.vue';
+import InfoBanner from './../widgets/InfoBanner.vue';
 
 const props = defineProps({
   settings: {
