@@ -33,6 +33,7 @@
 
 <script setup>
 import { ref, computed } from 'vue';
+import InfoBanner from './InfoBannerWallet.vue';
 
 defineProps({
   showHints: {
