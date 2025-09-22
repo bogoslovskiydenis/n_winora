@@ -38,12 +38,13 @@ useHead({
 
 <style scoped>
 .shop-page {
+  background: linear-gradient(0deg, #002920 0%, #00382b 100%);
   min-height: 100vh;
   width: 100%;
 }
 
 .content-wrapper {
-  padding: 32px 24px 0;
+  padding: 32px 24px 120px; /* Увеличен padding-bottom для прокрутки */
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -77,11 +78,15 @@ useHead({
 /* Mobile Responsive */
 @media (max-width: 1023px) {
   .content-wrapper {
-    padding: 24px 16px;
+    padding: 24px 16px 120px; /* Сохраняем большой padding-bottom */
   }
 }
 
 @media (max-width: 768px) {
+  .content-wrapper {
+    padding: 20px 16px 140px; /* Увеличиваем для мобильной навигации */
+  }
+
   .page-title {
     font-size: 24px;
   }
@@ -93,7 +98,7 @@ useHead({
 
 @media (max-width: 480px) {
   .content-wrapper {
-    padding: 20px 12px;
+    padding: 16px 12px 160px; /* Максимальный padding для самых маленьких экранов */
   }
 
   .page-title {

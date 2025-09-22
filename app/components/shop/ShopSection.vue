@@ -50,12 +50,13 @@
           </div>
           <div class="item-info">
             <div class="item-name">{{ chest.name }}</div>
+            <div class="item-description">{{ chest.description }}</div>
             <div class="item-price">
               <img src="" alt="Coin" class="price-icon" />
               <span class="price-value">{{ chest.price }}</span>
             </div>
-            <button class="buy-button" @click="buyItem(chest)">КУПИТЬ</button>
           </div>
+          <button class="buy-button" @click="buyItem(chest)">КУПИТЬ</button>
         </div>
       </div>
     </div>
@@ -83,8 +84,8 @@
               <img src="" alt="Coin" class="price-icon" />
               <span class="price-value">USD {{ bonus.price }}</span>
             </div>
-            <button class="buy-button" @click="buyItem(bonus)">КУПИТЬ</button>
           </div>
+          <button class="buy-button" @click="buyItem(bonus)">КУПИТЬ</button>
         </div>
 
         <!-- Специальный блокированный сундук -->
@@ -102,8 +103,8 @@
               <img src="" alt="Coin" class="price-icon" />
               <span class="price-value">USD 95</span>
             </div>
-            <button class="buy-button disabled" disabled>ЗАБЛОКИРОВАНО</button>
           </div>
+          <button class="buy-button disabled" disabled>ЗАБЛОКИРОВАНО</button>
         </div>
       </div>
     </div>
@@ -130,8 +131,8 @@
               <img src="" alt="Coin" class="price-icon" />
               <span class="price-value">{{ planet.price }}</span>
             </div>
-            <button class="buy-button" @click="buyItem(planet)">КУПИТЬ</button>
           </div>
+          <button class="buy-button" @click="buyItem(planet)">КУПИТЬ</button>
         </div>
       </div>
     </div>
@@ -141,59 +142,69 @@
 <script setup>
 import { ref } from 'vue';
 import img from '../../assets/images/shop/Box.svg';
+
 // Данные для сундуков
 const chests = ref([
   {
     id: 1,
     name: 'Обычный сундук',
+    description: `Дает шанс получить USTD`,
     price: '15$',
     image: img,
   },
   {
     id: 2,
     name: 'Обычный сундук',
+    description: `Дает шанс получить USTD`,
     price: '15$',
     image: img,
   },
   {
     id: 3,
     name: 'Редкий сундук',
+    description: `Дает шанс получить USTD`,
     price: '18$',
     image: img,
   },
   {
     id: 4,
     name: 'Редкий сундук',
+    description: `Дает шанс получить USTD`,
     price: '19$',
     image: img,
   },
   {
     id: 5,
     name: 'Эпический сундук',
+    description: `Дает шанс получить USTD`,
     price: '19$',
     image: img,
   },
   {
     id: 6,
     name: 'Эпический сундук',
+    description: `Дает шанс получить USTD`,
     price: '18$',
     image: img,
   },
   {
     id: 7,
     name: 'Золотой сундук',
+    description: `Дает шанс получить USTD`,
     price: '39$',
     image: img,
   },
   {
     id: 8,
     name: 'Легендарный сундук',
+    description: `Дает шанс получить USTD`,
     price: '19$',
     image: img,
   },
   {
     id: 9,
     name: 'Легендарный сундук',
+    description: `Дает шанс получить USTD`,
     price: '39$',
     image: img,
   },
@@ -205,42 +216,42 @@ const bonusInvestments = ref([
     id: 1,
     name: 'Инвестиционная сделка',
     description: 'Гарантированная прибыль',
-    price: '11$',
+    price: '11',
     image: img,
   },
   {
     id: 2,
     name: 'Инвестиционная сделка',
     description: 'Гарантированная прибыль',
-    price: '11$',
+    price: '11',
     image: img,
   },
   {
     id: 3,
     name: 'Золотая инвестиция',
     description: 'Премиум доходность',
-    price: '11$',
+    price: '11',
     image: img,
   },
   {
     id: 4,
     name: 'Золотая инвестиция',
     description: 'Премиум доходность',
-    price: '11$',
+    price: '11',
     image: img,
   },
   {
     id: 5,
     name: 'Горячая инвестиция',
     description: 'Высокая прибыльность',
-    price: '11$',
+    price: '11',
     image: img,
   },
   {
     id: 6,
     name: 'Горячая инвестиция',
     description: 'Высокая прибыльность',
-    price: '11$',
+    price: '11',
     image: img,
   },
 ]);
@@ -250,36 +261,42 @@ const planets = ref([
   {
     id: 1,
     name: 'Земля',
+    description: `Дает шанс получить USTD`,
     price: '8$',
     image: img,
   },
   {
     id: 2,
     name: 'Луна',
+    description: `Дает шанс получить USTD`,
     price: '9$',
     image: img,
   },
   {
     id: 3,
     name: 'Марс',
+    description: `Дает шанс получить USTD`,
     price: '8$',
     image: img,
   },
   {
     id: 4,
     name: 'Юпитер',
+    description: `Дает шанс получить USTD`,
     price: '8$',
     image: img,
   },
   {
     id: 5,
     name: 'Сатурн',
+    description: `Дает шанс получить USTD`,
     price: '8$',
     image: img,
   },
   {
     id: 6,
     name: 'Нептун',
+    description: `Дает шанс получить USTD`,
     price: '8$',
     image: img,
   },
@@ -433,25 +450,29 @@ const buyItem = (item) => {
 /* Сетка товаров */
 .items-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 30px 30px; /* Увеличиваем вертикальный зазор для кнопок */
+  margin-bottom: 40px; /* Добавляем отступ внизу */
 }
 
 .planets-grid {
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
 }
 
-/* Товары */
+/* Основные стили товаров - как в дизайне */
 .shop-item {
-  background: rgba(0, 170, 105, 0.15);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: url('./../../assets/images/shop/Frame.svg') no-repeat center top;
+  background-size: 100% auto;
+  border: 2px solid #035116;
   border-radius: 14px 14px 24px 24px;
-  padding: 16px 12px 12px;
+  width: 140px;
+  height: 182px;
+  position: relative;
   display: flex;
   flex-direction: column;
-  gap: 12px;
   transition: all 0.3s ease;
-  position: relative;
+  opacity: 1;
+  margin-bottom: 20px;
 }
 
 .shop-item:hover {
@@ -465,13 +486,18 @@ const buyItem = (item) => {
   pointer-events: none;
 }
 
+/* Изображение товара */
 .item-image {
-  width: 100%;
-  height: 120px;
+  position: absolute;
+  top: -16px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 80px;
   display: flex;
   align-items: center;
   justify-content: center;
-  position: relative;
+  z-index: 2;
 }
 
 .item-image img {
@@ -500,34 +526,52 @@ const buyItem = (item) => {
   filter: brightness(0) saturate(100%) invert(100%);
 }
 
+/* Контент товара */
 .item-info {
+  position: absolute;
+  top: 70px; /* Двигаем вниз от изображения */
+  left: 8px;
+  right: 8px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
   align-items: center;
   text-align: center;
+  z-index: 2;
 }
 
 .item-name {
-  font-family: 'Roboto', sans-serif;
-  font-weight: 600;
+  font-family: Roboto, sans-serif;
+  font-weight: 700;
   font-size: 14px;
-  color: #ffffff;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+  line-height: 16px;
+  text-align: center;
+  color: #07cb38;
+  margin-bottom: 4px;
+  /* Запрещаем перенос текста */
+  white-space: nowrap; /* ← это добавил */
+  overflow: hidden; /* ← это добавил */
+  text-overflow: ellipsis; /* ← это добавил */
+  max-width: 100%; /* ← это добавил */
+}
+
+.locked-text {
+  color: rgba(255, 255, 255, 0.5);
 }
 
 .item-description {
-  font-size: 12px;
+  font-size: 10px;
   color: rgba(255, 255, 255, 0.7);
-  margin-bottom: 4px;
+  line-height: 1.2;
+  max-width: 100%;
 }
 
 .item-price {
   display: flex;
   align-items: center;
-  gap: 6px;
-  margin-bottom: 4px;
+  justify-content: center;
+  gap: 4px;
+  margin: 2px 0;
 }
 
 .item-price.disabled {
@@ -535,13 +579,13 @@ const buyItem = (item) => {
 }
 
 .price-icon {
-  width: 16px;
-  height: 16px;
+  width: 14px;
+  height: 14px;
 }
 
 .price-value {
   font-weight: 700;
-  font-size: 14px;
+  font-size: 12px;
   color: #f97316;
 }
 
@@ -549,20 +593,27 @@ const buyItem = (item) => {
   background: #00b27d;
   color: #ffffff;
   border: none;
-  padding: 8px 20px;
-  border-radius: 8px;
+  padding: 6px 16px;
+  border-radius: 6px;
   font-weight: 700;
-  font-size: 12px;
+  font-size: 10px;
   cursor: pointer;
   transition: all 0.3s ease;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  min-height: 32px;
+  min-height: 28px;
+  width: 100%;
+  max-width: 100px;
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
 }
 
 .buy-button:hover:not(:disabled) {
   background: #22c55e;
-  transform: translateY(-1px);
+  transform: translateX(-50%) translateY(-1px);
 }
 
 .buy-button:disabled,
@@ -570,7 +621,7 @@ const buyItem = (item) => {
   background: rgba(255, 255, 255, 0.1);
   color: rgba(255, 255, 255, 0.5);
   cursor: not-allowed;
-  transform: none;
+  transform: translateX(-50%);
 }
 
 /* Адаптивность */
@@ -587,12 +638,16 @@ const buyItem = (item) => {
   }
 
   .items-grid {
-    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-    gap: 12px;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 16px;
   }
 
   .planets-grid {
     grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  }
+
+  .shop-item {
+    max-width: 160px;
   }
 }
 
@@ -607,6 +662,7 @@ const buyItem = (item) => {
 
   .items-grid {
     grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
   }
 
   .planets-grid {
@@ -614,16 +670,34 @@ const buyItem = (item) => {
   }
 
   .shop-item {
-    padding: 12px 8px 8px;
+    max-width: 140px;
   }
 
   .item-image {
-    height: 100px;
+    min-height: 100px;
+    padding: 12px;
   }
 
   .item-image img {
     max-width: 60px;
     max-height: 60px;
+  }
+
+  .item-name {
+    font-size: 12px;
+  }
+
+  .item-description {
+    font-size: 10px;
+  }
+
+  .price-value {
+    font-size: 11px;
+  }
+
+  .item-buy-button {
+    font-size: 9px;
+    padding: 6px 16px;
   }
 }
 </style>
