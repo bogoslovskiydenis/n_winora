@@ -183,7 +183,7 @@
         </NuxtLink>
 
         <NuxtLink
-          to="/basket"
+          to="/shop"
           class="menu-item"
           :data-tooltip="!isOpen ? 'Корзина' : ''"
         >

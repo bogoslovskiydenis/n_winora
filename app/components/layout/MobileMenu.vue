@@ -141,7 +141,7 @@
               <span class="menu-text">КОШЕЛЕК</span>
             </NuxtLink>
 
-            <NuxtLink to="/basket" class="menu-item" @click="closeMenu">
+            <NuxtLink to="/shop" class="menu-item" @click="closeMenu">
               <div class="menu-icon-wrapper">
                 <img
                   src="../../assets/images/navbar/basket_nav.svg"
