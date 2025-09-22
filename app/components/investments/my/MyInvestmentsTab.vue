@@ -18,13 +18,9 @@
             @click="toggleSearch"
             :class="{ active: showSearch }"
           >
-            <img src="~/assets/images/search.svg" alt="Search" />
+            <img :src="showSearch ? search_close : search" alt="Menu" />
           </div>
-          <div
-            class="filter-icon"
-            @click="toggleSortDropdown"
-            :class="{ active: showSortDropdown }"
-          >
+          <div class="filter-icon" @click="" :class="{}">
             <img src="~/assets/images/menu.svg" alt="Sort" />
           </div>
           <div
@@ -32,8 +28,26 @@
             @click="toggleFilterDropdown"
             :class="{ active: showFilterDropdown }"
           >
-            <img src="~/assets/images/page.svg" alt="Menu" />
+            <img :src="showFilterDropdown ? opn : close" alt="Menu" />
           </div>
+        </div>
+      </div>
+      <!-- Активные фильтры -->
+      <div v-if="activeFilters.length > 0" class="active-filters">
+        <div class="active-filters-list">
+          <!-- Кнопка очистки всех фильтров -->
+          <button class="clear-all-filters" @click="clearAllFilters">
+            <img src="~/assets/images/clear-all.svg" alt="Clear All" />
+          </button>
+          <span
+            v-for="filter in activeFilters"
+            :key="filter.id"
+            class="active-filter-tag"
+            @click="removeFilter(filter.id)"
+          >
+            <span>{{ filter.label }}</span>
+            <img src="~/assets/images/Close.svg" alt="Clear All" />
+          </span>
         </div>
       </div>
 
@@ -51,6 +65,185 @@
           <button v-if="searchQuery" class="search-clear" @click="clearSearch">
             ×
           </button>
+        </div>
+      </div>
+
+      <!-- Выпадающий фильтр -->
+      <div class="filter-section" v-if="showFilterDropdown">
+        <div class="filter-dropdown-container">
+          <!-- Опции фильтров -->
+          <div class="filter-options">
+            <!-- Положительная доходность -->
+            <div class="filter-item">
+              <button class="filter-option" @click="togglePositiveDropdown">
+                Положительная доходность
+                <span
+                  class="filter-arrow"
+                  :class="{ active: showPositiveDropdown }"
+                  >▼</span
+                >
+              </button>
+              <div class="sub-dropdown" v-if="showPositiveDropdown">
+                <button
+                  class="sub-option"
+                  :class="{
+                    selected: isFilterSelected('positive', 'variant1'),
+                  }"
+                  @click="
+                    toggleFilterOption('positive', 'variant1', 'Вариант 1')
+                  "
+                >
+                  Вариант 1
+                </button>
+                <button
+                  class="sub-option"
+                  :class="{
+                    selected: isFilterSelected('positive', 'variant2'),
+                  }"
+                  @click="
+                    toggleFilterOption('positive', 'variant2', 'Вариант 2')
+                  "
+                >
+                  Вариант 2
+                </button>
+                <button
+                  class="sub-option"
+                  :class="{
+                    selected: isFilterSelected('positive', 'variant3'),
+                  }"
+                  @click="
+                    toggleFilterOption('positive', 'variant3', 'Вариант 3')
+                  "
+                >
+                  Вариант 3
+                </button>
+              </div>
+            </div>
+
+            <!-- Спортруб -->
+            <div class="filter-item">
+              <button class="filter-option" @click="toggleSportDropdown">
+                Спортруб
+                <span
+                  class="filter-arrow"
+                  :class="{ active: showSportDropdown }"
+                  >▼</span
+                >
+              </button>
+              <div class="sub-dropdown" v-if="showSportDropdown">
+                <button
+                  class="sub-option"
+                  :class="{ selected: isFilterSelected('sport', 'optionA') }"
+                  @click="toggleFilterOption('sport', 'optionA', 'Опция A')"
+                >
+                  Опция A
+                </button>
+                <button
+                  class="sub-option"
+                  :class="{ selected: isFilterSelected('sport', 'optionB') }"
+                  @click="toggleFilterOption('sport', 'optionB', 'Опция B')"
+                >
+                  Опция B
+                </button>
+                <button
+                  class="sub-option"
+                  :class="{ selected: isFilterSelected('sport', 'optionC') }"
+                  @click="toggleFilterOption('sport', 'optionC', 'Опция C')"
+                >
+                  Опция C
+                </button>
+                <button
+                  class="sub-option"
+                  :class="{ selected: isFilterSelected('sport', 'optionD') }"
+                  @click="toggleFilterOption('sport', 'optionD', 'Опция D')"
+                >
+                  Опция D
+                </button>
+              </div>
+            </div>
+
+            <!-- Заморожениые -->
+            <div class="filter-item">
+              <button class="filter-option" @click="toggleFrozenDropdown">
+                Заморожениые
+                <span
+                  class="filter-arrow"
+                  :class="{ active: showFrozenDropdown }"
+                  >▼</span
+                >
+              </button>
+              <div class="sub-dropdown" v-if="showFrozenDropdown">
+                <button
+                  class="sub-option"
+                  :class="{ selected: isFilterSelected('frozen', 'element1') }"
+                  @click="toggleFilterOption('frozen', 'element1', 'Элемент 1')"
+                >
+                  Элемент 1
+                </button>
+                <button
+                  class="sub-option"
+                  :class="{ selected: isFilterSelected('frozen', 'element2') }"
+                  @click="toggleFilterOption('frozen', 'element2', 'Элемент 2')"
+                >
+                  Элемент 2
+                </button>
+              </div>
+            </div>
+
+            <!-- С прибылью -->
+            <div class="filter-item">
+              <button class="filter-option" @click="toggleProfitDropdown">
+                С прибылью
+                <span
+                  class="filter-arrow"
+                  :class="{ active: showProfitDropdown }"
+                  >▼</span
+                >
+              </button>
+              <div class="sub-dropdown" v-if="showProfitDropdown">
+                <button
+                  class="sub-option"
+                  :class="{ selected: isFilterSelected('profit', 'typeX') }"
+                  @click="toggleFilterOption('profit', 'typeX', 'Тип X')"
+                >
+                  Тип X
+                </button>
+                <button
+                  class="sub-option"
+                  :class="{ selected: isFilterSelected('profit', 'typeY') }"
+                  @click="toggleFilterOption('profit', 'typeY', 'Тип Y')"
+                >
+                  Тип Y
+                </button>
+                <button
+                  class="sub-option"
+                  :class="{ selected: isFilterSelected('profit', 'typeZ') }"
+                  @click="toggleFilterOption('profit', 'typeZ', 'Тип Z')"
+                >
+                  Тип Z
+                </button>
+                <button
+                  class="sub-option"
+                  :class="{ selected: isFilterSelected('profit', 'typeW') }"
+                  @click="toggleFilterOption('profit', 'typeW', 'Тип W')"
+                >
+                  Тип W
+                </button>
+                <button
+                  class="sub-option"
+                  :class="{ selected: isFilterSelected('profit', 'typeV') }"
+                  @click="toggleFilterOption('profit', 'typeV', 'Тип V')"
+                >
+                  Тип V
+                </button>
+              </div>
+            </div>
+
+            <!-- Кнопка применить фильтры -->
+            <button class="apply-filters-btn" @click="applyFilters">
+              ПРИМЕНИТЬ
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -72,19 +265,11 @@
       </div>
 
       <!-- Сетка инвестиций -->
-      <div
-        v-else
-        class="investments-grid"
-        :class="{
-          'grid-view': viewMode === 'grid',
-          'list-view': viewMode === 'list',
-        }"
-      >
+      <div v-else class="investments-grid">
         <InvestmentCard
           v-for="investment in paginatedInvestments"
           :key="investment.id"
           :investment="investment"
-          :view-mode="viewMode"
           @manage="handleManage"
           @withdraw="handleWithdraw"
           @view-details="handleViewDetails"
@@ -161,6 +346,10 @@ import { nextTick } from '#imports';
 import { navigateTo } from '#app';
 import InvestmentCard from './InvestmentCard.vue';
 import EmptyInvestments from './EmptyInvestments.vue';
+import opn from './../../../assets/images/page.svg';
+import close from './../../../assets/images/page_close.svg';
+import search from './../../../assets/images/search.svg';
+import search_close from './../../../assets/images/search_opn.svg';
 
 defineEmits(['create-first']);
 
@@ -168,20 +357,54 @@ defineEmits(['create-first']);
 const { getAllInvestments } = useInvestments();
 
 // Реактивные данные
-const viewMode = ref('grid');
-const sortBy = ref('date');
-const filterStatus = ref('all');
 const currentPage = ref(1);
 const itemsPerPage = 6; // Количество карточек на странице
 
 // Новые реактивные данные для фильтров
 const showSearch = ref(false);
 const searchQuery = ref('');
-const showSortDropdown = ref(false);
 const showFilterDropdown = ref(false);
+
+// Состояния для подвыпадающих списков каждого фильтра
+const showPositiveDropdown = ref(false);
+const showSportDropdown = ref(false);
+const showFrozenDropdown = ref(false);
+const showProfitDropdown = ref(false);
+
+// Активные фильтры и выбранные фильтры
+const activeFilters = ref([]);
+const selectedFilters = ref([]);
 
 // Реф для поискового поля
 const searchInput = ref(null);
+
+// Функция для проверки выбранного фильтра
+const isFilterSelected = (category, value) => {
+  return selectedFilters.value.some(
+    (filter) => filter.category === category && filter.value === value
+  );
+};
+
+// Функция для переключения выбора фильтра
+const toggleFilterOption = (category, value, label) => {
+  const filterId = `${category}_${value}`;
+  const existingIndex = selectedFilters.value.findIndex(
+    (filter) => filter.id === filterId
+  );
+
+  if (existingIndex > -1) {
+    // Удаляем фильтр если уже выбран
+    selectedFilters.value.splice(existingIndex, 1);
+  } else {
+    // Добавляем фильтр
+    selectedFilters.value.push({
+      id: filterId,
+      category: category,
+      value: value,
+      label: label,
+    });
+  }
+};
 
 // Вычисляемые свойства
 const filteredInvestments = computed(() => {
@@ -197,27 +420,6 @@ const filteredInvestments = computed(() => {
         inv.type.toLowerCase().includes(query)
     );
   }
-
-  // Фильтр по статусу
-  if (filterStatus.value !== 'all') {
-    filtered = filtered.filter((inv) => inv.status === filterStatus.value);
-  }
-
-  // Сортировка
-  filtered.sort((a, b) => {
-    switch (sortBy.value) {
-      case 'date':
-        return new Date(b.createdAt) - new Date(a.createdAt);
-      case 'profit':
-        return b.currentProfit - a.currentProfit;
-      case 'amount':
-        return b.amount - a.amount;
-      case 'status':
-        return a.status.localeCompare(b.status);
-      default:
-        return 0;
-    }
-  });
 
   return filtered;
 });
@@ -268,7 +470,6 @@ const toggleSearch = () => {
 
   if (showSearch.value) {
     // Закрываем другие выпадающие меню
-    showSortDropdown.value = false;
     showFilterDropdown.value = false;
 
     // Фокусируемся на поле ввода после открытия
@@ -291,20 +492,79 @@ const clearSearch = () => {
   searchQuery.value = '';
 };
 
-const toggleSortDropdown = () => {
-  showSortDropdown.value = !showSortDropdown.value;
-  showFilterDropdown.value = false;
-  if (showSortDropdown.value) {
+const toggleFilterDropdown = () => {
+  showFilterDropdown.value = !showFilterDropdown.value;
+  if (showFilterDropdown.value) {
     showSearch.value = false;
+  } else {
+    // Закрываем все подвыпадающие списки при закрытии основного фильтра
+    showPositiveDropdown.value = false;
+    showSportDropdown.value = false;
+    showFrozenDropdown.value = false;
+    showProfitDropdown.value = false;
   }
 };
 
-const toggleFilterDropdown = () => {
-  showFilterDropdown.value = !showFilterDropdown.value;
-  showSortDropdown.value = false;
-  if (showFilterDropdown.value) {
-    showSearch.value = false;
+// Функции для работы с фильтрами
+const applyFilters = () => {
+  activeFilters.value = [...selectedFilters.value];
+  showFilterDropdown.value = false;
+  showPositiveDropdown.value = false;
+  showSportDropdown.value = false;
+  showFrozenDropdown.value = false;
+  showProfitDropdown.value = false;
+};
+
+const removeFilter = (filterId) => {
+  // Удаляем из активных фильтров
+  const activeIndex = activeFilters.value.findIndex(
+    (filter) => filter.id === filterId
+  );
+  if (activeIndex > -1) {
+    activeFilters.value.splice(activeIndex, 1);
   }
+
+  // Удаляем из выбранных фильтров
+  const selectedIndex = selectedFilters.value.findIndex(
+    (filter) => filter.id === filterId
+  );
+  if (selectedIndex > -1) {
+    selectedFilters.value.splice(selectedIndex, 1);
+  }
+};
+
+const clearAllFilters = () => {
+  activeFilters.value = [];
+  selectedFilters.value = [];
+};
+
+// Функции для управления подвыпадающими списками
+const togglePositiveDropdown = () => {
+  showPositiveDropdown.value = !showPositiveDropdown.value;
+  showSportDropdown.value = false;
+  showFrozenDropdown.value = false;
+  showProfitDropdown.value = false;
+};
+
+const toggleSportDropdown = () => {
+  showSportDropdown.value = !showSportDropdown.value;
+  showPositiveDropdown.value = false;
+  showFrozenDropdown.value = false;
+  showProfitDropdown.value = false;
+};
+
+const toggleFrozenDropdown = () => {
+  showFrozenDropdown.value = !showFrozenDropdown.value;
+  showPositiveDropdown.value = false;
+  showSportDropdown.value = false;
+  showProfitDropdown.value = false;
+};
+
+const toggleProfitDropdown = () => {
+  showProfitDropdown.value = !showProfitDropdown.value;
+  showPositiveDropdown.value = false;
+  showSportDropdown.value = false;
+  showFrozenDropdown.value = false;
 };
 
 // Обработчики событий
@@ -333,17 +593,24 @@ const declensionWord = (count, words) => {
 };
 
 // Сброс страницы при изменении фильтров
-watch([filterStatus, sortBy, searchQuery], () => {
-  currentPage.value = 1;
-});
+watch(
+  [searchQuery, activeFilters],
+  () => {
+    currentPage.value = 1;
+  },
+  { deep: true }
+);
 
 // Закрытие выпадающих меню при клике вне их
 onMounted(() => {
   const handleClickOutside = (event) => {
-    const filterSection = document.querySelector('.filter-section');
-    if (filterSection && !filterSection.contains(event.target)) {
-      showSortDropdown.value = false;
+    const filtersContainer = document.querySelector('.filters-container');
+    if (filtersContainer && !filtersContainer.contains(event.target)) {
       showFilterDropdown.value = false;
+      showPositiveDropdown.value = false;
+      showSportDropdown.value = false;
+      showFrozenDropdown.value = false;
+      showProfitDropdown.value = false;
     }
   };
 
@@ -363,6 +630,51 @@ onMounted(() => {
 /* Контейнер фильтров */
 .filters-container {
   margin-bottom: 24px;
+  position: relative;
+}
+
+/* Активные фильтры */
+.active-filters {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.active-filters-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+}
+
+.active-filter-tag {
+  gap: 4px;
+  border-radius: 8px;
+  padding: 4px;
+  background: #04211ae5;
+  cursor: pointer;
+  align-items: center;
+  display: flex;
+}
+
+.active-filter-tag span {
+  font-family: Roboto;
+  font-weight: 400;
+  font-style: Condensed Regular;
+  font-size: 12px;
+  leading-trim: CAP_HEIGHT;
+  line-height: 100%;
+  letter-spacing: 0%;
+  vertical-align: middle;
+  text-transform: uppercase;
+}
+
+/* Кнопка очистки всех фильтров */
+.clear-all-filters {
+  background: transparent;
 }
 
 /* Секция фильтров */
@@ -473,6 +785,130 @@ onMounted(() => {
   transform: translateY(-50%) scale(1.1);
 }
 
+/* Выпадающий фильтр */
+.filter-dropdown-container {
+  width: 100%;
+  opacity: 1;
+  gap: 8px;
+  padding: 16px;
+  border-radius: 16px 16px 32px 32px;
+  border-top: 1px solid #f97c39;
+  background: #00000033;
+}
+
+.filter-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: space-around;
+}
+
+.filter-item {
+  gap: 8px;
+
+  position: relative;
+}
+
+.filter-option {
+  width: 274px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  color: white;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: inherit;
+  white-space: nowrap;
+  justify-content: space-between;
+  padding: 12px 16px;
+  gap: 10px;
+  border-radius: 47px;
+  background: #00000040;
+  border-width: 1px, 2px, 2px, 2px;
+  border-style: solid;
+  border-color: #035116;
+}
+
+.filter-option:hover {
+  border-color: rgba(108, 227, 35, 0.2);
+}
+
+.filter-arrow {
+  font-size: 12px;
+  transition: transform 0.3s ease;
+  opacity: 0.7;
+}
+
+.filter-arrow.active {
+  transform: rotate(180deg);
+  opacity: 1;
+}
+
+.sub-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin-top: 8px;
+  background: rgba(6, 37, 30, 0.98);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  padding: 8px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+  z-index: 9999;
+  min-width: 180px;
+  animation: slideDown 0.3s ease;
+}
+
+.sub-option {
+  display: block;
+  width: 100%;
+  padding: 8px 12px;
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: inherit;
+  text-align: left;
+}
+
+.sub-option:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.sub-option.selected {
+  background: rgba(7, 203, 56, 0.2);
+  color: #07cb38;
+  font-weight: 600;
+}
+
+.apply-filters-btn {
+  background: #07cb38;
+  color: #0a2f23;
+  border: none;
+  border-radius: 20px;
+  padding: 8px 20px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: inherit;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+.apply-filters-btn:hover {
+  background: #06b832;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(7, 203, 56, 0.4);
+}
+
 /* Нет результатов поиска */
 .no-results {
   text-align: center;
@@ -524,18 +960,6 @@ onMounted(() => {
   }
 }
 
-.investment-card {
-  animation: fadeInUp 0.6s ease-out;
-}
-
-.investment-card:nth-child(even) {
-  animation-delay: 0.1s;
-}
-
-.investment-card:nth-child(3n) {
-  animation-delay: 0.2s;
-}
-
 .investments-container {
   width: 100%;
 }
@@ -544,16 +968,8 @@ onMounted(() => {
   display: grid;
   gap: 20px;
   margin-bottom: 32px;
-}
-
-.investments-grid.grid-view {
   grid-template-columns: repeat(auto-fill, minmax(343px, 343px));
   justify-content: start;
-}
-
-.investments-grid.list-view {
-  grid-template-columns: 1fr;
-  gap: 16px;
 }
 
 .empty-state {
@@ -590,7 +1006,7 @@ onMounted(() => {
   background: transparent;
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 6px;
-  color: var(--text-secondary, rgba(255, 255, 255, 0.7));
+  color: rgba(255, 255, 255, 0.7);
   cursor: pointer;
   transition: all 0.3s ease;
   font-family: inherit;
@@ -600,7 +1016,7 @@ onMounted(() => {
 .pagination-btn:hover:not(:disabled) {
   background: rgba(255, 255, 255, 0.05);
   border-color: rgba(255, 255, 255, 0.3);
-  color: var(--text-primary, white);
+  color: white;
 }
 
 .pagination-btn:disabled {
@@ -612,7 +1028,7 @@ onMounted(() => {
   padding: 8px 12px;
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 6px;
-  color: var(--text-secondary, rgba(255, 255, 255, 0.7));
+  color: rgba(255, 255, 255, 0.7);
   cursor: pointer;
   transition: all 0.3s ease;
   font-size: 14px;
@@ -623,21 +1039,31 @@ onMounted(() => {
 .pagination-number:hover {
   background: rgba(255, 255, 255, 0.05);
   border-color: rgba(255, 255, 255, 0.3);
-  color: var(--text-primary, white);
+  color: white;
 }
 
 .pagination-number.active {
-  background: var(--primary-color, #07cb38);
-  border-color: var(--primary-color, #07cb38);
+  background: #07cb38;
+  border-color: #07cb38;
   color: #0a2f23;
   font-weight: 600;
 }
 
 /* Адаптивность */
-@media (max-width: 1200px) {
-}
-
 @media (max-width: 768px) {
+  .active-filters {
+    padding: 12px;
+  }
+
+  .active-filters-list {
+    gap: 6px;
+  }
+
+  .active-filter-tag {
+    padding: 4px 8px;
+    font-size: 11px;
+  }
+
   .filter-section {
     padding: 10px;
   }
@@ -664,7 +1090,11 @@ onMounted(() => {
     font-size: 16px; /* Предотвращает zoom на iOS */
   }
 
-  .investments-grid.grid-view {
+  .filter-dropdown-container {
+    padding: 16px;
+  }
+
+  .investments-grid {
     grid-template-columns: 1fr;
   }
 
@@ -693,6 +1123,24 @@ onMounted(() => {
   .filter-icon img {
     width: 16px;
     height: 16px;
+  }
+
+  .filter-dropdown-container {
+    padding: 12px;
+  }
+
+  .filter-option {
+    padding: 10px 12px;
+    font-size: 13px;
+  }
+
+  .sub-option {
+    font-size: 13px;
+  }
+
+  .apply-filters-btn {
+    padding: 12px 16px;
+    font-size: 13px;
   }
 
   .results-stats {
