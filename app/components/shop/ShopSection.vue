@@ -58,7 +58,14 @@
           </div>
           <div class="item-info">
             <div class="item-name">{{ chest.name }}</div>
-            <div class="item-description">{{ chest.description }}</div>
+            <div class="item-description">
+              <span class="description-first">{{
+                chest.description.firstPart
+              }}</span>
+              <span class="description-second">{{
+                chest.description.secondPart
+              }}</span>
+            </div>
             <div class="item-price">
               <img
                 src="./../../assets/images/shop/balance-icon.svg"
@@ -88,7 +95,7 @@
 
       <div class="items-grid">
         <div
-          class="shop-item bonus-item"
+          class="shop-item"
           v-for="bonus in bonusInvestments"
           :key="bonus.id"
         >
@@ -97,42 +104,26 @@
           </div>
           <div class="item-info">
             <div class="item-name">{{ bonus.name }}</div>
-            <div class="item-description">{{ bonus.description }}</div>
+            <div class="item-description">
+              <span class="description-first">{{
+                bonus.description.firstPart
+              }}</span>
+              <span class="description-second">{{
+                bonus.description.secondPart
+              }}</span>
+            </div>
             <div class="item-price">
               <img
                 src="./../../assets/images/shop/balance-icon.svg"
                 alt="Coin"
                 class="price-icon"
               />
-              <span class="price-value">USD {{ bonus.price }}</span>
+              <span class="price-value">{{ bonus.price }}</span>
             </div>
           </div>
           <button class="buy-button" @click="buyItem(bonus)">
             <span> КУПИТЬ </span>
           </button>
-        </div>
-
-        <!-- Специальный блокированный сундук -->
-        <div class="shop-item bonus-item locked">
-          <div class="item-image">
-            <img src="" alt="Locked Chest" />
-            <div class="locked-overlay">
-              <img src="" alt="Lock" class="lock-icon" />
-            </div>
-          </div>
-          <div class="item-info">
-            <div class="item-name">Заблокировано</div>
-            <div class="item-description">Достигните уровень 5</div>
-            <div class="item-price disabled">
-              <img
-                src="./../../assets/images/shop/balance-icon.svg"
-                alt="Coin"
-                class="price-icon"
-              />
-              <span class="price-value">USD 95</span>
-            </div>
-          </div>
-          <button class="buy-button disabled" disabled>ЗАБЛОКИРОВАНО</button>
         </div>
       </div>
     </div>
@@ -148,17 +139,21 @@
         <h2 class="category-title">КАСТОМИЗАЦИЯ ПРОФИЛЯ</h2>
       </div>
 
-      <div class="items-grid planets-grid">
-        <div
-          class="shop-item planet-item"
-          v-for="planet in planets"
-          :key="planet.id"
-        >
+      <div class="items-grid">
+        <div class="shop-item" v-for="planet in planets" :key="planet.id">
           <div class="item-image">
             <img :src="planet.image" :alt="planet.name" />
           </div>
           <div class="item-info">
             <div class="item-name">{{ planet.name }}</div>
+            <div class="item-description">
+              <span class="description-first">{{
+                planet.description.firstPart
+              }}</span>
+              <span class="description-second">{{
+                planet.description.secondPart
+              }}</span>
+            </div>
             <div class="item-price">
               <img
                 src="./../../assets/images/shop/balance-icon.svg"
@@ -180,117 +175,176 @@
 <script setup>
 import { ref } from 'vue';
 import img from '../../assets/images/shop/Box.svg';
+import bonus1 from '../../assets/images/shop/bonus1.svg';
+import bonus2 from '../../assets/images/shop/bonus2.svg';
+import bonus3 from '../../assets/images/shop/bonus3.svg';
+import bonus4 from '../../assets/images/shop/bonus4.svg';
 
 // Данные для сундуков
 const chests = ref([
   {
     id: 1,
-    name: 'Обычный сундук',
-    description: `Дает шанс получить USTD`,
-    price: '15$',
+    name: 'Золотой  сундук',
+    description: {
+      firstPart: 'Дает шанс',
+      secondPart: ' получить USTD',
+    },
+    price: '100',
     image: img,
   },
   {
     id: 2,
-    name: 'Обычный сундук',
-    description: `Дает шанс получить USTD`,
-    price: '15$',
+    name: 'Золотой  сундук',
+    description: {
+      firstPart: 'Дает шанс',
+      secondPart: ' получить USTD',
+    },
+    price: '100',
     image: img,
   },
   {
     id: 3,
-    name: 'Редкий сундук',
-    description: `Дает шанс получить USTD`,
-    price: '18$',
+    name: 'Огненный  сундук',
+    description: {
+      firstPart: 'Дает бонус к',
+      secondPart: ' приросту доходности',
+    },
+    price: '150',
     image: img,
   },
   {
     id: 4,
-    name: 'Редкий сундук',
-    description: `Дает шанс получить USTD`,
-    price: '19$',
+    name: 'Огненный  сундук',
+    description: {
+      firstPart: 'Дает бонус к',
+      secondPart: ' приросту доходности',
+    },
+    price: '150',
     image: img,
   },
   {
     id: 5,
-    name: 'Эпический сундук',
-    description: `Дает шанс получить USTD`,
-    price: '19$',
+    name: 'Неоновый  сундук',
+    description: {
+      firstPart: 'Поднять',
+      secondPart: 'рейтинг',
+    },
+    price: '120',
     image: img,
   },
   {
     id: 6,
-    name: 'Эпический сундук',
-    description: `Дает шанс получить USTD`,
-    price: '18$',
+    name: 'Неоновый  сундук',
+    description: {
+      firstPart: 'Поднять',
+      secondPart: ' рейтинг',
+    },
+    price: '120',
     image: img,
   },
   {
     id: 7,
-    name: 'Золотой сундук',
-    description: `Дает шанс получить USTD`,
-    price: '39$',
+    name: 'Солнечный  сундук',
+    description: {
+      firstPart: 'Дает бонус к',
+      secondPart: ' приросту доходности',
+    },
+    price: '100',
     image: img,
   },
   {
     id: 8,
-    name: 'Легендарный сундук',
-    description: `Дает шанс получить USTD`,
-    price: '19$',
+    name: 'Солнечный  сундук',
+    description: {
+      firstPart: 'Дает бонус к',
+      secondPart: ' приросту доходности',
+    },
+    price: '100',
     image: img,
   },
   {
     id: 9,
-    name: 'Легендарный сундук',
-    description: `Дает шанс получить USTD`,
-    price: '39$',
+    name: 'Огненный  сундук',
+    description: {
+      firstPart: 'Дает бонус к',
+      secondPart: ' приросту доходности',
+    },
+    price: '150',
     image: img,
   },
 ]);
 
-// Данные для бонусных инвестиций
+// Данные для бонусных инвестиций (ОБНОВЛЕНО)
 const bonusInvestments = ref([
   {
     id: 1,
-    name: 'Инвестиционная сделка',
-    description: 'Гарантированная прибыль',
+    name: 'Замороженная инвестиция',
+    description: {
+      firstPart: 'Дает бонус',
+      secondPart: ' с 5% скидкой',
+    },
     price: '11',
-    image: img,
+    image: bonus1,
   },
   {
     id: 2,
-    name: 'Инвестиционная сделка',
-    description: 'Гарантированная прибыль',
+    name: 'Замороженная инвестиция',
+    description: {
+      firstPart: 'Дает бонус',
+      secondPart: ' с 5% скидкой',
+    },
     price: '11',
-    image: img,
+    image: bonus1,
   },
   {
     id: 3,
     name: 'Золотая инвестиция',
-    description: 'Премиум доходность',
+    description: {
+      firstPart: 'Стабильный бонус',
+      secondPart: ' в 5 USTD / день',
+    },
     price: '11',
-    image: img,
+    image: bonus2,
   },
   {
     id: 4,
     name: 'Золотая инвестиция',
-    description: 'Премиум доходность',
+    description: {
+      firstPart: 'Стабильный бонус',
+      secondPart: ' в 5 USTD / день',
+    },
     price: '11',
-    image: img,
+    image: bonus2,
   },
   {
     id: 5,
     name: 'Горячая инвестиция',
-    description: 'Высокая прибыльность',
+    description: {
+      firstPart: 'Дает бонус к',
+      secondPart: ' приросту доходности',
+    },
     price: '11',
-    image: img,
+    image: bonus3,
   },
   {
     id: 6,
     name: 'Горячая инвестиция',
-    description: 'Высокая прибыльность',
+    description: {
+      firstPart: 'Дает бонус к',
+      secondPart: ' приросту доходности',
+    },
     price: '11',
-    image: img,
+    image: bonus3,
+  },
+  {
+    id: 7,
+    name: 'Инвестиция',
+    description: {
+      firstPart: 'Дает бонус',
+      secondPart: ' доходности',
+    },
+    price: '11',
+    image: bonus4,
   },
 ]);
 
@@ -298,44 +352,62 @@ const bonusInvestments = ref([
 const planets = ref([
   {
     id: 1,
-    name: 'Земля',
-    description: `Дает шанс получить USTD`,
-    price: '8$',
+    name: 'Заставка профиля "Луна"',
+    description: {
+      firstPart: 'Отображается в',
+      secondPart: ' рейтингах и профиле',
+    },
+    price: '55',
     image: img,
   },
   {
     id: 2,
-    name: 'Луна',
-    description: `Дает шанс получить USTD`,
-    price: '9$',
+    name: 'Заставка профиля "Озеро"',
+    description: {
+      firstPart: 'Отображается в',
+      secondPart: ' рейтингах и профиле',
+    },
+    price: '25',
     image: img,
   },
   {
     id: 3,
-    name: 'Марс',
-    description: `Дает шанс получить USTD`,
-    price: '8$',
+    name: 'Заставка профиля "Подсолнухи"',
+    description: {
+      firstPart: 'Отображается в',
+      secondPart: ' рейтингах и профиле',
+    },
+    price: '35',
     image: img,
   },
   {
     id: 4,
-    name: 'Юпитер',
-    description: `Дает шанс получить USTD`,
-    price: '8$',
+    name: 'Заставка профиля "Охотник"',
+    description: {
+      firstPart: 'Отображается в',
+      secondPart: ' рейтингах и профиле',
+    },
+    price: '45',
     image: img,
   },
   {
     id: 5,
-    name: 'Сатурн',
-    description: `Дает шанс получить USTD`,
-    price: '8$',
+    name: 'Заставка профиля "Туземун"',
+    description: {
+      firstPart: 'Отображается в',
+      secondPart: ' рейтингах и профиле',
+    },
+    price: '45',
     image: img,
   },
   {
     id: 6,
-    name: 'Нептун',
-    description: `Дает шанс получить USTD`,
-    price: '8$',
+    name: 'Заставка профиля "Луна"',
+    description: {
+      firstPart: 'Отображается в',
+      secondPart: ' рейтингах и профиле',
+    },
+    price: '55',
     image: img,
   },
 ]);
@@ -483,8 +555,6 @@ const buyItem = (item) => {
 }
 
 /* Сетка товаров */
-
-/* Сетка товаров */
 .items-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
@@ -516,6 +586,7 @@ const buyItem = (item) => {
   margin: 0;
   flex-shrink: 0;
 }
+
 .shop-item:hover {
   border-color: rgba(0, 178, 125, 0.5);
   transform: translateY(-2px);
@@ -602,9 +673,37 @@ const buyItem = (item) => {
 
 .item-description {
   font-size: 10px;
-  color: rgba(255, 255, 255, 0.7);
-  line-height: 1.2;
+  line-height: 12px;
+  text-align: center;
+  vertical-align: middle;
   max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.description-first {
+  font-family: Roboto, sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 10px;
+  line-height: 12px;
+  letter-spacing: 0%;
+  text-align: center;
+  vertical-align: middle;
+  color: #82ba94;
+}
+
+.description-second {
+  font-family: Roboto, sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 10px;
+  line-height: 12px;
+  letter-spacing: 0%;
+  text-align: center;
+  vertical-align: middle;
+  color: #07cb38;
 }
 
 .item-price {
@@ -657,6 +756,7 @@ const buyItem = (item) => {
   border-radius: 32px;
   background: #07cb38;
 }
+
 .buy-button span {
   font-family: Roboto, sans-serif;
   font-weight: 500;
