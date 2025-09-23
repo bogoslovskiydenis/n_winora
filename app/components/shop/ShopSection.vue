@@ -1,6 +1,6 @@
 <template>
   <div class="shop-section">
-    <!-- Акции и предложения -->
+    <!-- Инвестиционные предложения -->
     <div class="shop-category">
       <div class="category-header">
         <img
@@ -8,33 +8,67 @@
           alt="Promo"
           class="category-icon"
         />
-        <h2 class="category-title">АКЦИИ И ПРЕДЛОЖЕНИЯ</h2>
+        <h2 class="category-title">ИНВЕСТИЦИОННЫЕ ПРЕДЛОЖЕНИЯ</h2>
       </div>
 
-      <div class="promo-cards">
-        <div class="promo-card special-offer">
-          <div class="promo-content">
-            <div class="promo-badge">СКИДКА 50%</div>
-            <div class="promo-title">ИНВЕСТИЦИИ</div>
-            <div class="promo-subtitle">Мега скидка на инвестиции</div>
-            <button class="promo-button">КУПИТЬ</button>
-            <div class="promo-price">USD 75</div>
-          </div>
-          <div class="promo-image">
-            <img src="" alt="Investment Promo" />
+      <!-- Ряд баннеров инвестиций -->
+      <div class="investment-banners-row">
+        <div class="investment-banner-section">
+          <div class="investment-banner">
+            <!-- Заголовок -->
+            <div class="banner-header">
+              <h2 class="banner-title">Время выбрать</h2>
+              <h1 class="banner-main-title">ИНВЕСТИЦИИ</h1>
+            </div>
+
+            <!-- Иконки портфелей/сундуков -->
+            <div class="investment-cases">
+              <img src="./../../assets/images/cheast_1.png" />
+            </div>
+
+            <!-- Кнопка действия -->
+            <button class="investment-buy-btn" @click="handleInvestmentClick">
+              КУПИТЬ
+            </button>
           </div>
         </div>
 
-        <div class="promo-card special-offer">
-          <div class="promo-content">
-            <div class="promo-badge">СКИДКА 30%</div>
-            <div class="promo-title">ИНВЕСТИЦИИ</div>
-            <div class="promo-subtitle">Выгодное предложение</div>
-            <button class="promo-button">КУПИТЬ</button>
-            <div class="promo-price">USD 85</div>
+        <div class="investment-banner-section">
+          <div class="investment-banner">
+            <!-- Заголовок -->
+            <div class="banner-header">
+              <h2 class="banner-title">Время выбрать</h2>
+              <h1 class="banner-main-title">ИНВЕСТИЦИИ</h1>
+            </div>
+
+            <!-- Иконки портфелей/сундуков -->
+            <div class="investment-cases">
+              <img src="./../../assets/images/cheast_1.png" />
+            </div>
+
+            <!-- Кнопка действия -->
+            <button class="investment-buy-btn" @click="handleInvestmentClick">
+              КУПИТЬ
+            </button>
           </div>
-          <div class="promo-image">
-            <img src="" alt="Investment Promo" />
+        </div>
+        <div class="investment-banner-section">
+          <div class="investment-banner">
+            <!-- Заголовок -->
+            <div class="banner-header">
+              <h2 class="banner-title">Время выбрать</h2>
+              <h1 class="banner-main-title">ИНВЕСТИЦИИ</h1>
+            </div>
+
+            <!-- Иконки портфелей/сундуков -->
+            <div class="investment-cases">
+              <img src="./../../assets/images/cheast_1.png" />
+            </div>
+
+            <!-- Кнопка действия -->
+            <button class="investment-buy-btn" @click="handleInvestmentClick">
+              КУПИТЬ
+            </button>
           </div>
         </div>
       </div>
@@ -189,6 +223,7 @@ import profi2 from '../../assets/images/shop/profil2.svg';
 import profi3 from '../../assets/images/shop/profil3.svg';
 import profi4 from '../../assets/images/shop/profil4.svg';
 import profi5 from '../../assets/images/shop/profil5.svg';
+
 // Данные для сундуков
 const chests = ref([
   {
@@ -426,6 +461,11 @@ const buyItem = (item) => {
   console.log('Покупка товара:', item);
   // Здесь будет логика покупки
 };
+
+// Обработчик клика на кнопку инвестиций
+const handleInvestmentClick = () => {
+  navigateTo('/investments');
+};
 </script>
 
 <style scoped>
@@ -465,102 +505,114 @@ const buyItem = (item) => {
   color: #ffffff;
 }
 
-/* Промо карточки */
-.promo-cards {
+/* ===========================================
+   INVESTMENT BANNERS ROW
+   =========================================== */
+
+.investment-banners-row {
   display: flex;
   gap: 16px;
-  margin-bottom: 16px;
+  flex-wrap: wrap;
 }
 
-.promo-card {
-  flex: 1;
-  background: linear-gradient(
-    135deg,
-    rgba(185, 43, 255, 0.15) 0%,
-    rgba(255, 43, 133, 0.15) 100%
-  );
-  border: 1px solid rgba(185, 43, 255, 0.3);
+.investment-banner-section {
   border-radius: 16px;
-  padding: 20px;
-  position: relative;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  min-height: 120px;
+  width: 329px;
+  height: 160px;
+  background-image: url('./../../assets/images/cadrs_investitions_bg.png');
+  background-size: cover;
+  background-position: center;
 }
 
-.promo-content {
-  flex: 1;
+.investment-banner {
+  position: relative;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+  padding: 16px;
 }
 
-.promo-badge {
-  background: #f97316;
+/* ===========================================
+   КОНТЕНТ БАННЕРА
+   =========================================== */
+
+.banner-header {
+  text-align: center;
+  z-index: 2;
+}
+
+.banner-title {
+  font-family: Roboto, sans-serif;
+  font-weight: 900;
+  font-size: 16px;
+  line-height: 12px;
+  text-align: center;
+  vertical-align: middle;
   color: #ffffff;
-  font-size: 12px;
-  font-weight: 700;
-  padding: 4px 12px;
-  border-radius: 8px;
-  width: fit-content;
+}
+
+.banner-main-title {
+  font-family: Tomorrow, sans-serif;
+  font-weight: 900;
+  font-size: 32px;
+  line-height: 100%;
+  text-align: center;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  color: #07cb38;
 }
 
-.promo-title {
-  font-family: 'Tomorrow', sans-serif;
-  font-size: 18px;
-  font-weight: 700;
-  color: #ffffff;
-  text-transform: uppercase;
-}
+/* ===========================================
+   ИНВЕСТИЦИОННЫЕ ПОРТФЕЛИ
+   =========================================== */
 
-.promo-subtitle {
-  font-size: 14px;
-  color: rgba(255, 255, 255, 0.8);
-  margin-bottom: 8px;
-}
-
-.promo-button {
-  background: #00b27d;
-  color: #ffffff;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 8px;
-  font-weight: 700;
-  font-size: 12px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  text-transform: uppercase;
-  width: fit-content;
-}
-
-.promo-button:hover {
-  background: #22c55e;
-  transform: translateY(-1px);
-}
-
-.promo-price {
-  font-size: 14px;
-  font-weight: 700;
-  color: #00b27d;
-  margin-top: 4px;
-}
-
-.promo-image {
-  width: 80px;
-  height: 80px;
+.investment-cases {
   display: flex;
   align-items: center;
-  justify-content: center;
+  gap: 16px;
+  margin: 0 auto;
+  z-index: 2;
 }
 
-.promo-image img {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
+.investment-cases img {
+  width: 284px;
+  height: 93px;
+}
+
+/* ===========================================
+   КНОПКА ПОКУПКИ
+   =========================================== */
+
+.investment-buy-btn {
+  background: #f97c39;
+  border: none;
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  overflow: hidden;
+  z-index: 2;
+  width: 108px;
+  height: 42px;
+  min-height: 42px;
+  opacity: 1;
+  gap: 10px;
+  border-radius: 32px;
+  padding: 12px 16px;
+  color: #070202;
+}
+
+.investment-buy-btn:hover {
+  background: linear-gradient(135deg, #fb923c 0%, #f97316 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(249, 115, 22, 0.6);
 }
 
 /* Сетка товаров */
@@ -779,15 +831,34 @@ const buyItem = (item) => {
 
 /* Адаптивность */
 @media (max-width: 768px) {
-  .promo-cards {
+  .investment-banners-row {
     flex-direction: column;
   }
 
-  .promo-card {
-    flex-direction: column;
-    text-align: center;
-    min-height: auto;
-    gap: 16px;
+  .investment-banner-section {
+    width: 100%;
+    max-width: none;
+    height: 160px;
+  }
+
+  .investment-banner {
+    padding: 16px;
+    height: 100%;
+  }
+
+  .banner-main-title {
+    font-size: 22px;
+  }
+
+  .investment-cases {
+    gap: 12px;
+  }
+
+  .investment-buy-btn {
+    padding: 10px 24px;
+    font-size: 12px;
+    width: auto;
+    min-width: 100px;
   }
 
   .items-grid {
@@ -812,6 +883,25 @@ const buyItem = (item) => {
 
   .category-title {
     font-size: 14px;
+  }
+
+  .investment-banner-section {
+    height: 140px;
+  }
+
+  .investment-banner {
+    padding: 12px;
+  }
+
+  .banner-main-title {
+    font-size: 18px;
+  }
+
+  .investment-buy-btn {
+    padding: 8px 20px;
+    font-size: 11px;
+    min-width: 90px;
+    height: 36px;
   }
 
   .items-grid {
