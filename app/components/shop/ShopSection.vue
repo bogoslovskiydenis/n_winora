@@ -175,11 +175,20 @@
 <script setup>
 import { ref } from 'vue';
 import img from '../../assets/images/shop/Box.svg';
+import img2 from '../../assets/images/shop/box2.svg';
+import img3 from '../../assets/images/shop/box3.svg';
+import img4 from '../../assets/images/shop/box4.svg';
+import img5 from '../../assets/images/shop/box5.svg';
+
 import bonus1 from '../../assets/images/shop/bonus1.svg';
 import bonus2 from '../../assets/images/shop/bonus2.svg';
 import bonus3 from '../../assets/images/shop/bonus3.svg';
 import bonus4 from '../../assets/images/shop/bonus4.svg';
-
+import profil1 from '../../assets/images/shop/profil1.svg';
+import profi2 from '../../assets/images/shop/profil2.svg';
+import profi3 from '../../assets/images/shop/profil3.svg';
+import profi4 from '../../assets/images/shop/profil4.svg';
+import profi5 from '../../assets/images/shop/profil5.svg';
 // Данные для сундуков
 const chests = ref([
   {
@@ -210,7 +219,7 @@ const chests = ref([
       secondPart: ' приросту доходности',
     },
     price: '150',
-    image: img,
+    image: img2,
   },
   {
     id: 4,
@@ -220,7 +229,7 @@ const chests = ref([
       secondPart: ' приросту доходности',
     },
     price: '150',
-    image: img,
+    image: img2,
   },
   {
     id: 5,
@@ -230,7 +239,7 @@ const chests = ref([
       secondPart: 'рейтинг',
     },
     price: '120',
-    image: img,
+    image: img3,
   },
   {
     id: 6,
@@ -240,7 +249,7 @@ const chests = ref([
       secondPart: ' рейтинг',
     },
     price: '120',
-    image: img,
+    image: img3,
   },
   {
     id: 7,
@@ -250,7 +259,7 @@ const chests = ref([
       secondPart: ' приросту доходности',
     },
     price: '100',
-    image: img,
+    image: img4,
   },
   {
     id: 8,
@@ -260,7 +269,7 @@ const chests = ref([
       secondPart: ' приросту доходности',
     },
     price: '100',
-    image: img,
+    image: img4,
   },
   {
     id: 9,
@@ -270,7 +279,7 @@ const chests = ref([
       secondPart: ' приросту доходности',
     },
     price: '150',
-    image: img,
+    image: img5,
   },
 ]);
 
@@ -358,7 +367,7 @@ const planets = ref([
       secondPart: ' рейтингах и профиле',
     },
     price: '55',
-    image: img,
+    image: profil1,
   },
   {
     id: 2,
@@ -368,7 +377,7 @@ const planets = ref([
       secondPart: ' рейтингах и профиле',
     },
     price: '25',
-    image: img,
+    image: profi2,
   },
   {
     id: 3,
@@ -378,7 +387,7 @@ const planets = ref([
       secondPart: ' рейтингах и профиле',
     },
     price: '35',
-    image: img,
+    image: profi3,
   },
   {
     id: 4,
@@ -388,7 +397,7 @@ const planets = ref([
       secondPart: ' рейтингах и профиле',
     },
     price: '45',
-    image: img,
+    image: profi4,
   },
   {
     id: 5,
@@ -398,7 +407,7 @@ const planets = ref([
       secondPart: ' рейтингах и профиле',
     },
     price: '45',
-    image: img,
+    image: profi5,
   },
   {
     id: 6,
@@ -408,7 +417,7 @@ const planets = ref([
       secondPart: ' рейтингах и профиле',
     },
     price: '55',
-    image: img,
+    image: profil1,
   },
 ]);
 
