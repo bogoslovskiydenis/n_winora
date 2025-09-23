@@ -1,14 +1,6 @@
 <template>
   <div class="shop-page">
     <div class="content-wrapper">
-      <!-- Заголовок страницы -->
-      <div class="page-header">
-        <h1 class="page-title">МАГАЗИН</h1>
-        <div class="page-subtitle">
-          Приобретайте товары для улучшения игрового опыта
-        </div>
-      </div>
-
       <!-- Компонент секции магазина -->
       <ShopSection />
     </div>
@@ -44,7 +36,7 @@ useHead({
 }
 
 .content-wrapper {
-  padding: 32px 24px 120px; /* Увеличен padding-bottom для прокрутки */
+  padding: 32px 24px;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -78,13 +70,13 @@ useHead({
 /* Mobile Responsive */
 @media (max-width: 1023px) {
   .content-wrapper {
-    padding: 24px 16px 120px; /* Сохраняем большой padding-bottom */
+    padding: 24px 16px;
   }
 }
 
 @media (max-width: 768px) {
   .content-wrapper {
-    padding: 20px 16px 140px; /* Увеличиваем для мобильной навигации */
+    padding: 20px 16px;
   }
 
   .page-title {
@@ -98,7 +90,7 @@ useHead({
 
 @media (max-width: 480px) {
   .content-wrapper {
-    padding: 16px 12px 160px; /* Максимальный padding для самых маленьких экранов */
+    padding: 16px 12px;
   }
 
   .page-title {

@@ -3,7 +3,11 @@
     <!-- Акции и предложения -->
     <div class="shop-category">
       <div class="category-header">
-        <img src="" alt="Promo" class="category-icon" />
+        <img
+          src="./../../assets/images/shop/spin.svg"
+          alt="Promo"
+          class="category-icon"
+        />
         <h2 class="category-title">АКЦИИ И ПРЕДЛОЖЕНИЯ</h2>
       </div>
 
@@ -39,7 +43,11 @@
     <!-- Сундуки -->
     <div class="shop-category">
       <div class="category-header">
-        <img src="" alt="Chest" class="category-icon" />
+        <img
+          src="./../../assets/images/shop/account_balance_wallet.svg"
+          alt="Chest"
+          class="category-icon"
+        />
         <h2 class="category-title">СУНДУКИ</h2>
       </div>
 
@@ -52,11 +60,17 @@
             <div class="item-name">{{ chest.name }}</div>
             <div class="item-description">{{ chest.description }}</div>
             <div class="item-price">
-              <img src="" alt="Coin" class="price-icon" />
+              <img
+                src="./../../assets/images/shop/balance-icon.svg"
+                alt="Coin"
+                class="price-icon"
+              />
               <span class="price-value">{{ chest.price }}</span>
             </div>
           </div>
-          <button class="buy-button" @click="buyItem(chest)">КУПИТЬ</button>
+          <button class="buy-button" @click="buyItem(chest)">
+            <span> КУПИТЬ </span>
+          </button>
         </div>
       </div>
     </div>
@@ -64,7 +78,11 @@
     <!-- Бонусные инвестиции -->
     <div class="shop-category">
       <div class="category-header">
-        <img src="" alt="Bonus" class="category-icon" />
+        <img
+          src="./../../assets/images/shop/invest.svg"
+          alt="Bonus"
+          class="category-icon"
+        />
         <h2 class="category-title">БОНУСНЫЕ ИНВЕСТИЦИИ</h2>
       </div>
 
@@ -81,11 +99,17 @@
             <div class="item-name">{{ bonus.name }}</div>
             <div class="item-description">{{ bonus.description }}</div>
             <div class="item-price">
-              <img src="" alt="Coin" class="price-icon" />
+              <img
+                src="./../../assets/images/shop/balance-icon.svg"
+                alt="Coin"
+                class="price-icon"
+              />
               <span class="price-value">USD {{ bonus.price }}</span>
             </div>
           </div>
-          <button class="buy-button" @click="buyItem(bonus)">КУПИТЬ</button>
+          <button class="buy-button" @click="buyItem(bonus)">
+            <span> КУПИТЬ </span>
+          </button>
         </div>
 
         <!-- Специальный блокированный сундук -->
@@ -100,7 +124,11 @@
             <div class="item-name">Заблокировано</div>
             <div class="item-description">Достигните уровень 5</div>
             <div class="item-price disabled">
-              <img src="" alt="Coin" class="price-icon" />
+              <img
+                src="./../../assets/images/shop/balance-icon.svg"
+                alt="Coin"
+                class="price-icon"
+              />
               <span class="price-value">USD 95</span>
             </div>
           </div>
@@ -112,7 +140,11 @@
     <!-- Кастомизация профиля -->
     <div class="shop-category">
       <div class="category-header">
-        <img src="" alt="Planet" class="category-icon" />
+        <img
+          src="./../../assets/images/shop/brush.svg"
+          alt="Planet"
+          class="category-icon"
+        />
         <h2 class="category-title">КАСТОМИЗАЦИЯ ПРОФИЛЯ</h2>
       </div>
 
@@ -128,11 +160,17 @@
           <div class="item-info">
             <div class="item-name">{{ planet.name }}</div>
             <div class="item-price">
-              <img src="" alt="Coin" class="price-icon" />
+              <img
+                src="./../../assets/images/shop/balance-icon.svg"
+                alt="Coin"
+                class="price-icon"
+              />
               <span class="price-value">{{ planet.price }}</span>
             </div>
           </div>
-          <button class="buy-button" @click="buyItem(planet)">КУПИТЬ</button>
+          <button class="buy-button" @click="buyItem(planet)">
+            <span>КУПИТЬ</span>
+          </button>
         </div>
       </div>
     </div>
@@ -333,20 +371,17 @@ const buyItem = (item) => {
 }
 
 .category-icon {
-  width: 24px;
-  height: 24px;
-  filter: brightness(0) saturate(100%) invert(42%) sepia(93%) saturate(1352%)
-    hue-rotate(87deg) brightness(119%) contrast(119%);
+  width: 20px;
+  height: 20px;
 }
 
 .category-title {
-  font-family: 'Tomorrow', sans-serif;
-  font-weight: 700;
+  font-family: Tomorrow, sans-serif;
+  font-weight: 600;
   font-size: 16px;
-  color: #00b27d;
-  margin: 0;
-  letter-spacing: 1px;
+  vertical-align: middle;
   text-transform: uppercase;
+  color: #ffffff;
 }
 
 /* Промо карточки */
@@ -448,18 +483,24 @@ const buyItem = (item) => {
 }
 
 /* Сетка товаров */
+
+/* Сетка товаров */
 .items-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-  gap: 30px 30px; /* Увеличиваем вертикальный зазор для кнопок */
-  margin-bottom: 40px; /* Добавляем отступ внизу */
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 8px;
+  margin-bottom: 40px;
+  justify-items: center;
+  align-items: end;
+  row-gap: 60px;
 }
 
 .planets-grid {
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  justify-items: center;
+  align-items: end;
 }
 
-/* Основные стили товаров - как в дизайне */
 .shop-item {
   background: url('./../../assets/images/shop/Frame.svg') no-repeat center top;
   background-size: 100% auto;
@@ -472,9 +513,9 @@ const buyItem = (item) => {
   flex-direction: column;
   transition: all 0.3s ease;
   opacity: 1;
-  margin-bottom: 20px;
+  margin: 0;
+  flex-shrink: 0;
 }
-
 .shop-item:hover {
   border-color: rgba(0, 178, 125, 0.5);
   transform: translateY(-2px);
@@ -549,10 +590,10 @@ const buyItem = (item) => {
   color: #07cb38;
   margin-bottom: 4px;
   /* Запрещаем перенос текста */
-  white-space: nowrap; /* ← это добавил */
-  overflow: hidden; /* ← это добавил */
-  text-overflow: ellipsis; /* ← это добавил */
-  max-width: 100%; /* ← это добавил */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
 }
 
 .locked-text {
@@ -572,6 +613,14 @@ const buyItem = (item) => {
   justify-content: center;
   gap: 4px;
   margin: 2px 0;
+  width: 64px;
+  height: 26px;
+  opacity: 1;
+  padding-right: 8px;
+  padding-left: 1px;
+  border-radius: 16px;
+  border: 1px solid #00000040;
+  background: #00000040;
 }
 
 .item-price.disabled {
@@ -579,8 +628,8 @@ const buyItem = (item) => {
 }
 
 .price-icon {
-  width: 14px;
-  height: 14px;
+  width: 25px;
+  height: 25px;
 }
 
 .price-value {
@@ -590,38 +639,33 @@ const buyItem = (item) => {
 }
 
 .buy-button {
-  background: #00b27d;
-  color: #ffffff;
-  border: none;
-  padding: 6px 16px;
-  border-radius: 6px;
-  font-weight: 700;
-  font-size: 10px;
   cursor: pointer;
   transition: all 0.3s ease;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  min-height: 28px;
-  width: 100%;
   max-width: 100px;
   position: absolute;
-  bottom: -10px;
+  bottom: -30px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 3;
+  width: 108px;
+  height: 42px;
+  min-height: 42px;
+  padding: 12px 16px;
+  gap: 10px;
+  border-radius: 32px;
+  background: #07cb38;
 }
-
-.buy-button:hover:not(:disabled) {
-  background: #22c55e;
-  transform: translateX(-50%) translateY(-1px);
-}
-
-.buy-button:disabled,
-.buy-button.disabled {
-  background: rgba(255, 255, 255, 0.1);
-  color: rgba(255, 255, 255, 0.5);
-  cursor: not-allowed;
-  transform: translateX(-50%);
+.buy-button span {
+  font-family: Roboto, sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 100%;
+  text-align: center;
+  vertical-align: middle;
+  text-transform: uppercase;
+  color: #070202;
 }
 
 /* Адаптивность */
@@ -639,7 +683,8 @@ const buyItem = (item) => {
 
   .items-grid {
     grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-    gap: 16px;
+    gap: 8px;
+    row-gap: 50px;
   }
 
   .planets-grid {
@@ -662,7 +707,8 @@ const buyItem = (item) => {
 
   .items-grid {
     grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
+    gap: 8px;
+    row-gap: 40px;
   }
 
   .planets-grid {
