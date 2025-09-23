@@ -470,11 +470,11 @@ const handleInvestmentClick = () => {
 
 <style scoped>
 .shop-section {
-  width: 100%;
+  padding-top: 20px;
+  padding-bottom: 20px;
   display: flex;
   flex-direction: column;
   gap: 32px;
-  padding: 0;
 }
 
 /* Категории */
@@ -517,11 +517,19 @@ const handleInvestmentClick = () => {
 
 .investment-banner-section {
   border-radius: 16px;
-  width: 329px;
-  height: 160px;
+  width: 310px;
+  height: 219px;
   background-image: url('./../../assets/images/cadrs_investitions_bg.png');
   background-size: cover;
   background-position: center;
+  min-width: 310px;
+  max-width: 360px;
+  padding-bottom: 20px;
+  gap: 14px;
+  border-top-width: 1px;
+  border-right-width: 2px;
+  border-bottom-width: 2px;
+  border-left-width: 2px;
 }
 
 .investment-banner {

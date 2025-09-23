@@ -36,8 +36,8 @@ useHead({
 }
 
 .content-wrapper {
-  padding: 32px 24px;
-  width: 100%;
+  margin: 0 auto;
+  max-width: 984px;
   display: flex;
   flex-direction: column;
   gap: 24px;
