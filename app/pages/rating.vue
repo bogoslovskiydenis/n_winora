@@ -4,168 +4,168 @@
     <div class="rating-header">
       <span>РЕЙТИНГ</span>
     </div>
-
-    <!-- Иконки фильтров -->
-    <div class="filter-section">
-      <div class="filter-icons">
-        <div
-          class="filter-icon"
-          @click="toggleSearch"
-          :class="{ active: showSearch }"
-        >
-          <img src="~/assets/images/search.svg" alt="Search" />
-        </div>
-        <div class="filter-icon">
-          <img src="~/assets/images/arrow_down.svg" alt="Sort" />
-        </div>
-        <div class="filter-icon">
-          <img src="~/assets/images/menu.svg" alt="Menu" />
-        </div>
-        <div class="filter-icon active">
-          <img src="~/assets/images/gps_fixed.svg" alt="Diamond" />
+    <div class="rating-main-container">
+      <!-- Иконки фильтров -->
+      <div class="filter-section">
+        <div class="filter-icons">
+          <div
+            class="filter-icon"
+            @click="toggleSearch"
+            :class="{ active: showSearch }"
+          >
+            <img src="~/assets/images/search.svg" alt="Search" />
+          </div>
+          <div class="filter-icon">
+            <img src="~/assets/images/arrow_down.svg" alt="Sort" />
+          </div>
+          <div class="filter-icon">
+            <img src="~/assets/images/menu.svg" alt="Menu" />
+          </div>
+          <div class="filter-icon active">
+            <img src="~/assets/images/gps_fixed.svg" alt="Diamond" />
+          </div>
         </div>
       </div>
-    </div>
 
-    <!-- Поисковое поле -->
-    <div class="search-section" v-if="showSearch">
-      <div class="search-input-container">
-        <input
-          ref="searchInput"
-          v-model="searchQuery"
-          type="text"
-          placeholder="Поиск по никнейму..."
-          class="search-input"
-          @input="handleSearch"
-        />
-        <button v-if="searchQuery" class="search-clear" @click="clearSearch">
-          ×
+      <!-- Поисковое поле -->
+      <div class="search-section" v-if="showSearch">
+        <div class="search-input-container">
+          <input
+            ref="searchInput"
+            v-model="searchQuery"
+            type="text"
+            placeholder="Поиск по никнейму..."
+            class="search-input"
+            @input="handleSearch"
+          />
+          <button v-if="searchQuery" class="search-clear" @click="clearSearch">
+            ×
+          </button>
+        </div>
+      </div>
+
+      <!-- Навигационные вкладки -->
+      <div class="nav-tabs">
+        <div
+          class="tab"
+          :class="{ active: activeTab === 'position' }"
+          @click="setActiveTab('position')"
+        >
+          <span>ПОЗИЦИЯ</span>
+        </div>
+        <div
+          class="tab"
+          :class="{ active: activeTab === 'rating' }"
+          @click="setActiveTab('rating')"
+        >
+          РЕЙТИНГ
+        </div>
+        <div
+          class="tab"
+          :class="{ active: activeTab === 'nickname' }"
+          @click="setActiveTab('nickname')"
+        >
+          Никнейм
+        </div>
+        <div
+          class="tab"
+          :class="{ active: activeTab === 'income' }"
+          @click="setActiveTab('income')"
+        >
+          ДОХОДНОСТЬ
+        </div>
+      </div>
+
+      <!-- Список рейтинга -->
+      <div class="rating-grid">
+        <div
+          v-for="user in sortedUsers"
+          :key="user.id"
+          class="user-card"
+          :class="{ highlighted: user.isCurrentUser }"
+        >
+          <!-- Фоновое изображение карточки -->
+          <div class="card-background">
+            <img :src="user.backgroundImage" :alt="user.name" />
+          </div>
+
+          <!-- Контент карточки -->
+          <div class="card-content">
+            <!-- Позиция в рейтинге -->
+            <div class="user-rank">{{ user.rank }}</div>
+
+            <!-- Изменение позиции -->
+            <div class="user-change" :class="user.changeClass">
+              {{ user.change }}
+            </div>
+
+            <!-- Имя пользователя -->
+            <div class="user-name">{{ user.name }}</div>
+
+            <!-- Процент доходности -->
+            <div class="user-percentage">{{ user.percentage }}%</div>
+
+            <!-- Индикатор текущего пользователя -->
+            <div v-if="user.isCurrentUser" class="current-user-badge">Вы</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Сообщение об отсутствии результатов -->
+      <div v-if="searchQuery && sortedUsers.length === 0" class="no-results">
+        <div class="no-results-icon">🔍</div>
+        <div class="no-results-text">
+          Пользователи с никнеймом "{{ searchQuery }}" не найдены
+        </div>
+        <button class="no-results-clear" @click="clearSearch">
+          Очистить поиск
+        </button>
+      </div>
+
+      <!-- Пагинация -->
+      <div class="pagination" v-if="!searchQuery">
+        <button
+          class="page-btn"
+          :class="{ active: currentPage === 1 }"
+          @click="changePage(1)"
+          :disabled="isLoading"
+        >
+          ТОП 100
+        </button>
+        <button
+          class="page-btn"
+          :class="{ active: currentPage === 2 }"
+          @click="changePage(2)"
+          :disabled="isLoading"
+        >
+          101-199
+        </button>
+        <button
+          class="page-btn"
+          :class="{ active: currentPage === 3 }"
+          @click="changePage(3)"
+          :disabled="isLoading"
+        >
+          201-299
+        </button>
+        <button
+          class="page-btn"
+          :class="{ active: currentPage === 4 }"
+          @click="changePage(4)"
+          :disabled="isLoading"
+        >
+          301-399
+        </button>
+        <button
+          class="page-btn"
+          :class="{ active: currentPage === 5 }"
+          @click="changePage(5)"
+          :disabled="isLoading"
+        >
+          401-499
         </button>
       </div>
     </div>
-
-    <!-- Навигационные вкладки -->
-    <div class="nav-tabs">
-      <div
-        class="tab"
-        :class="{ active: activeTab === 'position' }"
-        @click="setActiveTab('position')"
-      >
-        <span>ПОЗИЦИЯ</span>
-      </div>
-      <div
-        class="tab"
-        :class="{ active: activeTab === 'rating' }"
-        @click="setActiveTab('rating')"
-      >
-        РЕЙТИНГ
-      </div>
-      <div
-        class="tab"
-        :class="{ active: activeTab === 'nickname' }"
-        @click="setActiveTab('nickname')"
-      >
-        Никнейм
-      </div>
-      <div
-        class="tab"
-        :class="{ active: activeTab === 'income' }"
-        @click="setActiveTab('income')"
-      >
-        ДОХОДНОСТЬ
-      </div>
-    </div>
-
-    <!-- Список рейтинга -->
-    <div class="rating-grid">
-      <div
-        v-for="user in sortedUsers"
-        :key="user.id"
-        class="user-card"
-        :class="{ highlighted: user.isCurrentUser }"
-      >
-        <!-- Фоновое изображение карточки -->
-        <div class="card-background">
-          <img :src="user.backgroundImage" :alt="user.name" />
-        </div>
-
-        <!-- Контент карточки -->
-        <div class="card-content">
-          <!-- Позиция в рейтинге -->
-          <div class="user-rank">{{ user.rank }}</div>
-
-          <!-- Изменение позиции -->
-          <div class="user-change" :class="user.changeClass">
-            {{ user.change }}
-          </div>
-
-          <!-- Имя пользователя -->
-          <div class="user-name">{{ user.name }}</div>
-
-          <!-- Процент доходности -->
-          <div class="user-percentage">{{ user.percentage }}%</div>
-
-          <!-- Индикатор текущего пользователя -->
-          <div v-if="user.isCurrentUser" class="current-user-badge">Вы</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Сообщение об отсутствии результатов -->
-    <div v-if="searchQuery && sortedUsers.length === 0" class="no-results">
-      <div class="no-results-icon">🔍</div>
-      <div class="no-results-text">
-        Пользователи с никнеймом "{{ searchQuery }}" не найдены
-      </div>
-      <button class="no-results-clear" @click="clearSearch">
-        Очистить поиск
-      </button>
-    </div>
-
-    <!-- Пагинация -->
-    <div class="pagination" v-if="!searchQuery">
-      <button
-        class="page-btn"
-        :class="{ active: currentPage === 1 }"
-        @click="changePage(1)"
-        :disabled="isLoading"
-      >
-        ТОП 100
-      </button>
-      <button
-        class="page-btn"
-        :class="{ active: currentPage === 2 }"
-        @click="changePage(2)"
-        :disabled="isLoading"
-      >
-        101-199
-      </button>
-      <button
-        class="page-btn"
-        :class="{ active: currentPage === 3 }"
-        @click="changePage(3)"
-        :disabled="isLoading"
-      >
-        201-299
-      </button>
-      <button
-        class="page-btn"
-        :class="{ active: currentPage === 4 }"
-        @click="changePage(4)"
-        :disabled="isLoading"
-      >
-        301-399
-      </button>
-      <button
-        class="page-btn"
-        :class="{ active: currentPage === 5 }"
-        @click="changePage(5)"
-        :disabled="isLoading"
-      >
-        401-499
-      </button>
-    </div>
-
     <!-- Индикатор загрузки -->
     <div v-if="isLoading" class="loading-overlay">
       <div class="loading-spinner"></div>
@@ -389,9 +389,16 @@ export default {
   color: #07cb38;
 }
 
+/* Основной контейнер для центрирования */
+.rating-main-container {
+  max-width: 1344px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
 /* Секция фильтров */
 .filter-section {
-  padding: 16px;
+  padding: 16px 0;
   display: flex;
   justify-content: center;
 }
@@ -498,18 +505,17 @@ export default {
 
 /* Навигационные вкладки */
 .nav-tabs {
-  margin: 0 auto;
+  display: flex;
+  justify-content: center;
   align-items: center;
   max-width: 462px;
   height: 25px;
-  display: flex;
-  justify-content: space-evenly;
   padding: 8px 16px 16px;
   gap: 16px;
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
   background: #ffffff1a;
-  margin-bottom: 10px;
+  margin: 0 auto 10px;
 }
 
 .tab {
@@ -588,9 +594,7 @@ export default {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 20px;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 20px;
+  width: 100%;
 }
 
 /* Карточка пользователя */
@@ -770,6 +774,14 @@ export default {
   padding: 20px;
   backdrop-filter: blur(10px);
   z-index: 100;
+  /* Добавляем overflow для скролла на маленьких экранах */
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.pagination::-webkit-scrollbar {
+  display: none;
 }
 
 .page-btn {
@@ -784,6 +796,7 @@ export default {
   transition: all 0.3s;
   min-width: 100px;
   backdrop-filter: blur(10px);
+  flex-shrink: 0; /* Не сжимаем кнопки */
 }
 
 .page-btn.active {
@@ -840,24 +853,40 @@ export default {
 
 /* Адаптивность */
 @media (max-width: 1024px) {
+  .rating-main-container {
+    padding: 0 16px;
+  }
+
   .rating-grid {
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 16px;
-    padding: 10px;
   }
 }
 
 @media (max-width: 768px) {
+  .rating-main-container {
+    padding: 0 12px;
+  }
+
   .nav-tabs {
     gap: 15px;
     margin-bottom: 0;
-    padding: 0;
-    flex-wrap: wrap;
-    justify-content: center;
+    padding: 8px 12px 16px;
+    max-width: 95%;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .nav-tabs::-webkit-scrollbar {
+    display: none;
   }
 
   .tab {
     font-size: 12px;
+    white-space: nowrap;
+    flex-shrink: 0;
   }
 
   .filter-icons {
@@ -867,12 +896,14 @@ export default {
   .rating-grid {
     grid-template-columns: 1fr;
     gap: 12px;
-    padding: 10px;
   }
 
   .pagination {
     gap: 8px;
-    padding: 15px;
+    padding: 15px 10px;
+    align-items: center;
+    white-space: nowrap;
+    margin-bottom: 100px;
   }
 
   .page-btn {
@@ -895,10 +926,14 @@ export default {
 }
 
 @media (max-width: 480px) {
+  .rating-main-container {
+    padding: 0 8px;
+  }
+
   .nav-tabs {
-    gap: 15px;
-    margin-bottom: 0;
-    padding: 0;
+    gap: 12px;
+    padding: 8px 8px 16px;
+    max-width: 98%;
   }
 
   .user-card {
@@ -941,7 +976,7 @@ export default {
   }
 
   .pagination {
-    padding: 12px;
+    padding: 12px 8px;
     gap: 6px;
   }
 
@@ -957,6 +992,32 @@ export default {
 
   .filter-icons {
     gap: 12px;
+  }
+}
+
+@media (max-width: 360px) {
+  .rating-main-container {
+    padding: 0 5px;
+  }
+
+  .pagination {
+    padding: 10px 5px;
+    gap: 4px;
+  }
+
+  .page-btn {
+    padding: 6px 10px;
+    font-size: 9px;
+    min-width: 60px;
+  }
+
+  .nav-tabs {
+    gap: 8px;
+    padding: 8px 5px 16px;
+  }
+
+  .tab {
+    font-size: 11px;
   }
 }
 
