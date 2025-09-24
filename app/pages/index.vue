@@ -40,8 +40,9 @@ useHead({
 }
 
 .content-wrapper {
-  padding: 32px 24px 0;
-  width: 100%;
+  margin: 0 auto;
+  padding: 24px 64px 64px 64px;
+  max-width: 1272px;
   display: flex;
   flex-direction: column;
   gap: 24px;

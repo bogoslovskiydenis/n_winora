@@ -108,11 +108,12 @@
 
 <style scoped>
 .game-section {
-  margin-bottom: 32px;
+  margin-bottom: 24px;
 }
 
 .game-cards {
   display: flex;
+  justify-content: center;
   flex-wrap: wrap;
   gap: 20px;
 }
@@ -365,11 +366,11 @@
 }
 
 @media (max-width: 768px) {
+  .game-section {
+    margin-bottom: 16px;
+  }
   .stat-box {
     padding: 10px 12px;
-  }
-
-  .card-header {
   }
 
   .card-title {
@@ -379,7 +380,7 @@
 
 @media (max-width: 480px) {
   .game-section {
-    margin-bottom: 24px;
+    margin-bottom: 16px;
   }
 
   .stat-value,
