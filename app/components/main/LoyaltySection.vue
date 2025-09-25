@@ -26,7 +26,7 @@
                   <span class="remaining">{{ nextLevelRemaining }} USD</span>
                 </div>
               </div>
-              <NuxtLink to="/profile" class="level-link">
+              <NuxtLink to="/loyalty" class="level-link">
                 Узнать больше
               </NuxtLink>
             </div>
