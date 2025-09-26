@@ -16,7 +16,7 @@
         <div class="user-level-card">
           <div class="level-badge">
             <div class="level-circle">
-              {{ currentUserLevel }}
+              <img src="./../assets/images/3.svg" alt="" />
             </div>
           </div>
           <div class="level-info">
@@ -39,56 +39,71 @@
         </div>
       </div>
 
-      <!-- Таблица уровней лояльности -->
+      <!-- Таблица уровней лояльности на флексах -->
       <div class="levels-section">
-        <div class="levels-header">
-          <div class="header-item">УРОВЕНЬ</div>
-          <div class="header-item">ПОРОГ</div>
-          <div class="header-item">КЕШБЕК</div>
-          <div class="header-item">БОНУСЫ</div>
-        </div>
+        <div class="levels-flex-table">
+          <!-- Заголовок -->
+          <div class="levels-header">
+            <div class="header-item">УРОВЕНЬ</div>
+            <div class="header-item">ПОРОГ</div>
+            <div class="header-item">КЕШБЕК</div>
+            <div class="header-item">БОНУСЫ</div>
+          </div>
 
-        <div class="levels-list">
-          <div
-            v-for="level in loyaltyLevels"
-            :key="level.id"
-            class="level-row"
-            :class="{
-              'current-level': level.id === currentUserLevel,
-              completed: level.id < currentUserLevel,
-            }"
-          >
-            <!-- Номер уровня -->
-            <div class="level-cell level-number-cell">
-              <div class="level-circle">
-                {{ level.id }}
-              </div>
-              <span v-if="level.id === currentUserLevel" class="current-label"
-                >Вы тут</span
-              >
-            </div>
-
-            <!-- Порог для уровня -->
-            <div class="level-cell threshold-cell">
-              {{ level.threshold }}
-            </div>
-
-            <!-- Процент кешбека -->
-            <div class="level-cell cashback-cell">{{ level.cashback }}%</div>
-
-            <!-- Бонусы -->
-            <div class="level-cell bonuses-cell">
-              <div class="bonuses-grid">
-                <div
-                  v-for="bonus in level.bonuses"
-                  :key="bonus.type"
-                  class="bonus-item"
-                  :class="bonus.type"
+          <!-- Строки уровней -->
+          <div class="levels-list">
+            <div
+              v-for="level in loyaltyLevels"
+              :key="level.id"
+              class="level-row"
+              :class="{
+                'current-level': level.id === currentUserLevel,
+                completed: level.id < currentUserLevel,
+              }"
+            >
+              <!-- Номер уровня -->
+              <div class="level-cell level-number-cell">
+                <div class="level-circle">
+                  {{ level.id }}
+                </div>
+                <span v-if="level.id === currentUserLevel" class="current-label"
+                  >Вы тут</span
                 >
-                  <span class="bonus-icon">{{ getBonusIcon(bonus.type) }}</span>
-                  <span class="bonus-text"
-                    >{{ bonus.amount }} {{ bonus.name }}</span
+              </div>
+
+              <!-- Порог для уровня -->
+              <div class="level-cell threshold-cell">
+                {{ level.threshold }}
+              </div>
+
+              <!-- Процент кешбека -->
+              <div class="level-cell cashback-cell">{{ level.cashback }}%</div>
+
+              <!-- Бонусы -->
+              <div class="level-cell bonuses-cell">
+                <div class="bonuses-grid">
+                  <div
+                    v-for="bonus in level.bonuses"
+                    :key="bonus.type"
+                    class="bonus-item"
+                    :class="bonus.type"
                   >
+                    <img
+                      v-if="bonus.type === 'spins'"
+                      :src="spin"
+                      alt="Спин"
+                      class="bonus-icon-img"
+                    />
+                    <img
+                      v-else-if="bonus.type === 'chests'"
+                      :src="box"
+                      alt="Сундук"
+                      class="bonus-icon-img"
+                    />
+                    <span class="bonus-text"
+                      >{{ bonus.amount }} {{ bonus.name }}</span
+                    >
+                  </div>
                 </div>
               </div>
             </div>
@@ -100,6 +115,9 @@
 </template>
 
 <script setup>
+import spin from './../assets/images/Spin.svg';
+import box from './../assets/images/box_small.svg';
+
 // Текущие данные пользователя
 const currentUserLevel = ref(3);
 const userDeposits = ref(1370);
@@ -148,18 +166,6 @@ const loyaltyLevels = ref([
   },
 ]);
 
-// Функция получения иконки для типа бонуса
-const getBonusIcon = (type) => {
-  switch (type) {
-    case 'spins':
-      return '🎰';
-    case 'chests':
-      return '📦';
-    default:
-      return '🎁';
-  }
-};
-
 // Функция возврата назад
 const goBack = () => {
   navigateTo(`/`);
@@ -167,6 +173,21 @@ const goBack = () => {
 </script>
 
 <style scoped>
+/* ===========================================
+   БАЗОВЫЕ СТИЛИ
+   =========================================== */
+
+.loyalty-page {
+  width: 100%;
+  min-height: 100vh;
+  background: linear-gradient(180deg, #001a14 0%, #002b20 100%);
+  animation: fadeInUp 0.8s ease-out;
+}
+
+/* ===========================================
+   ХЭДЕР
+   =========================================== */
+
 .loyalty-header {
   display: flex;
   align-items: center;
@@ -174,12 +195,15 @@ const goBack = () => {
   background: linear-gradient(0deg, #002920 0%, #00382b 100%);
   height: 66px;
   padding: 24px 50px;
+  width: 100%;
 }
 
 .card-header {
   display: flex;
   align-items: center;
   width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
   position: relative;
 }
 
@@ -227,14 +251,14 @@ const goBack = () => {
    =========================================== */
 
 .loyalty-content {
-  opacity: 1;
-  border-bottom-right-radius: 24px;
-  border-bottom-left-radius: 24px;
+  width: 100%;
   max-width: 644px;
   margin: 0 auto;
   background: #00aa6926;
-
-  padding: 32px 24px;
+  border-bottom-right-radius: 24px;
+  border-bottom-left-radius: 24px;
+  padding: 16px 24px;
+  box-sizing: border-box;
 }
 
 /* ===========================================
@@ -242,36 +266,22 @@ const goBack = () => {
    =========================================== */
 
 .current-level-section {
-  margin-bottom: 40px;
+  padding: 16px 0;
+  display: flex;
+  justify-content: center;
 }
 
 .user-level-card {
-  background: linear-gradient(
-    135deg,
-    rgba(7, 203, 56, 0.1) 0%,
-    rgba(0, 0, 0, 0.3) 100%
-  );
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(7, 203, 56, 0.3);
-  border-radius: 24px;
-  padding: 32px;
+  width: 100%;
+  max-width: 380px;
+  padding: 16px;
+  border-radius: 8px;
+  background: #00000042;
   display: flex;
-  gap: 32px;
   align-items: center;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  gap: 16px;
   position: relative;
   overflow: hidden;
-}
-
-.user-level-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(45deg, rgba(7, 203, 56, 0.1), transparent);
-  pointer-events: none;
 }
 
 .level-badge {
@@ -282,68 +292,58 @@ const goBack = () => {
   flex-shrink: 0;
 }
 
-.level-circle {
-  width: 80px;
-  height: 80px;
+.user-level-card .level-circle {
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #f97c39 0%, #ff6b35 100%);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: Tomorrow, sans-serif;
-  font-weight: 700;
-  font-size: 32px;
-  color: #ffffff;
-  box-shadow: 0 8px 32px rgba(249, 124, 57, 0.4);
-  border: 3px solid rgba(255, 255, 255, 0.2);
 }
 
-.current-level .level-circle {
-  background: linear-gradient(135deg, #07cb38 0%, #22c55e 100%);
-  box-shadow: 0 8px 32px rgba(7, 203, 56, 0.6);
-  animation: pulse 2s infinite;
+.user-level-card .level-circle img {
+  width: 24px;
+  height: 24px;
 }
 
 .level-info {
   flex: 1;
-  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .level-info-title {
   font-family: Tomorrow, sans-serif;
-  font-weight: 700;
-  font-size: 22px;
+  font-weight: 500;
+  font-size: 15px;
   color: #f97c39;
-  margin: 0 0 20px 0;
 }
 
 .level-details {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 4px;
 }
 
 .detail-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 12px 16px;
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  min-height: 20px;
 }
 
 .detail-label {
   font-family: Roboto, sans-serif;
   font-weight: 500;
-  font-size: 16px;
+  font-size: 12px;
   color: #ffffff;
 }
 
 .detail-value {
   font-family: Roboto, sans-serif;
-  font-weight: 700;
-  font-size: 16px;
+  font-weight: 900;
+  font-size: 12px;
 }
 
 .detail-value.highlight {
@@ -355,49 +355,58 @@ const goBack = () => {
 }
 
 /* ===========================================
-   ТАБЛИЦА УРОВНЕЙ
+   ТАБЛИЦА НА ФЛЕКСАХ
    =========================================== */
 
 .levels-section {
-  background: rgba(0, 0, 0, 0.3);
-  border-radius: 24px;
-  overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(20px);
+  padding: 16px 0;
+}
+
+.levels-flex-table {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  background: transparent;
 }
 
 .levels-header {
-  display: grid;
-  grid-template-columns: 120px 140px 120px 1fr;
-  gap: 16px;
-  padding: 20px 24px;
-  background: rgba(7, 203, 56, 0.1);
-  border-bottom: 1px solid rgba(7, 203, 56, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 43px;
+  background: #04211a66;
+  border-radius: 14px 14px 0 0;
+  padding: 0 8px;
 }
 
 .header-item {
-  font-family: Tomorrow, sans-serif;
-  font-weight: 700;
-  font-size: 14px;
-  text-transform: uppercase;
-  color: #07cb38;
+  font-family: Roboto, sans-serif;
+  font-weight: 500;
+  font-size: 12px;
   text-align: center;
-  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #ffffff;
+  flex: 1;
 }
 
 .levels-list {
   display: flex;
   flex-direction: column;
+  gap: 8px;
 }
 
+/* Общие стили для всех строк */
 .level-row {
-  display: grid;
-  grid-template-columns: 120px 140px 120px 1fr;
-  gap: 16px;
-  padding: 20px 24px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
   transition: all 0.3s ease;
   position: relative;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  width: 100%;
+  min-height: 60px;
+  gap: 8px;
+  border-radius: 16px;
+  padding: 4px;
+  box-sizing: border-box;
 }
 
 .level-row:last-child {
@@ -409,227 +418,374 @@ const goBack = () => {
 }
 
 .level-row.current-level {
-  background: linear-gradient(
-    135deg,
-    rgba(7, 203, 56, 0.2) 0%,
-    rgba(7, 203, 56, 0.1) 100%
-  );
-  border: 2px solid rgba(7, 203, 56, 0.5);
-  border-radius: 16px;
-  margin: 8px;
-  padding: 20px 24px;
-  box-shadow: 0 4px 20px rgba(7, 203, 56, 0.3);
-  animation: glow 3s infinite alternate;
+  border-radius: 32px 16px 16px 32px;
+  border: 2px solid #07cb38;
+  box-shadow: 0px 0px 7.3px 0px #00ff40;
 }
 
 .level-row.completed {
-  background: rgba(255, 255, 255, 0.02);
-  opacity: 0.8;
+  background: #ffffff1a;
+  border-radius: 32px 16px 16px 32px;
 }
 
 .level-cell {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   font-family: Roboto, sans-serif;
   font-weight: 500;
   font-size: 16px;
   color: #ffffff;
+  flex: 1;
+  min-height: 44px;
+  text-align: center;
 }
 
 .level-number-cell {
-  flex-direction: column;
-  gap: 8px;
+  position: relative;
 }
 
 .level-row .level-circle {
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
-  background: #f97c39;
+  background: #10101080;
   color: #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: 700;
   font-size: 20px;
-  box-shadow: 0 4px 16px rgba(249, 124, 57, 0.3);
-}
-
-.level-row.current-level .level-circle {
-  background: linear-gradient(135deg, #07cb38 0%, #22c55e 100%);
-  box-shadow: 0 4px 20px rgba(7, 203, 56, 0.5);
 }
 
 .level-row.completed .level-circle {
-  background: #4ade80;
+  background: #f97c39;
 }
 
 .current-label {
-  font-size: 12px;
+  font-size: 10px;
   color: #07cb38;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 1px;
+  display: block;
+  margin-top: 2px;
 }
 
 .threshold-cell {
-  font-weight: 600;
+  font-family: Roboto, sans-serif;
+  font-weight: 700;
+  font-size: 12px;
+  text-align: center;
   color: #ffffff;
 }
 
 .cashback-cell {
+  font-family: Roboto, sans-serif;
   font-weight: 700;
+  font-size: 16px;
+  text-align: center;
   color: #07cb38;
-  font-size: 20px;
 }
 
 .bonuses-cell {
-  justify-content: flex-start;
-  padding-left: 16px;
+  max-width: 113px;
+  padding: 8px;
+  border-radius: 4px 12px 12px 4px;
+  background: #00000042;
+  border-bottom: 1px solid #ffffff2e;
 }
 
 .bonuses-grid {
   display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
+  flex-direction: column;
+  gap: 4px;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  align-items: flex-start;
 }
 
 .bonus-item {
   display: flex;
   align-items: center;
-  gap: 6px;
-  background: rgba(255, 255, 255, 0.1);
-  padding: 8px 12px;
-  border-radius: 20px;
+  gap: 4px;
   font-size: 12px;
   font-weight: 600;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  transition: all 0.3s ease;
+  flex-shrink: 0;
+  width: 100%;
 }
 
 .bonus-item:hover {
   transform: scale(1.05);
 }
 
-.bonus-item.spins {
-  background: rgba(34, 197, 94, 0.2);
-  border: 1px solid rgba(34, 197, 94, 0.4);
-  color: #22c55e;
+.bonus-icon-img {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
 }
 
-.bonus-item.chests {
-  background: rgba(168, 85, 247, 0.2);
-  border: 1px solid rgba(168, 85, 247, 0.4);
-  color: #a855f7;
-}
-
-.bonus-icon {
-  font-size: 16px;
+.bonus-text {
+  font-family: Roboto, sans-serif;
+  font-weight: 700;
+  font-size: 9px;
+  text-transform: uppercase;
+  color: #07cb38;
+  white-space: nowrap;
 }
 
 /* ===========================================
    АДАПТИВНЫЕ СТИЛИ
    =========================================== */
 
+/* Планшеты */
 @media (max-width: 768px) {
+  .loyalty-header {
+    padding: 20px 24px;
+  }
+
   .loyalty-content {
-    padding: 24px 16px;
+    padding: 16px 16px;
   }
 
-  .header-title {
-    font-size: 24px;
+  .current-level-section {
+    padding: 16px 0;
   }
 
-  .user-level-card {
-    flex-direction: column;
-    text-align: center;
-    gap: 24px;
-    padding: 24px;
+  .levels-section {
+    padding: 16px 0;
   }
 
   .level-info-title {
-    font-size: 18px;
-  }
-
-  .detail-row {
-    flex-direction: column;
-    gap: 8px;
-    text-align: center;
-    padding: 16px;
-  }
-
-  .levels-header,
-  .level-row {
-    grid-template-columns: 80px 100px 80px 1fr;
-    gap: 8px;
-    padding: 16px 12px;
-  }
-
-  .level-row.current-level {
-    margin: 4px;
-    padding: 16px 12px;
+    font-size: 14px;
   }
 
   .header-item {
-    font-size: 12px;
+    font-size: 11px;
   }
 
-  .level-circle {
-    width: 40px !important;
-    height: 40px !important;
-    font-size: 16px !important;
-  }
-
-  .bonuses-cell {
-    justify-content: center;
-    padding-left: 0;
-  }
-
-  .bonuses-grid {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .bonus-item {
-    font-size: 10px;
-    padding: 6px 10px;
-  }
-}
-
-@media (max-width: 480px) {
-  .loyalty-content {
-    padding: 16px 12px;
-  }
-
-  .levels-header,
   .level-row {
-    grid-template-columns: 60px 80px 60px 1fr;
-    gap: 4px;
-    padding: 12px 8px;
-  }
-
-  .header-item {
-    font-size: 10px;
+    min-height: 55px;
   }
 
   .level-cell {
-    font-size: 12px;
+    min-height: 39px;
+    font-size: 14px;
   }
 
-  .level-circle {
-    width: 35px !important;
-    height: 35px !important;
-    font-size: 14px !important;
+  .level-row .level-circle {
+    width: 36px;
+    height: 36px;
+    font-size: 18px;
+  }
+
+  .threshold-cell {
+    font-size: 11px;
+  }
+
+  .cashback-cell {
+    font-size: 14px;
+  }
+
+  .current-label {
+    font-size: 9px;
+  }
+}
+
+/* Мобильные устройства */
+@media (max-width: 480px) {
+  .loyalty-header {
+    padding: 16px 16px;
+    height: 56px;
+  }
+
+  .header-title {
+    font-size: 18px;
+    letter-spacing: 1px;
+  }
+
+  .back-arrow {
+    width: 20px;
+    height: 20px;
+    padding: 4px;
+  }
+
+  .back-arrow img {
+    width: 14px;
+    height: 14px;
+  }
+
+  .loyalty-content {
+    padding: 12px 12px;
+    border-radius: 16px;
+  }
+
+  .level-info {
+    width: 100%;
+  }
+
+  .level-info-title {
+    font-size: 13px;
+  }
+
+  .detail-row {
+    gap: 2px;
+  }
+
+  .detail-label {
+    font-size: 11px;
+  }
+
+  .detail-value {
+    font-size: 11px;
+  }
+
+  .levels-header {
+    height: 38px;
+    padding: 0 4px;
+  }
+
+  .header-item {
+    font-size: 10px;
+  }
+
+  .level-row {
+    min-height: 50px;
+    gap: 4px;
+    padding: 6px;
+  }
+
+  .level-cell {
+    min-height: 36px;
+    font-size: 12px;
+    padding: 2px;
+  }
+
+  .level-row .level-circle {
+    width: 32px;
+    height: 32px;
+    font-size: 16px;
+  }
+
+  .threshold-cell {
+    font-size: 10px;
+  }
+
+  .cashback-cell {
+    font-size: 13px;
   }
 
   .current-label {
     font-size: 8px;
+    margin-top: 1px;
+  }
+
+  .bonuses-cell {
+    max-width: 90px;
+    padding: 4px;
   }
 
   .bonus-item {
+    gap: 2px;
+  }
+
+  .bonus-icon-img {
+    width: 14px;
+    height: 14px;
+  }
+
+  .bonus-text {
+    font-size: 8px;
+  }
+}
+
+/* Очень маленькие экраны */
+@media (max-width: 360px) {
+  .loyalty-header {
+    padding: 12px 12px;
+    height: 50px;
+  }
+
+  .header-title {
+    font-size: 16px;
+  }
+
+  .loyalty-content {
+    padding: 8px;
+    border-radius: 12px;
+  }
+
+  .user-level-card {
+    padding: 12px 8px;
+  }
+
+  .level-info-title {
+    font-size: 12px;
+  }
+
+  .detail-label,
+  .detail-value {
+    font-size: 10px;
+  }
+
+  .header-item {
     font-size: 9px;
-    padding: 4px 8px;
+  }
+
+  .level-row {
+    min-height: 45px;
+  }
+
+  .level-cell {
+    min-height: 32px;
+    font-size: 11px;
+  }
+
+  .level-row .level-circle {
+    width: 28px;
+    height: 28px;
+    font-size: 14px;
+  }
+
+  .threshold-cell {
+    font-size: 9px;
+  }
+
+  .cashback-cell {
+    font-size: 12px;
+  }
+
+  .bonuses-cell {
+    max-width: 80px;
+    padding: 2px;
+  }
+
+  .bonus-text {
+    font-size: 7px;
+  }
+
+  .bonus-icon-img {
+    width: 12px;
+    height: 12px;
+  }
+}
+
+/* Ландшафтная ориентация на мобильных */
+@media (max-width: 767px) and (orientation: landscape) {
+  .user-level-card {
+    flex-direction: row;
+    text-align: left;
+  }
+
+  .level-info-title {
+    text-align: left;
+  }
+
+  .detail-row {
+    flex-direction: row;
+    justify-content: space-between;
   }
 }
 
@@ -650,15 +806,6 @@ const goBack = () => {
   }
 }
 
-@keyframes glow {
-  0% {
-    box-shadow: 0 4px 20px rgba(7, 203, 56, 0.3);
-  }
-  100% {
-    box-shadow: 0 6px 30px rgba(7, 203, 56, 0.5);
-  }
-}
-
 @keyframes fadeInUp {
   from {
     opacity: 0;
@@ -670,12 +817,9 @@ const goBack = () => {
   }
 }
 
-.loyalty-page {
-  animation: fadeInUp 0.8s ease-out;
-}
-
 .level-row {
   animation: fadeInUp 0.6s ease-out;
+  animation-fill-mode: both;
 }
 
 .level-row:nth-child(1) {
@@ -693,13 +837,30 @@ const goBack = () => {
 .level-row:nth-child(5) {
   animation-delay: 0.5s;
 }
-
-.level-row {
-  animation-fill-mode: both;
+/* Уровни 1 и 2 */
+.level-row:nth-child(1) .level-circle,
+.level-row:nth-child(2) .level-circle {
+  background: #f97c39;
+  color: #1e1e1e;
 }
 
-.user-level-card {
-  animation: fadeInUp 0.8s ease-out 0.2s;
-  animation-fill-mode: both;
+/* Текущий уровень */
+.level-row.current-level .level-circle {
+  background: linear-gradient(135deg, #07cb38 0%, #22c55e 100%);
+  box-shadow: 0 4px 20px rgba(7, 203, 56, 0.5);
+  color: #1e1e1e;
+}
+
+/* Завершенные уровни */
+.level-row.completed .level-circle {
+  background: #f97c39;
+  color: #1e1e1e;
+}
+
+/* Стили для будущих уровней */
+.level-row:nth-child(4),
+.level-row:nth-child(5) {
+  background: #ffffff1a;
+  border-radius: 32px 16px 16px 32px;
 }
 </style>
