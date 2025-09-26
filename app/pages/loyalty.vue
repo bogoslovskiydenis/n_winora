@@ -418,9 +418,30 @@ const goBack = () => {
 }
 
 .level-row.current-level {
+  margin-top: 20px;
   border-radius: 32px 16px 16px 32px;
   border: 2px solid #07cb38;
   box-shadow: 0px 0px 7.3px 0px #00ff40;
+  position: relative;
+}
+
+.level-row.current-level::before {
+  content: 'Вы тут';
+  position: absolute;
+  top: -18px;
+  left: 50%;
+  transform: translateX(-50%);
+  box-shadow: 0px 0px 7.3px 0px #00ff40;
+  padding: 4px 12px;
+  border-radius: 18px;
+  color: #ffff;
+  z-index: 10;
+  background: #07cb38;
+  font-family: Roboto, sans-serif;
+  font-weight: 900;
+  font-size: 20px;
+  text-align: center;
+  vertical-align: middle;
 }
 
 .level-row.completed {
@@ -459,18 +480,28 @@ const goBack = () => {
   font-size: 20px;
 }
 
+/* Уровни 1 и 2 */
+.level-row:nth-child(1) .level-circle,
+.level-row:nth-child(2) .level-circle {
+  background: #f97c39;
+  color: #1e1e1e;
+}
+
+/* Текущий уровень */
+.level-row.current-level .level-circle {
+  background: linear-gradient(135deg, #07cb38 0%, #22c55e 100%);
+  box-shadow: 0 4px 20px rgba(7, 203, 56, 0.5);
+  color: #1e1e1e;
+}
+
+/* Завершенные уровни */
 .level-row.completed .level-circle {
   background: #f97c39;
+  color: #1e1e1e;
 }
 
 .current-label {
-  font-size: 10px;
-  color: #07cb38;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  display: block;
-  margin-top: 2px;
+  display: none;
 }
 
 .threshold-cell {
@@ -836,25 +867,6 @@ const goBack = () => {
 }
 .level-row:nth-child(5) {
   animation-delay: 0.5s;
-}
-/* Уровни 1 и 2 */
-.level-row:nth-child(1) .level-circle,
-.level-row:nth-child(2) .level-circle {
-  background: #f97c39;
-  color: #1e1e1e;
-}
-
-/* Текущий уровень */
-.level-row.current-level .level-circle {
-  background: linear-gradient(135deg, #07cb38 0%, #22c55e 100%);
-  box-shadow: 0 4px 20px rgba(7, 203, 56, 0.5);
-  color: #1e1e1e;
-}
-
-/* Завершенные уровни */
-.level-row.completed .level-circle {
-  background: #f97c39;
-  color: #1e1e1e;
 }
 
 /* Стили для будущих уровней */
