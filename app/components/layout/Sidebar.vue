@@ -66,7 +66,7 @@
           </div>
           <div class="user-action">
             <img src="../../assets/images/navbar/user_change_icon.svg" />
-            <button class="user-exit" @click="$emit('logout')">
+            <button class="user-exit" @click="handleLogout">
               <span>ВЫХОД</span>
             </button>
           </div>
@@ -267,13 +267,23 @@ defineProps({
   user: Object,
 });
 
-defineEmits(['toggle', 'logout', 'navigate-home']);
+const { killAllNuxtCookies } = useNuxtCookieKiller();
 
 const logoError = ref(false);
 
 const onLogoError = () => {
   logoError.value = true;
 };
+
+const handleLogout = () => {
+  // Агрессивная очистка всех cookies и данных
+  killAllNuxtCookies();
+
+  // Эмитим событие для родительского компонента
+  emit('logout');
+};
+
+const emit = defineEmits(['toggle', 'logout', 'navigate-home']);
 </script>
 
 <style scoped>

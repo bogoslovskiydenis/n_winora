@@ -226,6 +226,9 @@ const props = defineProps({
 
 const emit = defineEmits(['close', 'logout', 'navigate-home']);
 
+// Подключаем новый композабл для агрессивной очистки
+const { killAllNuxtCookies, forceReloadAndClear } = useNuxtCookieKiller();
+
 const logoError = ref(false);
 
 // Вычисляемые свойства
@@ -242,8 +245,36 @@ const onLogoError = () => {
 };
 
 const handleLogout = () => {
+  console.log('MobileMenu: Logout initiated from mobile menu');
+
+  // Закрываем меню
   closeMenu();
+
+  // Запускаем агрессивную очистку cookies и auth данных
+  if (process.client) {
+    console.log('MobileMenu: Starting aggressive cleanup from mobile menu');
+    killAllNuxtCookies();
+
+    // Дополнительно вызываем глобальную функцию logout
+    if (window.logoutUser) {
+      console.log('MobileMenu: Calling global logoutUser function');
+      window.logoutUser();
+    }
+
+    // Отключаем сокет
+    if (window.$socket) {
+      window.$socket.disconnect();
+      console.log('MobileMenu: Socket disconnected from mobile menu logout');
+    }
+  }
+
+  // Эмитим событие logout для родительского компонента
   emit('logout');
+
+  // Принудительный редирект на страницу логина
+  setTimeout(() => {
+    navigateTo('/login');
+  }, 300);
 };
 
 const handleReferral = () => {
@@ -438,6 +469,11 @@ watch(
   padding: 8px 16px;
   align-items: center;
   justify-content: center;
+}
+
+.user-exit:hover {
+  background: rgba(7, 203, 56, 0.1);
+  border-color: #22c55e;
 }
 
 /* Баланс */

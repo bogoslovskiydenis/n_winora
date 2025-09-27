@@ -1,3 +1,4 @@
+// composables/useAuth.js
 import { userAPI } from './../utils/api.js';
 
 export const useAuth = () => {
@@ -20,18 +21,49 @@ export const useAuth = () => {
   const sessionToken = useCookie('sessionToken', { default: () => null });
   const isLoading = ref(false);
 
+  // Подключаем новый композабл для агрессивной очистки Nuxt cookies
+  const { killAllNuxtCookies, forceReloadAndClear } = useNuxtCookieKiller();
+
   const initUser = () => {
     // Данные автоматически подтягиваются из cookie благодаря useCookie
     console.log('InitUser called:', {
       user: user.value,
       sessionToken: sessionToken.value,
     });
+
+    // Проверяем localStorage на остаточные данные при инициализации
+    if (process.client) {
+      const currentUser = localStorage.getItem('currentUser');
+      const hasUser = !!user.value;
+      const hasToken = !!sessionToken.value;
+
+      console.log('Auth state check on init:', {
+        hasUser,
+        hasToken,
+        localStorage: !!currentUser,
+      });
+
+      // Если есть несоответствие между cookies и localStorage, очищаем
+      if (!hasUser && !hasToken && currentUser) {
+        console.log('Found orphaned localStorage data, cleaning up');
+        localStorage.removeItem('currentUser');
+      }
+    }
   };
 
   const clearUserData = () => {
+    console.log(
+      'clearUserData called - запускаем агрессивную очистку Nuxt cookies'
+    );
+
+    // Очищаем cookies через useCookie
     user.value = null;
     sessionToken.value = null;
-    console.log('User data cleared');
+
+    // Запускаем агрессивную очистку Nuxt cookies
+    killAllNuxtCookies();
+
+    console.log('User data cleared completely with Nuxt cookie killer');
   };
 
   // Вычисляемое свойство для проверки аутентификации
@@ -119,11 +151,29 @@ export const useAuth = () => {
         user.value = userData;
         sessionToken.value = session;
 
+        // Сохраняем в localStorage для совместимости с сокетами
+        if (process.client) {
+          const userDataForStorage = {
+            id,
+            login: credentials.login,
+            role,
+            session,
+          };
+          localStorage.setItem(
+            'currentUser',
+            JSON.stringify(userDataForStorage)
+          );
+          console.log(
+            'User data saved to localStorage for socket compatibility'
+          );
+        }
+
         console.log('Login successful:', { userData, session });
 
         return {
           success: true,
           user: userData,
+          session: session,
         };
       } else if (response.body?.status === 'error') {
         return {
@@ -220,9 +270,32 @@ export const useAuth = () => {
   };
 
   const logoutUser = () => {
+    console.log(
+      'Logout initiated - запускаем агрессивную очистку Nuxt cookies'
+    );
+
+    // Очищаем все данные через новый метод
     clearUserData();
-    // Теперь перенаправляем на login вместо main
-    navigateTo('/login');
+
+    // Небольшая задержка для применения изменений
+    setTimeout(() => {
+      // Дополнительная проверка - если cookies все еще есть, принудительная перезагрузка
+      if (process.client) {
+        const remainingCookies = document.cookie;
+        if (
+          remainingCookies.includes('user') ||
+          remainingCookies.includes('session')
+        ) {
+          console.log(
+            'Cookies все еще остались, принудительная перезагрузка...'
+          );
+          forceReloadAndClear();
+          return;
+        }
+      }
+
+      navigateTo('/login');
+    }, 500);
   };
 
   return {

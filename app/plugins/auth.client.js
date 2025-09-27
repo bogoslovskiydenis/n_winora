@@ -9,10 +9,9 @@ export default defineNuxtPlugin(() => {
 
   // Регистрируем глобальные функции для совместимости
   if (process.client) {
-    // Исправленная функция логина
+    // Функция логина (без изменений)
     window.loginUser = async (userData, rememberMe = false) => {
       try {
-        // Правильно формируем credentials
         const credentials = {
           login: userData.login || userData.email || userData.nickname,
           password: userData.password,
@@ -23,7 +22,20 @@ export default defineNuxtPlugin(() => {
         const result = await loginUser(credentials, rememberMe);
 
         if (result.success) {
-          // Небольшая задержка для обновления состояния
+          // Сохраняем данные в localStorage для совместимости с сокетами
+          const userDataForStorage = {
+            id: result.user.id,
+            login: result.user.login,
+            role: result.user.role,
+            session: result.session || 'session_from_login',
+          };
+
+          localStorage.setItem(
+            'currentUser',
+            JSON.stringify(userDataForStorage)
+          );
+          console.log('User data saved to localStorage:', userDataForStorage);
+
           await nextTick();
           navigateTo('/main');
         }
@@ -38,20 +50,50 @@ export default defineNuxtPlugin(() => {
       }
     };
 
-    // Исправленная функция выхода
+    // МАКСИМАЛЬНО АГРЕССИВНАЯ функция выхода
     window.logoutUser = () => {
-      console.log('Window.logoutUser called');
+      console.log('Window.logoutUser called - запуск максимальной очистки');
+
+      // Импортируем новый композабл
+      const { killAllNuxtCookies, forceReloadAndClear } = useNuxtCookieKiller();
+
+      // Запускаем агрессивную очистку
+      killAllNuxtCookies();
+
+      // Отключаем сокет
+      if (window.$socket) {
+        window.$socket.disconnect();
+        console.log('Socket force disconnected');
+      }
+
+      // Вызываем оригинальную функцию логаута
       logoutUser();
+
+      // Проверяем результат и при необходимости перезагружаем
+      setTimeout(() => {
+        const remainingCookies = document.cookie;
+        if (
+          remainingCookies.includes('user') ||
+          remainingCookies.includes('session')
+        ) {
+          console.log(
+            'Cookies упорно не удаляются, принудительная перезагрузка...'
+          );
+          forceReloadAndClear();
+        }
+      }, 1000);
+
+      console.log('Complete aggressive logout performed');
     };
 
-    // Функция получения текущего пользователя
+    // Функция получения текущего пользователя (без изменений)
     window.getCurrentUser = () => {
       const currentUser = getCurrentUser();
       console.log('Window.getCurrentUser called:', currentUser);
       return currentUser;
     };
 
-    // Новые функции для работы с API
+    // Остальные функции (без изменений)
     window.registerUser = async (userData) => {
       console.log('Window.registerUser called with:', userData);
       return await registerUser(userData);
